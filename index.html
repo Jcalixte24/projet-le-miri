@@ -22,6 +22,32 @@
 html{scroll-behavior:smooth;}
 body{background:var(--li);color:var(--dk);font-family:'Outfit',sans-serif;overflow-x:hidden;}
 
+/* ══ LOADER (PAGE DE CHARGEMENT) ══ */
+#pageLoader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: var(--wh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+}
+#pageLoader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-logo {
+  width: 140px;
+  height: auto;
+  animation: pulseLoader 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+@keyframes pulseLoader {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
 /* ══ PAGE TRANSITION ══ */
 #root{animation:pgIn .35s ease;}
 @keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -56,16 +82,15 @@ nav{
   max-width:1340px;margin:0 auto;
   padding:0 1.5rem;
   display:flex;align-items:center;
+  justify-content: space-between; /* Assure que le logo est à gauche et le hamburger à droite */
   height:60px;
   gap:0;
 }
 
-/* Logo zone — image seule, pas de texte */
 .nav-logo{
   display:flex;align-items:center;
   cursor:pointer;flex-shrink:0;
   padding-right:1.4rem;
-  border-right:1.5px solid var(--cr3);
   height:100%;
 }
 .nav-logo-img{
@@ -77,7 +102,7 @@ nav{
 }
 .nav-logo-txt,.nav-logo-name,.nav-logo-sub{display:none !important;}
 
-/* Menu — flex centré, prend tout l'espace disponible */
+/* Menu Desktop */
 .nav-menu{
   display:flex;align-items:stretch;
   list-style:none;
@@ -137,13 +162,12 @@ nav{
   border-bottom:1px solid rgba(11,26,13,.06);
   transition:background .12s,color .12s,padding-left .12s;
 }
-.dropdown a:last-child,.dropdown button:last-child{border-bottom:none;}
 .dropdown a:hover,.dropdown button:hover{
   background:var(--cr2);color:var(--tr);
   padding-left:1.4rem;
 }
 
-/* CTA bouton — toujours visible, jamais rogné */
+/* CTA bouton Desktop */
 .nav-cta{
   flex-shrink:0;
   background:var(--tr);color:#fff;
@@ -164,31 +188,43 @@ nav{
 .hamburger{
   display:none;background:none;border:none;cursor:pointer;
   padding:.4rem;flex-direction:column;gap:5px;
-  margin-left:.5rem;flex-shrink:0;
+  margin-left:auto; /* S'assure qu'il est collé à droite */
+  flex-shrink:0;
 }
 .hamburger span{display:block;width:22px;height:2px;background:var(--dk);transition:.3s;}
 
 /* Mobile overlay */
 .mob-overlay{
   display:none;position:fixed;inset:0;z-index:800;
-  background:var(--fo);flex-direction:column;
-  transform:translateX(100%);transition:transform .35s;overflow-y:auto;
+  background:var(--wh);flex-direction:column;
+  transform:translateX(100%);transition:transform .35s ease-in-out;overflow-y:auto;
 }
-.mob-overlay.open{transform:none;}
-.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:var(--cr);font-size:1.8rem;cursor:pointer;}
-.mob-nav{padding:4rem 2rem 2rem;}
+.mob-overlay.open{transform:translateX(0);}
+.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:var(--dk);font-size:2rem;cursor:pointer;}
+.mob-nav{padding:4rem 2rem 2rem; display: flex; flex-direction: column;}
 .mob-nav a,.mob-nav button{
   display:block;width:100%;text-align:left;
   font-family:'Cormorant Garamond',serif;
   font-size:1.8rem;font-weight:700;
-  color:var(--cr);text-decoration:none;cursor:pointer;
+  color:var(--dk);text-decoration:none;cursor:pointer;
   background:none;border:none;
-  padding:.5rem 0;border-bottom:1px solid rgba(246,237,217,.1);
+  padding:1rem 0;border-bottom:1px solid rgba(11,26,13,.1);
   transition:color .2s;
 }
-.mob-nav a:hover,.mob-nav button:hover{color:var(--go2);}
-.mob-sub{padding-left:1.5rem;}
-.mob-sub a{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:400;}
+.mob-nav a:hover,.mob-nav button:hover{color:var(--tr);}
+.mob-sub{
+  padding-left:1.5rem; 
+  border-left: 2px solid var(--cr3);
+  margin: 0.5rem 0 0.5rem 1rem;
+}
+.mob-sub a{
+  font-family:'Outfit',sans-serif;
+  font-size:1.1rem;
+  font-weight:500;
+  color:var(--md);
+  padding: 0.6rem 0;
+  border: none;
+}
 
 /* ══ PAGE LAYOUT ══ */
 .page{max-width:1280px;margin:0 auto;padding:0 2rem;}
@@ -272,7 +308,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .hero{
   display:grid;
   grid-template-columns:1fr 1.2fr; 
-  height:calc(100vh - 120px); /* 120px = hauteur topbar + nav + ticker environ */
+  height:calc(100vh - 120px); 
   min-height:500px;
   border-bottom:2px solid var(--dk);
 }
@@ -281,17 +317,13 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 }
 .hero-left{
   background:var(--li);
-  padding:2rem 3rem; /* Marges resserrées pour s'assurer que ça rentre */
-  display:flex;flex-direction:column;justify-content:center;
-  position:relative;overflow:hidden;
+  padding:2rem 3rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center; /* Centré verticalement parfaitement */
+  position:relative;
+  overflow:hidden;
   border-right:2px solid var(--dk);
-}
-.hero-ghost{
-  position:absolute;font-family:'Cormorant Garamond',serif;
-  font-size:20rem;font-weight:700;font-style:italic;
-  color:rgba(27,74,41,.04);top:50%;left:50%;
-  transform:translate(-50%,-50%);pointer-events:none;
-  line-height:1;z-index:0;user-select:none;
 }
 .hero-left>*{position:relative;z-index:1;}
 .hero-tag{
@@ -333,11 +365,10 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .carousel-slide img{
   position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;
+  object-fit:contain; /* AUCUN ROGNAGE */
   object-position:center;
   display:block;
 }
-/* Gradient overlay bas */
 .carousel-slide::after{
   content:'';
   position:absolute;inset:0;
@@ -400,7 +431,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .carousel-btn.prev{left:1rem;}
 .carousel-btn.next{right:1rem;}
 
-/* Stats strip */
+/* Stats strip (Mise à jour avec les nouveaux chiffres) */
 .stats-strip{
   background:var(--fo);
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -428,25 +459,37 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .feature-list li{display:flex;gap:.75rem;align-items:flex-start;font-size:.9rem;color:var(--md);line-height:1.6;}
 .feature-list li::before{content:'→';color:var(--tr);font-weight:700;flex-shrink:0;margin-top:.05rem;}
 
-/* News grid */
-.news-section{padding:4rem 0;background:var(--cr2);}
-.news-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:0;border:2px solid var(--dk);margin-top:2.5rem;}
-.n-card{overflow:hidden;cursor:pointer;transition:background .2s;}
-.n-card:hover{background:var(--cr2);}
-.n-card+.n-card{border-left:1.5px solid var(--dk);}
-.n-card-img{position:relative;overflow:hidden;}
-.n-card-img img{width:100%;object-fit:cover;transition:transform .5s;display:block;}
-.n-card:hover .n-card-img img{transform:scale(1.04);}
-.n-big .n-card-img{height:280px;}
-.n-sm .n-card-img{height:180px;}
-.n-body{padding:1.2rem 1.4rem;border-top:1.5px solid var(--dk);}
-.n-date{font-size:.7rem;color:var(--md);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
-.n-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;line-height:1.35;color:var(--dk);margin-bottom:.3rem;}
-.n-big .n-title{font-size:1.35rem;}
-.n-excerpt{font-size:.8rem;color:var(--md);line-height:1.55;margin-top:.3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.n-tag{display:inline-block;margin-top:.6rem;font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tr);border-bottom:1.5px solid var(--tr);}
-.second-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1.5px solid var(--dk);}
-.second-row .n-card+.n-card{border-left:1.5px solid var(--dk);}
+/* ══ DESIGN FACEBOOK POUR L'ACTUALITÉ ══ */
+.news-section{padding:4rem 0;background:#F0F2F5;}
+.social-feed { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+.fb-post {
+  background: #ffffff; border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  display: flex; flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden; cursor: pointer; transition: box-shadow 0.2s;
+}
+.fb-post:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.fb-header { display: flex; align-items: center; padding: 12px 16px; gap: 10px; }
+.fb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: contain; border:1px solid #ddd; background:#fff;}
+.fb-author-info { flex: 1; display: flex; flex-direction: column; }
+.fb-name { font-weight: 600; font-size: 0.95rem; color: #050505; }
+.fb-date { font-size: 0.8rem; color: #65676B; display: flex; align-items: center; gap: 4px; margin-top: 2px;}
+.fb-dots { color: #65676B; font-weight: bold; letter-spacing: 2px; padding-bottom: 8px; }
+.fb-content { padding: 0 16px 12px; font-size: 0.95rem; color: #050505; line-height: 1.4; }
+.fb-image-wrap { position: relative; background: #000; display:flex; justify-content:center;}
+.fb-image { width: 100%; max-height: 350px; object-fit: contain; display:block; }
+.fb-stats { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #CED0D4; font-size: 0.85rem; color: #65676B; }
+.fb-stats-left { display: flex; align-items: center; gap: 6px; }
+.fb-like-icon-circle { background: #1877F2; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; color: white; }
+.fb-actions { display: flex; padding: 4px 12px; gap: 4px; }
+.fb-action-btn { 
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; 
+  padding: 6px 0; color: #65676B; font-weight: 600; font-size: 0.95rem; 
+  cursor: pointer; border-radius: 4px; background: none; border: none; transition: background 0.2s, color 0.2s; 
+}
+.fb-action-btn:hover { background: #F2F2F2; }
+.fb-action-btn.liked { color: #1877F2; }
 
 /* Inscription CTA */
 .cta-band{display:grid;grid-template-columns:1.1fr 1fr;border-top:2px solid var(--dk);border-bottom:2px solid var(--dk);}
@@ -565,14 +608,18 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .nav-link{padding:0 .6rem;font-size:.69rem;}
 }
 
+/* ── Passage en menu Hamburger si l'écran réduit trop (≤ 1150px) ── */
+@media(max-width:1150px){
+  .nav-inner { justify-content: space-between; }
+  .nav-menu{display:none;}
+  .nav-cta{display:none;}
+  .hamburger{display:flex;}
+  .nav-logo-img{height:40px;}
+}
+
 /* ── Tablette large ≤ 1100px ── */
 @media(max-width:1100px){
-  .nav-link{padding:0 .5rem;font-size:.67rem;}
   .intro-grid{grid-template-columns:1fr;gap:2.5rem;}
-  .news-grid{grid-template-columns:1fr;}
-  .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
-  .second-row{grid-template-columns:1fr;}
-  .second-row .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
   .cta-band{grid-template-columns:1fr;}
   .cta-right{border-left:none;border-top:2px solid var(--dk);}
   .foot-top{grid-template-columns:1fr 1fr;gap:2rem;}
@@ -589,14 +636,10 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .g4{grid-template-columns:1fr 1fr;}
 }
 
-/* ── Tablette ≤ 900px — hamburger, hero colonne ── */
+/* ── Tablette ≤ 900px — hero colonne ── */
 @media(max-width:900px){
-  .nav-menu{display:none;}
-  .nav-cta{display:none;}
-  .hamburger{display:flex;}
   .nav-logo-img{height:38px;}
 
-  /* Hero : colonne verticale ajustée sans débordement */
   .hero{
     display:flex;
     flex-direction:column;
@@ -618,7 +661,6 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
     min-height:250px;
     max-height:none;
   }
-
   .stats-strip{grid-template-columns:repeat(2,1fr);}
   .stat-cell:nth-child(3){border-left:none;}
 }
@@ -626,16 +668,13 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 /* ── Mobile ≤ 600px ── */
 @media(max-width:600px){
   .topbar{display:none;}
-
-  /* Navbar compacte */
   .nav-inner{height:54px;padding:0 1rem;}
   .nav-logo-img{height:32px;}
 
-  /* Hero mobile : 100% visible sans scroll (via Flexbox) */
   .hero{
     display:flex;
     flex-direction:column;
-    height:calc(100vh - 85px); /* On soustrait la barre de nav (54px) et le bandeau (~30px) */
+    height:calc(100vh - 85px); 
     min-height:550px;
   }
   @supports (height: 100svh) {
@@ -650,32 +689,22 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .hero-desc{font-size:.86rem; margin-bottom: 1.2rem;}
   
   .hero-right{
-    flex: 1 1 auto; /* Prend tout l'espace vide restant en dessous du texte */
+    flex: 1 1 auto;
     height:auto; 
     min-height:200px;
     max-height:none;
   }
 
-  /* Ajustements pour que le texte du carrousel ne cache pas trop l'image */
-  .slide-caption{
-    padding: 1.2rem;
-  }
-  .hero-year-badge {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem 0.8rem;
-  }
+  .slide-caption{ padding: 1.2rem; }
+  .hero-year-badge { top: 1rem; right: 1rem; padding: 0.5rem 0.8rem; }
   .hero-year-badge strong{font-size:1.4rem;}
-
   .carousel-btn{width:32px;height:32px;font-size:.8rem;}
   .slide-caption-title{font-size:1.05rem;}
 
-  /* Stats 2×2 */
   .stats-strip{grid-template-columns:repeat(2,1fr);}
   .stat-cell:nth-child(3){border-left:none;}
   .stat-n{font-size:2.2rem;}
 
-  /* Layouts */
   .page{padding:0 1rem;}
   .f-row{grid-template-columns:1fr;}
   .foot-top{grid-template-columns:1fr;}
@@ -687,13 +716,16 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .cta-left,.cta-right{padding:2.5rem 1.4rem;}
   .cta-band{grid-template-columns:1fr;}
   .admin-grid,.parents-grid{grid-template-columns:1fr;}
-  .second-row{grid-template-columns:1fr;}
-  .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
-  .second-row .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
+  .social-feed { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
+
+<!-- LOADER -->
+<div id="pageLoader">
+  <img src="https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg" alt="Logo Le Miri" class="loader-logo">
+</div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -820,7 +852,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
     <a onclick="go('vie');document.getElementById('mobMenu').classList.remove('open')">Vie Scolaire</a>
     <a onclick="go('blog');document.getElementById('mobMenu').classList.remove('open')">Événements</a>
     <a onclick="go('contact');document.getElementById('mobMenu').classList.remove('open')">Contact</a>
-    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" style="color:var(--go2);margin-top:1rem;">→ Inscription 2025-2026</a>
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" style="color:var(--tr);margin-top:1rem;border:none;">→ Inscription 2025-2026</a>
   </nav>
 </div>
 
@@ -904,8 +936,14 @@ const IMG = {
 };
 
 /* ══════════════════════════════════════
-   ROUTER
+   ROUTER & LOADER
 ══════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('pageLoader').classList.add('hide');
+  }, 400); // Petit délai pour laisser l'animation respirer
+});
+
 let currentPage = 'accueil';
 let currentSub = null;
 
@@ -918,7 +956,6 @@ function go(page, sub) {
     render();
   });
   window.scrollTo({top: 0, behavior:'smooth'});
-  // update active nav
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   const el = document.getElementById('nav-' + page);
   if (el) el.classList.add('active');
@@ -971,15 +1008,81 @@ function footer_cta() {
   </div>`;
 }
 
+/* Générateur de "Post Facebook" */
+function renderFbPost(post) {
+  const likeSvg = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>`;
+  const commentSvg = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`;
+  const shareSvg = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`;
+  
+  return `
+    <div class="fb-post">
+      <div class="fb-header" onclick="go('blog')">
+        <img src="${IMG.logo}" alt="Logo" class="fb-avatar">
+        <div class="fb-author-info">
+          <div class="fb-name">Groupe Scolaire Le Miri</div>
+          <div class="fb-date">${post.date} · 🌍</div>
+        </div>
+        <div class="fb-dots">...</div>
+      </div>
+      <div class="fb-content" onclick="go('blog')">
+        <strong>${post.title}</strong><br><br>
+        ${post.text}
+      </div>
+      <div class="fb-image-wrap" onclick="go('blog')">
+        <img src="${post.img}" alt="Image" class="fb-image" loading="lazy">
+      </div>
+      <div class="fb-stats">
+        <div class="fb-stats-left">
+          <div class="fb-like-icon-circle"><svg viewBox="0 0 512 512" width="10" height="10" fill="currentColor"><path d="M225.8 468.2..."></path></svg>👍</div>
+          <span class="like-count">${post.likes}</span>
+        </div>
+        <div>${post.comments} commentaires · ${post.shares} partages</div>
+      </div>
+      <div class="fb-actions">
+        <button class="fb-action-btn" onclick="toggleLike(this)">
+          ${likeSvg} <span>J'aime</span>
+        </button>
+        <button class="fb-action-btn" onclick="go('blog')">
+          ${commentSvg} <span>Commenter</span>
+        </button>
+        <button class="fb-action-btn" onclick="go('blog')">
+          ${shareSvg} <span>Partager</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+window.toggleLike = function(btn) {
+  const isLiked = btn.classList.toggle('liked');
+  const svg = btn.querySelector('svg');
+  if(isLiked) { svg.setAttribute('fill', 'currentColor'); } 
+  else { svg.setAttribute('fill', 'none'); }
+  
+  const countEl = btn.closest('.fb-post').querySelector('.like-count');
+  if(countEl) {
+    let current = parseInt(countEl.textContent);
+    countEl.textContent = isLiked ? current + 1 : current - 1;
+  }
+}
+
 /* ══════════════════════════════════════
    PAGE: ACCUEIL
 ══════════════════════════════════════ */
 function pageAccueil() {
+  const newsPosts = [
+    { img: IMG.femmes, date: "Mars 2026", title: "Journée internationale des droits des femmes", text: "Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. Élèves, enseignant·e·s et personnel réunis autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.", likes: 214, comments: 45, shares: 12 },
+    { img: IMG.merite, date: "21 Juin 2025", title: "Journée du mérite et de l'excellence 2024-2025", text: "Célébration et récompense de nos meilleurs élèves pour cette année académique. Félicitations à tous nos lauréats !", likes: 342, comments: 89, shares: 34 },
+    { img: IMG.bingerville, date: "Mai 2025", title: "Prix d'excellence — Meilleur élève de Bingerville", text: "L'élève BROU GRACE LYN (Tle A1) a reçu de la part du Maire de Bingerville le prix d'excellence de meilleur élève de Bingerville. Fierté !", likes: 485, comments: 112, shares: 56 },
+    { img: IMG.anglais, date: "Mai 2025", title: "Concours national d'anglais", text: "L'élève BINTUNI JOËLLE (4ème) qualifiée pour la finale du Concours national d'anglais. Tous nos vœux de succès !", likes: 156, comments: 28, shares: 8 },
+    { img: IMG.salon, date: "Mai 2025", title: "Sortie au Salon du Livre 2025", text: "Les élèves du Miri ont visité le salon du livre au parc des expositions d'Abidjan. Une belle journée de découverte littéraire.", likes: 128, comments: 15, shares: 5 },
+    { img: IMG.art, date: "2025", title: "Tableau d'art — Club Art visuel", text: "Remarquable travail réalisé par les élèves membres du Club Art Visuel du MIRI, promotion 2024-2025.", likes: 275, comments: 54, shares: 22 }
+  ];
+
   return `
   <!-- HERO -->
   <div class="hero">
     <div class="hero-left">
-      <div class="hero-ghost">M</div>
       <div class="hero-tag">Bingerville, Abidjan · Depuis 2015</div>
       <h1 class="hero-title">
         Élever chaque<br>esprit,<br><em>construire<br>l'avenir.</em>
@@ -994,7 +1097,6 @@ function pageAccueil() {
     </div>
 
     <div class="hero-right" id="heroCarousel">
-      <!-- Slides wrapper -->
       <div class="carousel-track" id="cTrack">
         <div class="carousel-slide">
           <img src="${IMG.femmes}" alt="Journée droits des femmes" loading="eager">
@@ -1039,28 +1141,22 @@ function pageAccueil() {
           </div>
         </div>
       </div>
-
-      <!-- Badge -->
       <div class="hero-year-badge">
         <strong>2025</strong>
         <span>Année académique</span>
       </div>
-
-      <!-- Boutons navigation -->
       <button class="carousel-btn prev" id="cPrev" aria-label="Précédent">&#8592;</button>
       <button class="carousel-btn next" id="cNext" aria-label="Suivant">&#8594;</button>
-
-      <!-- Dots -->
       <div class="carousel-dots" id="cDots"></div>
     </div>
   </div>
 
   <!-- STATS -->
   <div class="stats-strip">
-    <div class="stat-cell"><div class="stat-n" data-target="1200" data-suffix="">0</div><div class="stat-l">Total élèves inscrits</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="450" data-suffix="">0</div><div class="stat-l">Préscolaire & Primaire</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="92" data-suffix="%">0%</div><div class="stat-l">Réussite BEPC 2024</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="95" data-suffix="%">0%</div><div class="stat-l">Réussite BAC 2024</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="542" data-suffix="">0</div><div class="stat-l">Élèves inscrits</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="105" data-suffix="">0</div><div class="stat-l">Préscolaire-primaire</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="77" data-suffix="">0</div><div class="stat-l">Candidats au Bepc</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="78" data-suffix="">0</div><div class="stat-l">Candidats au Bac</div></div>
   </div>
 
   <!-- INTRO -->
@@ -1090,71 +1186,18 @@ function pageAccueil() {
     </div>
   </div>
 
-  <!-- ACTUALITÉS -->
+  <!-- ACTUALITÉS LIGNE FACEBOOK -->
   <div class="news-section">
     <div class="page">
-      <div class="flex-between mb1">
+      <div class="flex-between">
         <div>
-          <div class="s-tag">Actualités 2025-2026</div>
+          <div class="s-tag">L'actualité en direct</div>
           <h2 class="s-h2">Ce qui se passe <em>au Miri</em></h2>
         </div>
         <button class="btn btn-outline" onclick="go('blog')">Voir tous les événements →</button>
       </div>
-      <div class="news-grid">
-        <div class="n-card n-big" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.femmes}" alt="Journée droits des femmes" style="height:280px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">Mars 2026</div>
-            <div class="n-title">Journée internationale des droits des femmes au Groupe Scolaire Le Miri</div>
-            <div class="n-excerpt">Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. Élèves, enseignant·e·s et personnel réunis autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.</div>
-            <span class="n-tag">Vie scolaire</span>
-          </div>
-        </div>
-        <div class="n-card n-sm" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.merite}" alt="Journée mérite" style="height:180px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">21 Juin 2025</div>
-            <div class="n-title">Journée du mérite et de l'excellence 2024-2025</div>
-            <span class="n-tag">Excellence</span>
-          </div>
-        </div>
-        <div class="n-card n-sm" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.bingerville}" alt="Prix Bingerville" style="height:180px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">Mai 2025</div>
-            <div class="n-title">Prix d'excellence — Meilleur élève de Bingerville</div>
-            <span class="n-tag">Prix</span>
-          </div>
-        </div>
-      </div>
-      <div class="second-row" style="border:2px solid var(--dk);border-top:none;">
-        <div class="n-card n-sm" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.anglais}" alt="Concours anglais" style="height:180px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">Mai 2025</div>
-            <div class="n-title">Concours national d'anglais — Finale nationale</div>
-            <div class="n-excerpt">L'élève BINTUNI JOËLLE (4ème) qualifiée pour la finale du Concours national d'anglais. Félicitations !</div>
-            <span class="n-tag">Compétition</span>
-          </div>
-        </div>
-        <div class="n-card n-sm" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.salon}" alt="Salon du livre" style="height:180px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">Mai 2025</div>
-            <div class="n-title">Sortie au Salon du Livre 2025 — Parc des Expositions</div>
-            <div class="n-excerpt">Les élèves du Miri ont visité le salon du livre au parc des expositions d'Abidjan.</div>
-            <span class="n-tag">Culture</span>
-          </div>
-        </div>
-        <div class="n-card n-sm" onclick="go('blog')">
-          <div class="n-card-img"><img src="${IMG.art}" alt="Club art visuel" style="height:180px;width:100%;object-fit:cover;"></div>
-          <div class="n-body">
-            <div class="n-date">2025</div>
-            <div class="n-title">Tableau d'art — Club Art visuel du MIRI, promotion 2024-2025</div>
-            <div class="n-excerpt">Remarquable travail réalisé par les élèves membres du Club Art Visuel.</div>
-            <span class="n-tag">Arts</span>
-          </div>
-        </div>
+      <div class="social-feed">
+        ${newsPosts.map(p => renderFbPost(p)).join('')}
       </div>
     </div>
   </div>
@@ -1713,8 +1756,8 @@ function pageContact() {
         </div>
         <div class="map-box">
           <strong>Bingerville, Abidjan</strong>
-          <span>Côte d'Ivoire</span>
-          <a href="https://maps.google.com?q=Bingerville+Abidjan+Cote+d+Ivoire" target="_blank" class="btn btn-fo" style="margin-top:.5rem;padding:.5rem 1.2rem;font-size:.75rem;">📍 Voir sur Google Maps</a>
+          <span>Côte d'Ivoire (93MQ+83G)</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=93MQ%2B83G,+C%C3%B4te+d%E2%80%99Ivoire" target="_blank" class="btn btn-fo" style="margin-top:.5rem;padding:.5rem 1.2rem;font-size:.75rem;">📍 Voir sur Google Maps</a>
         </div>
       </div>
       <div>
