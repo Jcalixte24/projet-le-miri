@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" sizes="192x192" href="https://static.wixstatic.com/media/568692_d208ed65917a482280a345ef2a14eba6%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/568692_d208ed65917a482280a345ef2a14eba6%7Emv2.jpg" type="image/jpeg"/>
 <title>Groupe Scolaire Le Miri — Bingerville, Abidjan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,67 +27,146 @@ body{background:var(--li);color:var(--dk);font-family:'Outfit',sans-serif;overfl
 @keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══ TOPBAR ══ */
-.topbar{background:var(--fo);color:rgba(246,237,217,.65);font-size:.72rem;letter-spacing:.04em;padding:.38rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
-.topbar a{color:var(--go2);text-decoration:none;font-weight:600;}
-.topbar a:hover{color:#fff;}
-.topbar-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.topbar{
+  background:var(--fo);color:rgba(246,237,217,.7);
+  font-size:.71rem;letter-spacing:.03em;
+  padding:.4rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:1rem;
+}
+.topbar-left{display:flex;align-items:center;gap:1.4rem;flex-shrink:0;}
+.topbar-left span{display:flex;align-items:center;gap:.35rem;}
+.topbar-right{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
+.topbar a{
+  color:var(--cr);text-decoration:none;font-weight:600;
+  background:rgba(246,237,217,.12);padding:.22rem .7rem;
+  border-radius:2px;transition:background .2s;
+  white-space:nowrap;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;
+}
+.topbar a:hover{background:rgba(246,237,217,.22);}
 
 /* ══ NAV ══ */
-nav{background:var(--wh);border-bottom:2px solid var(--dk);position:sticky;top:0;z-index:500;}
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;gap:1rem;}
-.nav-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none;cursor:pointer;}
-.nav-logo-img{height:38px;width:auto;}
-.nav-logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--dk);line-height:1.15;}
-.nav-logo-txt small{display:block;font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--md);}
-
-/* Main menu */
-.nav-menu{display:flex;align-items:center;gap:0;list-style:none;height:66px;}
-.nav-item{position:relative;height:100%;}
-.nav-link{
-  display:flex;align-items:center;gap:.28rem;height:100%;
-  padding:0 .9rem;font-size:.78rem;font-weight:500;
-  letter-spacing:.05em;text-transform:uppercase;
-  color:var(--dk);text-decoration:none;cursor:pointer;
-  white-space:nowrap;border-bottom:3px solid transparent;
-  transition:color .2s,border-color .2s;
-  background:none;border-top:none;border-left:none;border-right:none;
-  font-family:'Outfit',sans-serif;
+nav{
+  background:var(--wh);
+  border-bottom:2px solid var(--dk);
+  position:sticky;top:0;z-index:500;
+  box-shadow:0 2px 8px rgba(11,26,13,.06);
 }
-.nav-link:hover,.nav-link.active{color:var(--tr);border-bottom-color:var(--tr);}
-.nav-link svg{width:12px;height:12px;transition:transform .2s;flex-shrink:0;}
+.nav-inner{
+  max-width:1340px;margin:0 auto;
+  padding:0 1.5rem;
+  display:flex;align-items:center;
+  height:60px;
+  gap:0;
+}
+
+/* Logo zone — image seule, pas de texte */
+.nav-logo{
+  display:flex;align-items:center;
+  cursor:pointer;flex-shrink:0;
+  padding-right:1.4rem;
+  border-right:1.5px solid var(--cr3);
+  height:100%;
+}
+.nav-logo-img{
+  height:46px;width:auto;
+  max-width:160px;
+  object-fit:contain;
+  flex-shrink:0;
+  display:block;
+}
+.nav-logo-txt,.nav-logo-name,.nav-logo-sub{display:none !important;}
+
+/* Menu — flex centré, prend tout l'espace disponible */
+.nav-menu{
+  display:flex;align-items:stretch;
+  list-style:none;
+  height:60px;
+  flex:1;
+  justify-content:center;
+  gap:0;
+  padding:0 .5rem;
+  overflow:visible;
+}
+.nav-item{position:relative;display:flex;align-items:stretch;}
+.nav-link{
+  display:flex;align-items:center;gap:.22rem;
+  padding:0 .7rem;
+  font-size:.72rem;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--dk);cursor:pointer;white-space:nowrap;
+  border:none;background:none;
+  font-family:'Outfit',sans-serif;
+  border-bottom:2.5px solid transparent;
+  transition:color .18s,border-color .18s,background .18s;
+  border-top:2.5px solid transparent;
+}
+.nav-link:hover,.nav-link.active{
+  color:var(--tr);
+  border-bottom-color:var(--tr);
+  background:rgba(192,78,21,.04);
+}
+.nav-link svg{
+  width:10px;height:10px;
+  flex-shrink:0;
+  transition:transform .2s;
+  opacity:.5;
+}
 .nav-item:hover .nav-link svg{transform:rotate(180deg);}
 
 /* Dropdown */
 .dropdown{
-  position:absolute;top:100%;left:0;min-width:220px;
-  background:var(--wh);border:2px solid var(--dk);
-  border-top:none;
-  opacity:0;pointer-events:none;transform:translateY(-6px);
-  transition:opacity .2s,transform .2s;z-index:600;
+  position:absolute;top:calc(100% + 2px);left:0;
+  min-width:210px;
+  background:var(--wh);
+  border:1.5px solid var(--dk);
+  border-top:3px solid var(--tr);
+  box-shadow:0 8px 24px rgba(11,26,13,.12);
+  opacity:0;pointer-events:none;
+  transform:translateY(-4px);
+  transition:opacity .18s,transform .18s;
+  z-index:700;
 }
 .nav-item:hover .dropdown{opacity:1;pointer-events:all;transform:translateY(0);}
 .dropdown a,.dropdown button{
   display:block;width:100%;text-align:left;
-  padding:.65rem 1.1rem;font-size:.8rem;font-weight:400;
+  padding:.6rem 1rem;
+  font-size:.78rem;font-weight:400;
   color:var(--dk);text-decoration:none;cursor:pointer;
   border:none;background:none;font-family:'Outfit',sans-serif;
   border-bottom:1px solid rgba(11,26,13,.06);
-  transition:background .15s,color .15s,padding-left .15s;
+  transition:background .12s,color .12s,padding-left .12s;
 }
 .dropdown a:last-child,.dropdown button:last-child{border-bottom:none;}
-.dropdown a:hover,.dropdown button:hover{background:var(--cr2);color:var(--tr);padding-left:1.5rem;}
-
-.nav-cta{
-  background:var(--tr);color:#fff;padding:.55rem 1.3rem;
-  font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  border:none;cursor:pointer;font-family:'Outfit',sans-serif;
-  white-space:nowrap;transition:background .2s;flex-shrink:0;
+.dropdown a:hover,.dropdown button:hover{
+  background:var(--cr2);color:var(--tr);
+  padding-left:1.4rem;
 }
-.nav-cta:hover{background:var(--dk);}
+
+/* CTA bouton — toujours visible, jamais rogné */
+.nav-cta{
+  flex-shrink:0;
+  background:var(--tr);color:#fff;
+  padding:0 1.4rem;
+  height:38px;
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  border:none;cursor:pointer;font-family:'Outfit',sans-serif;
+  white-space:nowrap;
+  transition:background .18s,transform .1s;
+  display:flex;align-items:center;
+  margin-left:.75rem;
+  border-radius:2px;
+}
+.nav-cta:hover{background:var(--dk);transform:translateY(-1px);}
 
 /* Hamburger */
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:5px;}
-.hamburger span{display:block;width:24px;height:2px;background:var(--dk);transition:.3s;}
+.hamburger{
+  display:none;background:none;border:none;cursor:pointer;
+  padding:.4rem;flex-direction:column;gap:5px;
+  margin-left:.5rem;flex-shrink:0;
+}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dk);transition:.3s;}
 
 /* Mobile overlay */
 .mob-overlay{
@@ -188,29 +268,152 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .text-md{color:var(--md);font-size:.92rem;line-height:1.8;}
 .divider{height:1.5px;background:var(--cr3);margin:2.5rem 0;}
 
-/* ══ HOME PAGE ══ */
-.hero{display:grid;grid-template-columns:1fr 1fr;min-height:82vh;border-bottom:2px solid var(--dk);}
-.hero-left{background:var(--li);padding:5rem 3.5rem 5rem 4rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;border-right:2px solid var(--dk);}
-.hero-ghost{position:absolute;font-family:'Cormorant Garamond',serif;font-size:22rem;font-weight:700;font-style:italic;color:rgba(27,74,41,.05);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;z-index:0;}
+/* ══ HERO CAROUSEL ══ */
+.hero{
+  display:grid;
+  
+  grid-template-columns:1fr 1.2fr; 
+  min-height:85vh; /* Légèrement réduit pour être sûr qu'il s'affiche bien sur les petits écrans PC */
+  border-bottom:2px solid var(--dk);
+}
+.hero-left{
+  background:var(--li);
+  padding:4rem 3rem 4rem 3.5rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+  border-right:2px solid var(--dk);
+}
+.hero-ghost{
+  position:absolute;font-family:'Cormorant Garamond',serif;
+  font-size:20rem;font-weight:700;font-style:italic;
+  color:rgba(27,74,41,.04);top:50%;left:50%;
+  transform:translate(-50%,-50%);pointer-events:none;
+  line-height:1;z-index:0;user-select:none;
+}
 .hero-left>*{position:relative;z-index:1;}
-.hero-tag{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--tr);display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;}
+.hero-tag{
+  font-size:.7rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tr);
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1.8rem;
+}
 .hero-tag::before{content:'';width:24px;height:1.5px;background:var(--tr);}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,5.5vw,5.5rem);font-weight:700;line-height:1.0;color:var(--dk);margin-bottom:1.8rem;}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.6rem,4vw,5rem);
+  font-weight:700;line-height:1.0;color:var(--dk);margin-bottom:1.6rem;
+}
 .hero-title em{font-style:italic;color:var(--fo);display:block;}
-.hero-desc{font-size:.93rem;line-height:1.85;color:var(--md);max-width:420px;margin-bottom:2.5rem;}
+.hero-desc{font-size:.92rem;line-height:1.85;color:var(--md);max-width:420px;margin-bottom:2.2rem;}
 .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
-.hero-right{position:relative;overflow:hidden;}
-.hero-right img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-.hero-right-badge{position:absolute;bottom:2rem;left:2rem;background:var(--fo);color:var(--cr);padding:1rem 1.5rem;}
-.hero-right-badge strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1;}
-.hero-right-badge span{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;opacity:.7;}
+
+/* ── Carrousel droit ── */
+.hero-right{
+  position:relative;
+  overflow:hidden;
+  background:var(--dk);
+  /* hauteur = celle du parent (min-height:88vh) */
+}
+.carousel-track{
+  display:flex;
+  width:100%;
+  height:100%;
+  transition:transform .7s cubic-bezier(.77,0,.175,1);
+  will-change:transform;
+}
+.carousel-slide{
+  flex:0 0 100%;
+  width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+}
+.carousel-slide img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+/* Gradient overlay bas */
+.carousel-slide::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(11,26,13,.68) 100%
+  );
+  z-index:1;
+}
+/* Caption */
+.slide-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2.5rem 2rem 2rem;
+  color:var(--cr);z-index:2;
+}
+.slide-caption-tag{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--go2);
+  margin-bottom:.4rem;display:block;
+}
+.slide-caption-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:700;line-height:1.3;
+}
+/* Badge */
+.hero-year-badge{
+  position:absolute;top:1.4rem;right:1.4rem;z-index:3;
+  background:var(--fo);color:var(--cr);
+  padding:.7rem 1.1rem;text-align:center;
+}
+.hero-year-badge strong{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:700;line-height:1;
+}
+.hero-year-badge span{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;opacity:.7;}
+/* Dots */
+.carousel-dots{
+  position:absolute;bottom:2rem;right:2rem;
+  z-index:3;display:flex;gap:.45rem;align-items:center;
+}
+.carousel-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(246,237,217,.35);
+  cursor:pointer;transition:background .3s,transform .3s;
+  border:none;padding:0;
+}
+.carousel-dot.active{background:var(--cr);transform:scale(1.35);}
+/* Flèches */
+.carousel-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  z-index:3;background:rgba(246,237,217,.12);
+  border:1px solid rgba(246,237,217,.25);
+  color:var(--cr);width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.1rem;
+  transition:background .2s;backdrop-filter:blur(4px);
+}
+.carousel-btn:hover{background:rgba(246,237,217,.28);}
+.carousel-btn.prev{left:1rem;}
+.carousel-btn.next{right:1rem;}
 
 /* Stats strip */
-.stats-strip{background:var(--fo);display:grid;grid-template-columns:repeat(4,1fr);}
-.stat-cell{padding:2.2rem 2rem;border-left:1px solid rgba(246,237,217,.12);text-align:center;}
+.stats-strip{
+  background:var(--fo);
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.stat-cell{
+  padding:2rem 1.5rem;
+  border-left:1px solid rgba(246,237,217,.12);
+  text-align:center;
+}
 .stat-cell:first-child{border-left:none;}
-.stat-n{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--go2);line-height:1;margin-bottom:.3rem;}
-.stat-l{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(246,237,217,.5);}
+.stat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:700;color:var(--go2);
+  line-height:1;margin-bottom:.3rem;
+}
+.stat-l{font-size:.71rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(246,237,217,.5);line-height:1.4;}
 
 /* Intro section */
 .intro{padding:5rem 0;}
@@ -353,15 +556,20 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .map-box strong{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--dk);}
 
 /* ══ RESPONSIVE ══ */
+
+/* ── Grands écrans ≤ 1280px ── */
+@media(max-width:1280px){
+  .nav-link{padding:0 .6rem;font-size:.69rem;}
+}
+
+/* ── Tablette large ≤ 1100px ── */
 @media(max-width:1100px){
-  .hero{grid-template-columns:1fr;}
-  .hero-right{height:380px;display:none;}
-  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .nav-link{padding:0 .5rem;font-size:.67rem;}
   .intro-grid{grid-template-columns:1fr;gap:2.5rem;}
   .news-grid{grid-template-columns:1fr;}
-  .second-row{grid-template-columns:1fr;}
   .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
-  .second-row .n-card+.n-card{border-left:none;}
+  .second-row{grid-template-columns:1fr;}
+  .second-row .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
   .cta-band{grid-template-columns:1fr;}
   .cta-right{border-left:none;border-top:2px solid var(--dk);}
   .foot-top{grid-template-columns:1fr 1fr;gap:2rem;}
@@ -377,23 +585,116 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .g3{grid-template-columns:1fr 1fr;}
   .g4{grid-template-columns:1fr 1fr;}
 }
-@media(max-width:768px){
-  .topbar{display:none;}
+
+/* ── Tablette ≤ 900px — hamburger, hero colonne ── */
+@media(max-width:900px){
   .nav-menu{display:none;}
   .nav-cta{display:none;}
   .hamburger{display:flex;}
-  .hero-left{padding:3rem 1.5rem;}
-  .hero-title{font-size:3rem;}
+  .nav-logo-img{height:38px;}
+
+  /* Hero : colonne verticale */
+  .hero{
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+  .hero-left{
+    padding:3rem 2rem;
+    border-right:none;
+    border-bottom:2px solid var(--dk);
+  }
+  .hero-right{
+    height:60vw;
+    min-height: 380px;
+    max-height:550px;
+  }
+
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .stat-cell:nth-child(3){border-left:none;}
+}
+
+/* ── Mobile ≤ 600px ── */
+@media(max-width:600px){
+  .topbar{display:none;}
+
+  /* Navbar compacte */
+  .nav-inner{height:54px;padding:0 1rem;}
+  .nav-logo-img{height:32px;}
+
+  /* Hero mobile */
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:2.2rem 1.2rem;}
+  .hero-title{font-size:2.4rem;}
+  .hero-desc{font-size:.86rem;}
+  /* ── Mobile ≤ 600px ── */
+  .hero-right{
+    height: 85vw; /* L'image prend presque un format carré, idéal pour mobile */
+    min-height: 380px; 
+    max-height: 480px;
+  }
+
+  /* On réduit les marges du texte superposé pour qu'il ne cache pas l'image */
+  .slide-caption{
+    padding: 1.5rem 1.2rem 1.2rem;
+  }
+/* ── Mobile ≤ 600px ── */
+  .hero-right{
+    height: 85vw; /* L'image prend presque un format carré, idéal pour mobile */
+    min-height: 380px; 
+    max-height: 480px;
+  }
+
+  /* On réduit les marges du texte superposé pour qu'il ne cache pas l'image */
+  .slide-caption{
+    padding: 1.5rem 1.2rem 1.2rem;
+  }
+
+  /* On ajuste le badge de l'année pour qu'il prenne moins de place */
+  .hero-year-badge {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.8rem;
+  }
+  .hero-year-badge strong{font-size:1.4rem;}
+
+  .carousel-btn{width:32px;height:32px;font-size:.8rem;}
+  .slide-caption-title{font-size:1.05rem;}
+  /* On ajuste le badge de l'année pour qu'il prenne moins de place */
+  .hero-year-badge {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.8rem;
+  }
+  .hero-year-badge strong{font-size:1.4rem;}
+
+  .carousel-btn{width:32px;height:32px;font-size:.8rem;}
+  .slide-caption-title{font-size:1.05rem;}
+
+  /* Stats 2×2 */
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .stat-cell:nth-child(3){border-left:none;}
+  .stat-n{font-size:2.2rem;}
+
+  /* Layouts */
   .page{padding:0 1rem;}
-  .stats-strip{grid-template-columns:1fr 1fr;}
   .f-row{grid-template-columns:1fr;}
   .foot-top{grid-template-columns:1fr;}
   .clubs-grid{grid-template-columns:1fr;}
   .info-cards{grid-template-columns:1fr;}
   .events-grid{grid-template-columns:1fr;}
-  .g3{grid-template-columns:1fr;}
-  .g4{grid-template-columns:1fr 1fr;}
+  .g3,.g4{grid-template-columns:1fr;}
   .gallery-masonry{columns:1;}
+  .cta-left,.cta-right{padding:2.5rem 1.4rem;}
+  .cta-band{grid-template-columns:1fr;}
+  .admin-grid,.parents-grid{grid-template-columns:1fr;}
+  .second-row{grid-template-columns:1fr;}
+  .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
+  .second-row .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
+
+  /* Carrousel */
+  .carousel-btn{width:32px;height:32px;font-size:.8rem;}
+  .hero-year-badge strong{font-size:1.6rem;}
+  .slide-caption-title{font-size:.95rem;}
 }
 </style>
 </head>
@@ -401,16 +702,14 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div>
-    <span>📍 01 BP 8051, Abidjan 01 — Bingerville</span>
-    &nbsp;·&nbsp;
-    <span>📞 27 22 52 79 00</span>
-    &nbsp;·&nbsp;
-    <a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a>
+  <div class="topbar-left">
+    <span>📍 Bingerville, Abidjan 01</span>
+    <span>📞 +225 27 22 52 79 00</span>
+    <span>✉ lemiri2015ac@gmail.com</span>
   </div>
-  <div class="topbar-links">
-    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">🔸 Inscription Nouvel Élève 2025-2026</a>
-    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">🔸 Réinscription 2025-2026</a>
+  <div class="topbar-right">
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">Inscription Nouvel Élève</a>
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">Réinscription</a>
   </div>
 </div>
 
@@ -422,8 +721,8 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
         src="https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg"
         alt="Logo GSM" onerror="this.style.display='none'">
       <div class="nav-logo-txt">
-        Groupe Scolaire Le Miri
-        <small>Bingerville · Abidjan · Code 041604</small>
+        <span class="nav-logo-name">Groupe Scolaire Le Miri</span>
+        <span class="nav-logo-sub">Bingerville · Abidjan</span>
       </div>
     </div>
 
@@ -644,6 +943,7 @@ function render() {
     default:           root.innerHTML = pageAccueil();
   }
   initCounters();
+  if (currentPage === 'accueil') initCarousel();
 }
 
 /* ══════════════════════════════════════
@@ -697,12 +997,66 @@ function pageAccueil() {
         <button class="btn btn-outline" onclick="go('groupe')">Découvrir l'école</button>
       </div>
     </div>
-    <div class="hero-right">
-      <img src="${IMG.slide}" alt="Groupe Scolaire Le Miri">
-      <div class="hero-right-badge">
+
+    <div class="hero-right" id="heroCarousel">
+      <!-- Slides wrapper -->
+      <div class="carousel-track" id="cTrack">
+        <div class="carousel-slide">
+          <img src="${IMG.femmes}" alt="Journée droits des femmes" loading="eager">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Vie scolaire · Mars 2026</span>
+            <div class="slide-caption-title">Journée internationale des droits des femmes</div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="${IMG.merite}" alt="Journée mérite" loading="lazy">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Excellence · Juin 2025</span>
+            <div class="slide-caption-title">Journée du mérite et de l'excellence</div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="${IMG.bingerville}" alt="Prix Bingerville" loading="lazy">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Prix · Mai 2025</span>
+            <div class="slide-caption-title">Prix d'excellence — Meilleur élève de Bingerville</div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="${IMG.oissu}" alt="OISSU 2024" loading="lazy">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Sports · 2024</span>
+            <div class="slide-caption-title">OISSU 2024 — Compétitions interscolaires</div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="${IMG.culture}" alt="Journée culturelle" loading="lazy">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Culture · 2024</span>
+            <div class="slide-caption-title">Journée culturelle 2024 au Groupe Le Miri</div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="${IMG.jeux}" alt="Jeux EMPT" loading="lazy">
+          <div class="slide-caption">
+            <span class="slide-caption-tag">Sports · 2024</span>
+            <div class="slide-caption-title">52ème édition — Jeux culturels et sportifs EMPT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="hero-year-badge">
         <strong>2025</strong>
         <span>Année académique</span>
       </div>
+
+      <!-- Boutons navigation -->
+      <button class="carousel-btn prev" id="cPrev" aria-label="Précédent">&#8592;</button>
+      <button class="carousel-btn next" id="cNext" aria-label="Suivant">&#8594;</button>
+
+      <!-- Dots -->
+      <div class="carousel-dots" id="cDots"></div>
     </div>
   </div>
 
@@ -1444,8 +1798,62 @@ function initCounters() {
 }
 
 /* ══════════════════════════════════════
-   FORM
+   CAROUSEL
 ══════════════════════════════════════ */
+function initCarousel() {
+  const track  = document.getElementById('cTrack');
+  const dotsEl = document.getElementById('cDots');
+  const prev   = document.getElementById('cPrev');
+  const next   = document.getElementById('cNext');
+  if (!track) return;
+
+  const slides = track.querySelectorAll('.carousel-slide');
+  const total  = slides.length;
+  let cur = 0;
+  let timer;
+
+  /* Crée les dots */
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i+1));
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    cur = (idx + total) % total;
+    /* Translate sur les slides (chaque slide = 100% de la largeur du track) */
+    track.style.transform = `translateX(-${cur * 100}%)`;
+    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === cur)
+    );
+  }
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(cur + 1), 4500);
+  }
+
+  prev.addEventListener('click', () => { goTo(cur - 1); startAuto(); });
+  next.addEventListener('click', () => { goTo(cur + 1); startAuto(); });
+
+  /* Touch / swipe */
+  let startX = 0;
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) { goTo(dx < 0 ? cur+1 : cur-1); startAuto(); }
+  }, {passive:true});
+
+  /* Pause on hover */
+  track.closest('.hero-right')?.addEventListener('mouseenter', () => clearInterval(timer));
+  track.closest('.hero-right')?.addEventListener('mouseleave', startAuto);
+
+  startAuto();
+}
+
+
 function fakeSubmit(btn) {
   const orig = btn.textContent;
   btn.textContent = '✓ Message envoyé !';
