@@ -271,14 +271,17 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 /* ══ HERO CAROUSEL ══ */
 .hero{
   display:grid;
-  
   grid-template-columns:1fr 1.2fr; 
-  min-height:85vh; /* Légèrement réduit pour être sûr qu'il s'affiche bien sur les petits écrans PC */
+  height:calc(100vh - 120px); /* 120px = hauteur topbar + nav + ticker environ */
+  min-height:500px;
   border-bottom:2px solid var(--dk);
+}
+@supports (height: 100svh) {
+  .hero{ height:calc(100svh - 120px); }
 }
 .hero-left{
   background:var(--li);
-  padding:4rem 3rem 4rem 3.5rem;
+  padding:2rem 3rem; /* Marges resserrées pour s'assurer que ça rentre */
   display:flex;flex-direction:column;justify-content:center;
   position:relative;overflow:hidden;
   border-right:2px solid var(--dk);
@@ -294,16 +297,16 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .hero-tag{
   font-size:.7rem;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--tr);
-  display:flex;align-items:center;gap:.6rem;margin-bottom:1.8rem;
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;
 }
 .hero-tag::before{content:'';width:24px;height:1.5px;background:var(--tr);}
 .hero-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(2.6rem,4vw,5rem);
-  font-weight:700;line-height:1.0;color:var(--dk);margin-bottom:1.6rem;
+  font-weight:700;line-height:1.0;color:var(--dk);margin-bottom:1.2rem;
 }
 .hero-title em{font-style:italic;color:var(--fo);display:block;}
-.hero-desc{font-size:.92rem;line-height:1.85;color:var(--md);max-width:420px;margin-bottom:2.2rem;}
+.hero-desc{font-size:.92rem;line-height:1.85;color:var(--md);max-width:420px;margin-bottom:1.8rem;}
 .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
 
 /* ── Carrousel droit ── */
@@ -311,7 +314,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   position:relative;
   overflow:hidden;
   background:var(--dk);
-  /* hauteur = celle du parent (min-height:88vh) */
+  height:100%;
 }
 .carousel-track{
   display:flex;
@@ -593,20 +596,27 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .hamburger{display:flex;}
   .nav-logo-img{height:38px;}
 
-  /* Hero : colonne verticale */
+  /* Hero : colonne verticale ajustée sans débordement */
   .hero{
-    grid-template-columns:1fr;
-    min-height:auto;
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 120px);
+    min-height:600px;
+  }
+  @supports (height: 100svh) {
+    .hero{ height:calc(100svh - 120px); }
   }
   .hero-left{
-    padding:3rem 2rem;
+    padding:2.5rem 2rem;
+    flex: 0 0 auto;
     border-right:none;
     border-bottom:2px solid var(--dk);
   }
   .hero-right{
-    height:60vw;
-    min-height: 380px;
-    max-height:550px;
+    flex: 1 1 auto;
+    height:auto;
+    min-height:250px;
+    max-height:none;
   }
 
   .stats-strip{grid-template-columns:repeat(2,1fr);}
@@ -621,45 +631,35 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .nav-inner{height:54px;padding:0 1rem;}
   .nav-logo-img{height:32px;}
 
-  /* Hero mobile */
-  .hero{grid-template-columns:1fr;min-height:auto;}
-  .hero-left{padding:2.2rem 1.2rem;}
-  .hero-title{font-size:2.4rem;}
-  .hero-desc{font-size:.86rem;}
-  /* ── Mobile ≤ 600px ── */
+  /* Hero mobile : 100% visible sans scroll (via Flexbox) */
+  .hero{
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 85px); /* On soustrait la barre de nav (54px) et le bandeau (~30px) */
+    min-height:550px;
+  }
+  @supports (height: 100svh) {
+    .hero{ height:calc(100svh - 85px); }
+  }
+  .hero-left{
+    padding:1.5rem 1.2rem;
+    flex: 0 0 auto;
+  }
+  .hero-tag{margin-bottom: 1rem;}
+  .hero-title{font-size:2.2rem; margin-bottom: 1rem;}
+  .hero-desc{font-size:.86rem; margin-bottom: 1.2rem;}
+  
   .hero-right{
-    height: 85vw; /* L'image prend presque un format carré, idéal pour mobile */
-    min-height: 380px; 
-    max-height: 480px;
+    flex: 1 1 auto; /* Prend tout l'espace vide restant en dessous du texte */
+    height:auto; 
+    min-height:200px;
+    max-height:none;
   }
 
-  /* On réduit les marges du texte superposé pour qu'il ne cache pas l'image */
+  /* Ajustements pour que le texte du carrousel ne cache pas trop l'image */
   .slide-caption{
-    padding: 1.5rem 1.2rem 1.2rem;
+    padding: 1.2rem;
   }
-/* ── Mobile ≤ 600px ── */
-  .hero-right{
-    height: 85vw; /* L'image prend presque un format carré, idéal pour mobile */
-    min-height: 380px; 
-    max-height: 480px;
-  }
-
-  /* On réduit les marges du texte superposé pour qu'il ne cache pas l'image */
-  .slide-caption{
-    padding: 1.5rem 1.2rem 1.2rem;
-  }
-
-  /* On ajuste le badge de l'année pour qu'il prenne moins de place */
-  .hero-year-badge {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem 0.8rem;
-  }
-  .hero-year-badge strong{font-size:1.4rem;}
-
-  .carousel-btn{width:32px;height:32px;font-size:.8rem;}
-  .slide-caption-title{font-size:1.05rem;}
-  /* On ajuste le badge de l'année pour qu'il prenne moins de place */
   .hero-year-badge {
     top: 1rem;
     right: 1rem;
@@ -690,11 +690,6 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .second-row{grid-template-columns:1fr;}
   .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
   .second-row .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
-
-  /* Carrousel */
-  .carousel-btn{width:32px;height:32px;font-size:.8rem;}
-  .hero-year-badge strong{font-size:1.6rem;}
-  .slide-caption-title{font-size:.95rem;}
 }
 </style>
 </head>
