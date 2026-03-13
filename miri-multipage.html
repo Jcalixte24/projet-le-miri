@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groupe Scolaire Le Miri — Bingerville, Abidjan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══ */
+:root{
+  --cr:#F6EDD9; --cr2:#EDE3CC; --cr3:#E4D8BC;
+  --dk:#0B1A0D; --fo:#1B4A29; --fo2:#2A6B3E;
+  --tr:#C04E15; --tr2:#E06020;
+  --go:#C8900A; --go2:#E8A81A;
+  --md:#6B7462; --li:#FAF6EE;
+  --wh:#FFFFFF;
+  --rad:4px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--li);color:var(--dk);font-family:'Outfit',sans-serif;overflow-x:hidden;}
+
+/* ══ PAGE TRANSITION ══ */
+#root{animation:pgIn .35s ease;}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ TOPBAR ══ */
+.topbar{background:var(--fo);color:rgba(246,237,217,.65);font-size:.72rem;letter-spacing:.04em;padding:.38rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+.topbar a{color:var(--go2);text-decoration:none;font-weight:600;}
+.topbar a:hover{color:#fff;}
+.topbar-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+
+/* ══ NAV ══ */
+nav{background:var(--wh);border-bottom:2px solid var(--dk);position:sticky;top:0;z-index:500;}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;gap:1rem;}
+.nav-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none;cursor:pointer;}
+.nav-logo-img{height:38px;width:auto;}
+.nav-logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--dk);line-height:1.15;}
+.nav-logo-txt small{display:block;font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--md);}
+
+/* Main menu */
+.nav-menu{display:flex;align-items:center;gap:0;list-style:none;height:66px;}
+.nav-item{position:relative;height:100%;}
+.nav-link{
+  display:flex;align-items:center;gap:.28rem;height:100%;
+  padding:0 .9rem;font-size:.78rem;font-weight:500;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--dk);text-decoration:none;cursor:pointer;
+  white-space:nowrap;border-bottom:3px solid transparent;
+  transition:color .2s,border-color .2s;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'Outfit',sans-serif;
+}
+.nav-link:hover,.nav-link.active{color:var(--tr);border-bottom-color:var(--tr);}
+.nav-link svg{width:12px;height:12px;transition:transform .2s;flex-shrink:0;}
+.nav-item:hover .nav-link svg{transform:rotate(180deg);}
+
+/* Dropdown */
+.dropdown{
+  position:absolute;top:100%;left:0;min-width:220px;
+  background:var(--wh);border:2px solid var(--dk);
+  border-top:none;
+  opacity:0;pointer-events:none;transform:translateY(-6px);
+  transition:opacity .2s,transform .2s;z-index:600;
+}
+.nav-item:hover .dropdown{opacity:1;pointer-events:all;transform:translateY(0);}
+.dropdown a,.dropdown button{
+  display:block;width:100%;text-align:left;
+  padding:.65rem 1.1rem;font-size:.8rem;font-weight:400;
+  color:var(--dk);text-decoration:none;cursor:pointer;
+  border:none;background:none;font-family:'Outfit',sans-serif;
+  border-bottom:1px solid rgba(11,26,13,.06);
+  transition:background .15s,color .15s,padding-left .15s;
+}
+.dropdown a:last-child,.dropdown button:last-child{border-bottom:none;}
+.dropdown a:hover,.dropdown button:hover{background:var(--cr2);color:var(--tr);padding-left:1.5rem;}
+
+.nav-cta{
+  background:var(--tr);color:#fff;padding:.55rem 1.3rem;
+  font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:none;cursor:pointer;font-family:'Outfit',sans-serif;
+  white-space:nowrap;transition:background .2s;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--dk);}
+
+/* Hamburger */
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--dk);transition:.3s;}
+
+/* Mobile overlay */
+.mob-overlay{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:var(--fo);flex-direction:column;
+  transform:translateX(100%);transition:transform .35s;overflow-y:auto;
+}
+.mob-overlay.open{transform:none;}
+.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:var(--cr);font-size:1.8rem;cursor:pointer;}
+.mob-nav{padding:4rem 2rem 2rem;}
+.mob-nav a,.mob-nav button{
+  display:block;width:100%;text-align:left;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:700;
+  color:var(--cr);text-decoration:none;cursor:pointer;
+  background:none;border:none;
+  padding:.5rem 0;border-bottom:1px solid rgba(246,237,217,.1);
+  transition:color .2s;
+}
+.mob-nav a:hover,.mob-nav button:hover{color:var(--go2);}
+.mob-sub{padding-left:1.5rem;}
+.mob-sub a{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:400;}
+
+/* ══ PAGE LAYOUT ══ */
+.page{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.page-full{width:100%;}
+
+/* Breadcrumb */
+.breadcrumb{background:var(--cr2);border-bottom:1px solid var(--cr3);padding:.6rem 2rem;font-size:.75rem;color:var(--md);display:flex;gap:.5rem;align-items:center;}
+.breadcrumb a{color:var(--fo);text-decoration:none;cursor:pointer;}
+.breadcrumb a:hover{color:var(--tr);}
+.breadcrumb span{color:var(--md);}
+
+/* Page hero banner */
+.page-banner{
+  background:var(--fo);color:var(--cr);
+  padding:3.5rem 2rem;
+  background-image:linear-gradient(135deg,var(--dk) 0%,var(--fo) 60%,var(--fo2) 100%);
+  position:relative;overflow:hidden;
+}
+.page-banner::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 80% 50%,rgba(200,144,10,.12) 0%,transparent 60%);
+}
+.page-banner .inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 2rem;}
+.page-banner h1{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1.15;}
+.page-banner h1 em{color:var(--go2);font-style:italic;}
+.page-banner p{margin-top:.6rem;color:rgba(246,237,217,.65);font-size:.92rem;}
+
+/* Section titles */
+.s-tag{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--tr);display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;}
+.s-tag::before{content:'';width:24px;height:1.5px;background:var(--tr);flex-shrink:0;}
+.s-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;line-height:1.12;color:var(--dk);}
+.s-h2 em{color:var(--fo);font-style:italic;}
+.s-h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--dk);}
+
+/* Cards */
+.card{background:var(--wh);border:1.5px solid var(--cr3);border-radius:var(--rad);}
+.card-body{padding:1.4rem;}
+
+/* ══ BUTTONS ══ */
+.btn{display:inline-block;padding:.75rem 1.8rem;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:.2s;}
+.btn-fo{background:var(--fo);color:var(--cr);}
+.btn-fo:hover{background:var(--dk);}
+.btn-tr{background:var(--tr);color:#fff;}
+.btn-tr:hover{background:var(--dk);}
+.btn-outline{background:transparent;border:1.5px solid var(--dk);color:var(--dk);}
+.btn-outline:hover{background:var(--dk);color:var(--cr);}
+
+/* ══ TICKER ══ */
+.ticker{background:var(--dk);color:rgba(246,237,217,.7);padding:.4rem 0;overflow:hidden;}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 40s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+.t-item{display:inline-flex;align-items:center;gap:.7rem;padding:0 2.5rem;font-size:.74rem;}
+.t-dot{width:4px;height:4px;border-radius:50%;background:var(--go);flex-shrink:0;}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ══ FOOTER ══ */
+footer{background:var(--fo);color:rgba(246,237,217,.6);}
+.foot-top{max-width:1280px;margin:0 auto;padding:3.5rem 2rem 2.5rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;border-bottom:1px solid rgba(246,237,217,.1);}
+.foot-brand-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--cr);margin-bottom:.6rem;}
+.foot-brand-name em{color:var(--go2);font-style:italic;}
+.foot-brand p{font-size:.83rem;line-height:1.7;max-width:260px;margin-top:.5rem;}
+.foot-badge{display:inline-block;margin-top:1rem;background:rgba(200,144,10,.18);color:var(--go2);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border:1px solid rgba(200,144,10,.3);}
+.foot-col h4{font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cr);margin-bottom:1.2rem;}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:.55rem;}
+.foot-links a,.foot-links button{font-size:.82rem;color:rgba(246,237,217,.45);text-decoration:none;cursor:pointer;background:none;border:none;font-family:'Outfit',sans-serif;text-align:left;transition:color .2s;}
+.foot-links a:hover,.foot-links button:hover{color:var(--go2);}
+.foot-bottom{max-width:1280px;margin:0 auto;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.72rem;}
+
+/* ══ GRID UTILS ══ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.flex-between{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;}
+.mt1{margin-top:1rem;}.mt2{margin-top:2rem;}.mt3{margin-top:3rem;}.mt4{margin-top:4rem;}
+.mb1{margin-bottom:1rem;}.mb2{margin-bottom:2rem;}.mb3{margin-bottom:3rem;}
+.py5{padding:5rem 0;}.py4{padding:4rem 0;}.py3{padding:3rem 0;}
+.text-md{color:var(--md);font-size:.92rem;line-height:1.8;}
+.divider{height:1.5px;background:var(--cr3);margin:2.5rem 0;}
+
+/* ══ HOME PAGE ══ */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:82vh;border-bottom:2px solid var(--dk);}
+.hero-left{background:var(--li);padding:5rem 3.5rem 5rem 4rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;border-right:2px solid var(--dk);}
+.hero-ghost{position:absolute;font-family:'Cormorant Garamond',serif;font-size:22rem;font-weight:700;font-style:italic;color:rgba(27,74,41,.05);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;z-index:0;}
+.hero-left>*{position:relative;z-index:1;}
+.hero-tag{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--tr);display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;}
+.hero-tag::before{content:'';width:24px;height:1.5px;background:var(--tr);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,5.5vw,5.5rem);font-weight:700;line-height:1.0;color:var(--dk);margin-bottom:1.8rem;}
+.hero-title em{font-style:italic;color:var(--fo);display:block;}
+.hero-desc{font-size:.93rem;line-height:1.85;color:var(--md);max-width:420px;margin-bottom:2.5rem;}
+.hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
+.hero-right{position:relative;overflow:hidden;}
+.hero-right img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.hero-right-badge{position:absolute;bottom:2rem;left:2rem;background:var(--fo);color:var(--cr);padding:1rem 1.5rem;}
+.hero-right-badge strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1;}
+.hero-right-badge span{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;opacity:.7;}
+
+/* Stats strip */
+.stats-strip{background:var(--fo);display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-cell{padding:2.2rem 2rem;border-left:1px solid rgba(246,237,217,.12);text-align:center;}
+.stat-cell:first-child{border-left:none;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--go2);line-height:1;margin-bottom:.3rem;}
+.stat-l{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(246,237,217,.5);}
+
+/* Intro section */
+.intro{padding:5rem 0;}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.intro-quote{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;line-height:1.3;color:var(--dk);position:relative;padding-left:1.8rem;border-left:4px solid var(--tr);}
+.intro-quote em{color:var(--fo);font-style:italic;}
+.intro-quote-author{margin-top:1.5rem;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--md);}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-top:1.5rem;}
+.feature-list li{display:flex;gap:.75rem;align-items:flex-start;font-size:.9rem;color:var(--md);line-height:1.6;}
+.feature-list li::before{content:'→';color:var(--tr);font-weight:700;flex-shrink:0;margin-top:.05rem;}
+
+/* News grid */
+.news-section{padding:4rem 0;background:var(--cr2);}
+.news-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:0;border:2px solid var(--dk);margin-top:2.5rem;}
+.n-card{overflow:hidden;cursor:pointer;transition:background .2s;}
+.n-card:hover{background:var(--cr2);}
+.n-card+.n-card{border-left:1.5px solid var(--dk);}
+.n-card-img{position:relative;overflow:hidden;}
+.n-card-img img{width:100%;object-fit:cover;transition:transform .5s;display:block;}
+.n-card:hover .n-card-img img{transform:scale(1.04);}
+.n-big .n-card-img{height:280px;}
+.n-sm .n-card-img{height:180px;}
+.n-body{padding:1.2rem 1.4rem;border-top:1.5px solid var(--dk);}
+.n-date{font-size:.7rem;color:var(--md);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.n-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;line-height:1.35;color:var(--dk);margin-bottom:.3rem;}
+.n-big .n-title{font-size:1.35rem;}
+.n-excerpt{font-size:.8rem;color:var(--md);line-height:1.55;margin-top:.3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.n-tag{display:inline-block;margin-top:.6rem;font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tr);border-bottom:1.5px solid var(--tr);}
+.second-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1.5px solid var(--dk);}
+.second-row .n-card+.n-card{border-left:1.5px solid var(--dk);}
+
+/* Inscription CTA */
+.cta-band{display:grid;grid-template-columns:1.1fr 1fr;border-top:2px solid var(--dk);border-bottom:2px solid var(--dk);}
+.cta-left{background:var(--tr);padding:4rem;position:relative;overflow:hidden;}
+.cta-left::after{content:'2025';position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:10rem;font-weight:700;color:rgba(0,0,0,.08);line-height:1;}
+.cta-left h2{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1.15;position:relative;z-index:1;}
+.cta-left p{color:rgba(255,255,255,.75);font-size:.9rem;margin-top:.8rem;position:relative;z-index:1;}
+.cta-btns{display:flex;flex-direction:column;gap:.7rem;max-width:260px;margin-top:2rem;position:relative;z-index:1;}
+.cta-right{background:var(--li);padding:4rem;border-left:2px solid var(--dk);}
+.cta-right h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:1.5rem;}
+
+/* Form */
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.f-group{margin-bottom:.9rem;}
+.f-group label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--md);margin-bottom:.35rem;}
+.f-group input,.f-group select,.f-group textarea{
+  width:100%;background:var(--cr);border:1.5px solid var(--cr3);
+  padding:.72rem .9rem;font-family:'Outfit',sans-serif;
+  font-size:.88rem;color:var(--dk);outline:none;transition:border-color .2s;border-radius:0;
+}
+.f-group input:focus,.f-group select:focus,.f-group textarea:focus{border-color:var(--fo);}
+.f-group textarea{height:80px;resize:vertical;}
+.btn-submit{width:100%;background:var(--fo);color:var(--cr);padding:.85rem;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;margin-top:.4rem;}
+.btn-submit:hover{background:var(--dk);}
+
+/* ══ EVENTS PAGE ══ */
+.events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;}
+.ev-card{background:var(--wh);border:1.5px solid var(--cr3);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;border-radius:var(--rad);}
+.ev-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(11,26,13,.1);}
+.ev-card img{width:100%;height:210px;object-fit:cover;display:block;}
+.ev-card-body{padding:1.2rem 1.4rem;}
+.ev-card-date{font-size:.7rem;color:var(--md);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.ev-card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;line-height:1.35;color:var(--dk);margin-bottom:.4rem;}
+.ev-card-text{font-size:.82rem;color:var(--md);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.ev-card-tag{display:inline-block;margin-top:.7rem;font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tr);}
+
+/* ══ ADMIN PAGE ══ */
+.admin-grid{display:grid;grid-template-columns:1fr 2fr;gap:3rem;padding:3rem 0;}
+.sidebar{background:var(--cr2);border:1.5px solid var(--cr3);padding:1.5rem;border-radius:var(--rad);}
+.sidebar h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1.5px solid var(--cr3);}
+.sidebar-links{list-style:none;display:flex;flex-direction:column;gap:.2rem;}
+.sidebar-links button{width:100%;text-align:left;background:none;border:none;padding:.65rem 1rem;font-size:.85rem;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--dk);border-radius:3px;transition:background .15s,color .15s;}
+.sidebar-links button:hover{background:var(--cr3);color:var(--tr);}
+.sidebar-links button.active{background:var(--fo);color:var(--cr);}
+.content-box{background:var(--wh);border:1.5px solid var(--cr3);padding:2rem 2.5rem;border-radius:var(--rad);}
+.content-box h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1.5px solid var(--cr3);}
+.content-box p{font-size:.9rem;color:var(--md);line-height:1.85;margin-bottom:1rem;}
+.content-box ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin:.8rem 0;}
+.content-box ul li{display:flex;gap:.75rem;font-size:.9rem;color:var(--md);align-items:flex-start;}
+.content-box ul li::before{content:'◆';color:var(--tr);font-size:.5rem;flex-shrink:0;margin-top:.35rem;}
+.info-link-card{background:var(--cr2);border:1.5px solid var(--cr3);padding:1.2rem 1.5rem;border-radius:var(--rad);margin:.5rem 0;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;}
+.info-link-card:hover{background:var(--cr3);}
+.info-link-card span{font-size:.88rem;font-weight:500;color:var(--fo);}
+.info-link-card .arrow{color:var(--tr);font-size:1rem;}
+
+/* ══ GROUPE SCOLAIRE PAGE ══ */
+.cycle-tabs{display:flex;gap:0;border-bottom:2px solid var(--dk);margin-top:2.5rem;}
+.cycle-tab{padding:.8rem 2rem;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;font-family:'Outfit',sans-serif;border-bottom:3px solid transparent;transition:.2s;color:var(--md);}
+.cycle-tab.active{color:var(--tr);border-bottom-color:var(--tr);background:rgba(192,78,21,.05);}
+.cycle-content{padding:3rem 0;}
+.cycle-panel{display:none;}
+.cycle-panel.active{display:block;}
+.cycle-hero{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-bottom:3rem;}
+.cycle-hero img{width:100%;height:300px;object-fit:cover;border:2px solid var(--dk);}
+.levels-table{width:100%;border-collapse:collapse;margin-top:1.5rem;}
+.levels-table th{background:var(--fo);color:var(--cr);padding:.8rem 1.2rem;text-align:left;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+.levels-table td{padding:.75rem 1.2rem;border-bottom:1px solid var(--cr3);font-size:.88rem;color:var(--md);}
+.levels-table tr:nth-child(even) td{background:var(--cr2);}
+.levels-table tr:hover td{background:var(--cr3);}
+
+/* ══ ENSEIGNANTS PAGE ══ */
+.info-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem;}
+.info-card{background:var(--cr2);border:1.5px solid var(--cr3);padding:1.5rem;border-radius:var(--rad);cursor:pointer;transition:border-color .2s,background .2s;}
+.info-card:hover{border-color:var(--tr);background:var(--cr);}
+.info-card-icon{font-size:2rem;margin-bottom:.8rem;}
+.info-card-title{font-weight:600;font-size:.9rem;color:var(--dk);margin-bottom:.3rem;}
+.info-card-desc{font-size:.8rem;color:var(--md);line-height:1.5;}
+
+/* ══ PARENTS PAGE ══ */
+.parents-grid{display:grid;grid-template-columns:1fr 2fr;gap:3rem;padding:3rem 0;}
+.note-list{display:flex;flex-direction:column;gap:.7rem;margin-top:1.5rem;}
+.note-item{background:var(--wh);border:1.5px solid var(--cr3);padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;border-radius:var(--rad);cursor:pointer;transition:border-color .2s,background .2s;}
+.note-item:hover{border-color:var(--fo);background:var(--cr2);}
+.note-item-left{display:flex;align-items:center;gap:.8rem;}
+.note-dot{width:8px;height:8px;border-radius:50%;background:var(--tr);flex-shrink:0;}
+.note-title{font-size:.88rem;font-weight:500;color:var(--dk);}
+.note-arr{color:var(--md);font-size:.9rem;}
+
+/* ══ VIE SCOLAIRE ══ */
+.clubs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+.club-card{background:var(--wh);border:1.5px solid var(--cr3);padding:2rem 1.5rem;text-align:center;border-radius:var(--rad);transition:transform .2s,border-color .2s;}
+.club-card:hover{transform:translateY(-4px);border-color:var(--fo);}
+.club-icon{font-size:2.5rem;margin-bottom:1rem;}
+.club-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;}
+.club-desc{font-size:.82rem;color:var(--md);line-height:1.6;}
+.gallery-masonry{columns:3;gap:1rem;margin-top:2rem;}
+.gallery-masonry img{width:100%;margin-bottom:1rem;display:block;object-fit:cover;border:1px solid var(--cr3);transition:transform .3s;cursor:pointer;}
+.gallery-masonry img:hover{transform:scale(1.02);}
+
+/* ══ CONTACTS PAGE ══ */
+.contacts-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;padding:4rem 0;}
+.contact-info-grid{display:flex;flex-direction:column;gap:0;border:2px solid var(--dk);}
+.ci-row{display:grid;grid-template-columns:110px 1fr;padding:1.1rem 1.5rem;border-bottom:1px solid var(--cr3);}
+.ci-row:last-child{border-bottom:none;}
+.ci-key{font-size:.73rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--md);}
+.ci-val{font-size:.9rem;color:var(--dk);line-height:1.5;}
+.ci-val a{color:var(--fo);text-decoration:none;}
+.ci-val a:hover{color:var(--tr);}
+.map-box{background:var(--cr2);border:2px solid var(--dk);height:220px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--md);text-align:center;padding:1.5rem;flex-direction:column;gap:.5rem;margin-top:1.5rem;}
+.map-box strong{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--dk);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr;}
+  .hero-right{height:380px;display:none;}
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .intro-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .news-grid{grid-template-columns:1fr;}
+  .second-row{grid-template-columns:1fr;}
+  .n-card+.n-card{border-left:none;border-top:1.5px solid var(--dk);}
+  .second-row .n-card+.n-card{border-left:none;}
+  .cta-band{grid-template-columns:1fr;}
+  .cta-right{border-left:none;border-top:2px solid var(--dk);}
+  .foot-top{grid-template-columns:1fr 1fr;gap:2rem;}
+  .admin-grid{grid-template-columns:1fr;}
+  .cycle-hero{grid-template-columns:1fr;}
+  .info-cards{grid-template-columns:1fr 1fr;}
+  .parents-grid{grid-template-columns:1fr;}
+  .clubs-grid{grid-template-columns:1fr 1fr;}
+  .events-grid{grid-template-columns:1fr 1fr;}
+  .contacts-layout{grid-template-columns:1fr;}
+  .gallery-masonry{columns:2;}
+  .g2{grid-template-columns:1fr;}
+  .g3{grid-template-columns:1fr 1fr;}
+  .g4{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .topbar{display:none;}
+  .nav-menu{display:none;}
+  .nav-cta{display:none;}
+  .hamburger{display:flex;}
+  .hero-left{padding:3rem 1.5rem;}
+  .hero-title{font-size:3rem;}
+  .page{padding:0 1rem;}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .f-row{grid-template-columns:1fr;}
+  .foot-top{grid-template-columns:1fr;}
+  .clubs-grid{grid-template-columns:1fr;}
+  .info-cards{grid-template-columns:1fr;}
+  .events-grid{grid-template-columns:1fr;}
+  .g3{grid-template-columns:1fr;}
+  .g4{grid-template-columns:1fr 1fr;}
+  .gallery-masonry{columns:1;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <span>📍 01 BP 8051, Abidjan 01 — Bingerville</span>
+    &nbsp;·&nbsp;
+    <span>📞 27 22 52 79 00</span>
+    &nbsp;·&nbsp;
+    <a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a>
+  </div>
+  <div class="topbar-links">
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">🔸 Inscription Nouvel Élève 2025-2026</a>
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">🔸 Réinscription 2025-2026</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="go('accueil')">
+      <img class="nav-logo-img"
+        src="https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg"
+        alt="Logo GSM" onerror="this.style.display='none'">
+      <div class="nav-logo-txt">
+        Groupe Scolaire Le Miri
+        <small>Bingerville · Abidjan · Code 041604</small>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('accueil')" id="nav-accueil">Accueil</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('admin')">
+          Administration
+          <svg viewBox="0 0 10 6" fill="currentColor"><path d="M0 0l5 6 5-6z"/></svg>
+        </button>
+        <div class="dropdown">
+          <button onclick="go('admin','historique')">Historique / Le MIRI</button>
+          <button onclick="go('admin','reglement')">Règlement intérieur</button>
+          <button onclick="go('admin','organigramme')">Organigramme</button>
+          <button onclick="go('admin','notes-service')">Notes de service</button>
+          <button onclick="go('admin','liste-eleves')">Liste des élèves</button>
+        </div>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('groupe')">
+          Groupe Scolaire
+          <svg viewBox="0 0 10 6" fill="currentColor"><path d="M0 0l5 6 5-6z"/></svg>
+        </button>
+        <div class="dropdown">
+          <button onclick="go('groupe','maternelle')">Maternelle</button>
+          <button onclick="go('groupe','primaire')">Primaire</button>
+          <button onclick="go('groupe','secondaire')">Secondaire & Lycée</button>
+        </div>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('enseignants')">
+          Enseignants
+          <svg viewBox="0 0 10 6" fill="currentColor"><path d="M0 0l5 6 5-6z"/></svg>
+        </button>
+        <div class="dropdown">
+          <button onclick="go('enseignants','infos')">Infos aux Enseignants</button>
+          <button onclick="go('enseignants','liste')">Liste 2025-2026</button>
+          <button onclick="go('enseignants','principaux')">Professeurs principaux</button>
+          <button onclick="go('enseignants','surveillance')">Calendrier de surveillance</button>
+          <button onclick="go('enseignants','notes')">Saisie des notes</button>
+          <button onclick="go('enseignants','visites')">Visites de classe</button>
+        </div>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('parents')">
+          Parents d'Élèves
+          <svg viewBox="0 0 10 6" fill="currentColor"><path d="M0 0l5 6 5-6z"/></svg>
+        </button>
+        <div class="dropdown">
+          <button onclick="go('parents','infos')">Informations</button>
+          <button onclick="go('parents','horaires')">Horaires des cours</button>
+          <button onclick="go('parents','examens')">Calendrier examens blancs</button>
+          <button onclick="go('parents','notes')">Consultations des notes</button>
+          <button onclick="go('parents','evaluation')">Évaluation professeurs</button>
+        </div>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('vie')">
+          Vie Scolaire
+          <svg viewBox="0 0 10 6" fill="currentColor"><path d="M0 0l5 6 5-6z"/></svg>
+        </button>
+        <div class="dropdown">
+          <button onclick="go('vie','conseil')">Conseil Scolaire</button>
+          <button onclick="go('vie','clubs')">Les Clubs du MIRI</button>
+          <button onclick="go('vie','galerie')">Galerie photos & vidéos</button>
+        </div>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('blog')">Événements</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="go('contact')">Contact</button>
+      </li>
+    </ul>
+
+    <button class="nav-cta" onclick="window.open('https://www.expertpro-ci.net/accueilpreinscription.php','_blank')">
+      Inscription 2025-2026
+    </button>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.toggle('open')" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-overlay" id="mobMenu">
+  <button class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">✕</button>
+  <nav class="mob-nav">
+    <a onclick="go('accueil');document.getElementById('mobMenu').classList.remove('open')">Accueil</a>
+    <a onclick="go('admin');document.getElementById('mobMenu').classList.remove('open')">Administration</a>
+    <div class="mob-sub">
+      <a onclick="go('admin','historique');document.getElementById('mobMenu').classList.remove('open')">Historique / Le MIRI</a>
+      <a onclick="go('admin','reglement');document.getElementById('mobMenu').classList.remove('open')">Règlement intérieur</a>
+    </div>
+    <a onclick="go('groupe');document.getElementById('mobMenu').classList.remove('open')">Groupe Scolaire</a>
+    <a onclick="go('enseignants');document.getElementById('mobMenu').classList.remove('open')">Enseignants</a>
+    <a onclick="go('parents');document.getElementById('mobMenu').classList.remove('open')">Parents d'Élèves</a>
+    <a onclick="go('vie');document.getElementById('mobMenu').classList.remove('open')">Vie Scolaire</a>
+    <a onclick="go('blog');document.getElementById('mobMenu').classList.remove('open')">Événements</a>
+    <a onclick="go('contact');document.getElementById('mobMenu').classList.remove('open')">Contact</a>
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" style="color:var(--go2);margin-top:1rem;">→ Inscription 2025-2026</a>
+  </nav>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ROOT: pages render here -->
+<div id="root"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="foot-brand-name">Groupe Scolaire <em>Le Miri</em></div>
+      <p>Former les esprits qui construiront l'Afrique de demain. Excellence, rigueur et bienveillance au cœur de Bingerville depuis 2015.</p>
+      <div class="foot-badge">Code établissement 041604</div>
+    </div>
+    <div class="foot-col">
+      <h4>Navigation</h4>
+      <ul class="foot-links">
+        <li><button onclick="go('accueil')">Accueil</button></li>
+        <li><button onclick="go('admin')">Administration</button></li>
+        <li><button onclick="go('groupe')">Groupe Scolaire</button></li>
+        <li><button onclick="go('enseignants')">Enseignants</button></li>
+        <li><button onclick="go('parents')">Parents d'Élèves</button></li>
+        <li><button onclick="go('vie')">Vie Scolaire</button></li>
+        <li><button onclick="go('blog')">Événements</button></li>
+        <li><button onclick="go('contact')">Contact</button></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Inscriptions</h4>
+      <ul class="foot-links">
+        <li><a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">Nouvel élève 2025-2026</a></li>
+        <li><a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank">Réinscription</a></li>
+        <li><a href="https://www.groupescolairelemiri.org/de-fiches-de-renseignement-2025" target="_blank">Fiche de renseignement</a></li>
+        <li><a href="https://www.groupescolairelemiri.org/mode-de-paiement-2023-2024" target="_blank">Mode de paiement</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <ul class="foot-links">
+        <li><a href="tel:+22527225279 00">+225 27 22 52 79 00</a></li>
+        <li><a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a></li>
+        <li><span>01 BP 8051, Abidjan 01</span></li>
+        <li><a href="https://web.facebook.com/lycee.classique.abidjan.officiel/" target="_blank">Facebook officiel</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 Groupe Scolaire Le Miri — Bingerville, Abidjan, Côte d'Ivoire · Tous droits réservés</span>
+    <span style="color:rgba(246,237,217,.25)">INFOS EDUCATION</span>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   IMAGES (vraies URLs Wixstatic)
+══════════════════════════════════════ */
+const IMG = {
+  logo: 'https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg',
+  slide: 'https://static.wixstatic.com/media/568692_d2a38e66fee443b68e92efd88dfbc76b~mv2.jpg',
+  femmes: 'https://static.wixstatic.com/media/568692_e74ddedabe33488d96e4e1f158cd0e2e~mv2.jpeg',
+  merite: 'https://static.wixstatic.com/media/568692_5872756807264897800571835c6aa93e~mv2.jpeg',
+  bingerville: 'https://static.wixstatic.com/media/568692_4e332bbf1a0b463b88aca254efd3e71b~mv2.jpeg',
+  anglais: 'https://static.wixstatic.com/media/568692_54db957d77394b61a594f9e1e70a819d~mv2.jpeg',
+  salon: 'https://static.wixstatic.com/media/568692_f1345125c1c94672ae63069bc5a308bb~mv2.jpeg',
+  cafe: 'https://static.wixstatic.com/media/568692_66460a94c1e54198a62370b17eea46c0~mv2.jpeg',
+  art: 'https://static.wixstatic.com/media/568692_dd39357cc7394d20a85fdaa74a437a45~mv2.jpeg',
+  oissu: 'https://static.wixstatic.com/media/568692_dc37e82b251f4539a2197bfce1bb7473~mv2.jpg',
+  jeux: 'https://static.wixstatic.com/media/568692_cf5e087dc01145bd9f1d4e17833baaf2~mv2.jpg',
+  culture: 'https://static.wixstatic.com/media/568692_1b54c000148f481cb510501377260cb5~mv2.jpg',
+  res1: 'https://static.wixstatic.com/media/568692_ec3af11afc7a40a488d0ff31d17b873e~mv2.jpeg',
+  res2: 'https://static.wixstatic.com/media/568692_a65331c5584f43638b715742c86f8512~mv2.jpeg',
+  recon: 'https://static.wixstatic.com/media/568692_985f0dc45b2a4f4eb4c53032c4101f70~mv2.jpeg',
+  g1: 'https://static.wixstatic.com/media/568692_e5c817d6d91448828cbcee4039c499bd~mv2.jpg',
+  g2: 'https://static.wixstatic.com/media/568692_6aaae0b45446498fabc4166d226e8b8d~mv2.jpg',
+  g3: 'https://static.wixstatic.com/media/568692_dc618a84ed8344a1b57b50feffab7725~mv2.jpg',
+};
+
+/* ══════════════════════════════════════
+   ROUTER
+══════════════════════════════════════ */
+let currentPage = 'accueil';
+let currentSub = null;
+
+function go(page, sub) {
+  currentPage = page; currentSub = sub || null;
+  document.getElementById('root').innerHTML = '';
+  document.getElementById('root').style.animation = 'none';
+  requestAnimationFrame(() => {
+    document.getElementById('root').style.animation = '';
+    render();
+  });
+  window.scrollTo({top: 0, behavior:'smooth'});
+  // update active nav
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const el = document.getElementById('nav-' + page);
+  if (el) el.classList.add('active');
+}
+
+function render() {
+  const root = document.getElementById('root');
+  switch(currentPage) {
+    case 'accueil':    root.innerHTML = pageAccueil(); break;
+    case 'admin':      root.innerHTML = pageAdmin(currentSub); break;
+    case 'groupe':     root.innerHTML = pageGroupe(currentSub); break;
+    case 'enseignants':root.innerHTML = pageEnseignants(currentSub); break;
+    case 'parents':    root.innerHTML = pageParents(currentSub); break;
+    case 'vie':        root.innerHTML = pageVie(currentSub); break;
+    case 'blog':       root.innerHTML = pageBlog(); break;
+    case 'contact':    root.innerHTML = pageContact(); break;
+    default:           root.innerHTML = pageAccueil();
+  }
+  initCounters();
+}
+
+/* ══════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════ */
+function breadcrumb(items) {
+  const parts = items.map((it, i) => {
+    if (i < items.length - 1)
+      return `<a onclick="go('${it.page}')">${it.label}</a><span> › </span>`;
+    return `<span>${it.label}</span>`;
+  }).join('');
+  return `<div class="breadcrumb">${parts}</div>`;
+}
+
+function pageBanner(title, sub) {
+  return `<div class="page-banner"><div class="inner"><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ''}</div></div>`;
+}
+
+function footer_cta() {
+  return `
+  <div style="background:var(--fo2);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;border-top:2px solid var(--dk);">
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--cr);">Inscriptions 2025-2026 ouvertes</div>
+      <div style="color:rgba(246,237,217,.65);font-size:.85rem;margin-top:.3rem">Nouveaux élèves et réinscriptions — formulaire en ligne disponible</div>
+    </div>
+    <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+      <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" class="btn btn-tr">Nouvel élève</a>
+      <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" class="btn" style="background:rgba(246,237,217,.1);color:var(--cr);border:1.5px solid rgba(246,237,217,.3);">Réinscription</a>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: ACCUEIL
+══════════════════════════════════════ */
+function pageAccueil() {
+  return `
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-ghost">M</div>
+      <div class="hero-tag">Bingerville, Abidjan · Depuis 2015</div>
+      <h1 class="hero-title">
+        Élever chaque<br>esprit,<br><em>construire<br>l'avenir.</em>
+      </h1>
+      <p class="hero-desc">
+        Du préscolaire au Baccalauréat, le Groupe Scolaire Le Miri cultive l'excellence, la créativité et les valeurs humaines. Travaillons ensemble pour <strong>gagner cette année académique 2025-2026&nbsp;!</strong>
+      </p>
+      <div class="hero-actions">
+        <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" class="btn btn-tr">Inscription 2025-2026</a>
+        <button class="btn btn-outline" onclick="go('groupe')">Découvrir l'école</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="${IMG.slide}" alt="Groupe Scolaire Le Miri">
+      <div class="hero-right-badge">
+        <strong>2025</strong>
+        <span>Année académique</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-n" data-target="1200" data-suffix="">0</div><div class="stat-l">Total élèves inscrits</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="450" data-suffix="">0</div><div class="stat-l">Préscolaire & Primaire</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="92" data-suffix="%">0%</div><div class="stat-l">Réussite BEPC 2024</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="95" data-suffix="%">0%</div><div class="stat-l">Réussite BAC 2024</div></div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="page">
+    <div class="intro">
+      <div class="intro-grid">
+        <div>
+          <blockquote class="intro-quote">
+            Relevez les défis, laissez libre cours à votre imagination et faisons de cette année une <em>année mémorable&nbsp;!</em>
+          </blockquote>
+          <div class="intro-quote-author">Le Directeur des Études — Groupe Scolaire Le Miri</div>
+        </div>
+        <div>
+          <div class="s-tag">Notre mission</div>
+          <h2 class="s-h2 mb2">La culture de <em>l'excellence</em> au quotidien</h2>
+          <p class="text-md mb2">Le Groupe Scolaire Le Miri est bien plus qu'une école. C'est un espace de vie, de croissance et d'ambition où chaque élève est accompagné vers son plein potentiel académique, culturel et humain.</p>
+          <ul class="feature-list">
+            <li>Enseignants qualifiés et dévoués à la réussite de chaque élève</li>
+            <li>Programme officiel ivoirien enrichi d'activités parascolaires variées</li>
+            <li>Suivi individualisé et rencontres régulières avec les familles</li>
+            <li>Infrastructures modernes : piscine, clubs artistiques, bibliothèque</li>
+            <li>Prix d'excellence du meilleur élève de Bingerville (2024)</li>
+            <li>Résultats exceptionnels aux examens nationaux BEPC et BAC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTUALITÉS -->
+  <div class="news-section">
+    <div class="page">
+      <div class="flex-between mb1">
+        <div>
+          <div class="s-tag">Actualités 2025-2026</div>
+          <h2 class="s-h2">Ce qui se passe <em>au Miri</em></h2>
+        </div>
+        <button class="btn btn-outline" onclick="go('blog')">Voir tous les événements →</button>
+      </div>
+      <div class="news-grid">
+        <div class="n-card n-big" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.femmes}" alt="Journée droits des femmes" style="height:280px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">Mars 2026</div>
+            <div class="n-title">Journée internationale des droits des femmes au Groupe Scolaire Le Miri</div>
+            <div class="n-excerpt">Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. Élèves, enseignant·e·s et personnel réunis autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.</div>
+            <span class="n-tag">Vie scolaire</span>
+          </div>
+        </div>
+        <div class="n-card n-sm" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.merite}" alt="Journée mérite" style="height:180px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">21 Juin 2025</div>
+            <div class="n-title">Journée du mérite et de l'excellence 2024-2025</div>
+            <span class="n-tag">Excellence</span>
+          </div>
+        </div>
+        <div class="n-card n-sm" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.bingerville}" alt="Prix Bingerville" style="height:180px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">Mai 2025</div>
+            <div class="n-title">Prix d'excellence — Meilleur élève de Bingerville</div>
+            <span class="n-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+      <div class="second-row" style="border:2px solid var(--dk);border-top:none;">
+        <div class="n-card n-sm" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.anglais}" alt="Concours anglais" style="height:180px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">Mai 2025</div>
+            <div class="n-title">Concours national d'anglais — Finale nationale</div>
+            <div class="n-excerpt">L'élève BINTUNI JOËLLE (4ème) qualifiée pour la finale du Concours national d'anglais. Félicitations !</div>
+            <span class="n-tag">Compétition</span>
+          </div>
+        </div>
+        <div class="n-card n-sm" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.salon}" alt="Salon du livre" style="height:180px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">Mai 2025</div>
+            <div class="n-title">Sortie au Salon du Livre 2025 — Parc des Expositions</div>
+            <div class="n-excerpt">Les élèves du Miri ont visité le salon du livre au parc des expositions d'Abidjan.</div>
+            <span class="n-tag">Culture</span>
+          </div>
+        </div>
+        <div class="n-card n-sm" onclick="go('blog')">
+          <div class="n-card-img"><img src="${IMG.art}" alt="Club art visuel" style="height:180px;width:100%;object-fit:cover;"></div>
+          <div class="n-body">
+            <div class="n-date">2025</div>
+            <div class="n-title">Tableau d'art — Club Art visuel du MIRI, promotion 2024-2025</div>
+            <div class="n-excerpt">Remarquable travail réalisé par les élèves membres du Club Art Visuel.</div>
+            <span class="n-tag">Arts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSCRIPTION CTA -->
+  <div class="cta-band">
+    <div class="cta-left">
+      <h2>Rejoignez<br>la famille<br>Le Miri</h2>
+      <p>Inscriptions ouvertes pour les nouveaux et anciens élèves — Année scolaire 2025-2026</p>
+      <div class="cta-btns">
+        <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" class="btn" style="background:#fff;color:var(--tr);text-align:center;">Inscription — Nouvel élève</a>
+        <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.3);text-align:center;">Réinscription — Ancien élève</a>
+        <a href="https://www.groupescolairelemiri.org/de-fiches-de-renseignement-2025" target="_blank" class="btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.2);text-align:center;">Fiche de renseignement</a>
+      </div>
+    </div>
+    <div class="cta-right">
+      <h3>Nous écrire directement</h3>
+      <div class="f-row">
+        <div class="f-group"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
+        <div class="f-group"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
+      </div>
+      <div class="f-group"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+      <div class="f-group">
+        <label>Objet</label>
+        <select>
+          <option>Inscription nouvel élève 2025-2026</option>
+          <option>Réinscription ancien élève</option>
+          <option>Renseignements scolarité</option>
+          <option>Mode de paiement</option>
+          <option>Autre demande</option>
+        </select>
+      </div>
+      <div class="f-group"><label>Message</label><textarea placeholder="Votre message..."></textarea></div>
+      <button class="btn-submit" onclick="fakeSubmit(this)">Envoyer le message</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: ADMINISTRATION
+══════════════════════════════════════ */
+function pageAdmin(sub) {
+  const tabs = [
+    {id:'historique', label:'Historique / Le MIRI'},
+    {id:'reglement', label:'Règlement intérieur'},
+    {id:'organigramme', label:'Organigramme'},
+    {id:'notes-service', label:'Notes de service'},
+    {id:'liste-eleves', label:'Liste des élèves'},
+  ];
+  const activeSub = sub || 'historique';
+
+  const contentMap = {
+    historique: `
+      <h2>Historique — Le MIRI</h2>
+      <p>Le Groupe Scolaire Le Miri est un établissement d'enseignement privé laïc situé à Bingerville, dans la commune d'Abidjan, en Côte d'Ivoire. Fondé avec la vision de proposer une éducation de qualité accessible, l'établissement accueille des élèves du préscolaire jusqu'au Lycée.</p>
+      <p>Depuis sa création, le MIRI s'est imposé comme un acteur incontournable de l'éducation à Bingerville, distingué par ses résultats réguliers aux examens nationaux et par la qualité de sa vie scolaire.</p>
+      <p>L'établissement est officiellement reconnu par le Ministère de l'Éducation Nationale de Côte d'Ivoire sous le <strong>Code Établissement 041604</strong>.</p>
+      <ul>
+        <li>Établissement laïc privé agréé par le Ministère de l'Éducation Nationale</li>
+        <li>Code établissement : 041604</li>
+        <li>Adresse : 01 BP 8051, Abidjan 01 — Bingerville</li>
+        <li>Plus de 1 200 élèves inscrits pour l'année 2024-2025</li>
+        <li>Cycles assurés : Préscolaire, Primaire, Secondaire (Collège et Lycée)</li>
+        <li>Taux de réussite au BAC 2024 : 95% · BEPC 2024 : 92%</li>
+      </ul>`,
+    reglement: `
+      <h2>Règlement Intérieur</h2>
+      <p>Le règlement intérieur du Groupe Scolaire Le Miri définit les droits et les obligations de tous les membres de la communauté scolaire (élèves, parents, personnels). Il vise à garantir un environnement d'apprentissage respectueux, sécurisé et propice à la réussite de chacun.</p>
+      <p>Le document complet du règlement intérieur est disponible en téléchargement ou consultable directement auprès de l'administration de l'établissement.</p>
+      <ul>
+        <li>Tenue vestimentaire et uniforme scolaire obligatoire</li>
+        <li>Ponctualité et assiduité exigées</li>
+        <li>Respect du personnel enseignant et administratif</li>
+        <li>Interdiction de tout appareil électronique non autorisé</li>
+        <li>Procédure disciplinaire en cas d'infraction</li>
+        <li>Conditions d'accès aux locaux et de sortie de l'établissement</li>
+      </ul>
+      <div class="info-link-card" onclick="window.open('https://www.groupescolairelemiri.org/reglement-interieur','_blank')">
+        <span>📄 Consulter le règlement intérieur complet</span>
+        <span class="arrow">→</span>
+      </div>`,
+    organigramme: `
+      <h2>Organigramme de l'établissement</h2>
+      <p>L'organisation administrative du Groupe Scolaire Le Miri est structurée pour assurer une gestion pédagogique rigoureuse et une coordination efficace entre tous les acteurs de la communauté scolaire.</p>
+      <ul>
+        <li>Direction Générale</li>
+        <li>Direction des Études</li>
+        <li>Corps enseignant (Maternelle, Primaire, Secondaire)</li>
+        <li>Service de la Vie Scolaire</li>
+        <li>Service Administratif et Comptable</li>
+        <li>Conseil Scolaire</li>
+      </ul>
+      <div class="info-link-card" onclick="window.open('https://www.groupescolairelemiri.org/organigramme','_blank')">
+        <span>🗂️ Voir l'organigramme complet</span>
+        <span class="arrow">→</span>
+      </div>`,
+    'notes-service': `
+      <h2>Notes de Service</h2>
+      <p>Les notes de service sont des communications officielles émises par la direction à destination du personnel enseignant et administratif de l'établissement. Elles portent sur les directives pédagogiques, les changements d'organisation, les rappels réglementaires, etc.</p>
+      <div class="info-link-card" onclick="window.open('https://www.groupescolairelemiri.org/note-de-service','_blank')">
+        <span>📋 Accéder aux notes de service</span>
+        <span class="arrow">→</span>
+      </div>`,
+    'liste-eleves': `
+      <h2>Liste des Élèves</h2>
+      <p>La liste officielle des élèves inscrits au Groupe Scolaire Le Miri pour l'année académique 2025-2026 est accessible via l'espace sécurisé de l'établissement. Cette consultation est réservée au personnel autorisé.</p>
+      <div class="info-link-card" onclick="window.open('https://www.groupescolairelemiri.org/liste-des-eleves','_blank')">
+        <span>👥 Accéder à la liste des élèves (espace réservé)</span>
+        <span class="arrow">→</span>
+      </div>`,
+  };
+
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Administration'}])}
+  ${pageBanner('Administration', 'Gestion et organisation du Groupe Scolaire Le Miri')}
+  <div class="page">
+    <div class="admin-grid">
+      <div class="sidebar">
+        <h3>Sous-sections</h3>
+        <ul class="sidebar-links">
+          ${tabs.map(t => `<li><button class="${activeSub===t.id?'active':''}" onclick="go('admin','${t.id}')">${t.label}</button></li>`).join('')}
+        </ul>
+      </div>
+      <div class="content-box">
+        ${contentMap[activeSub] || contentMap['historique']}
+      </div>
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: GROUPE SCOLAIRE
+══════════════════════════════════════ */
+function pageGroupe(sub) {
+  const activeSub = sub || 'maternelle';
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Groupe Scolaire'}])}
+  ${pageBanner('Groupe Scolaire', 'Du préscolaire au Baccalauréat — Un parcours d\'excellence complet')}
+  <div class="page">
+    <div class="cycle-tabs">
+      <button class="cycle-tab ${activeSub==='maternelle'?'active':''}" onclick="go('groupe','maternelle')">🌱 Maternelle</button>
+      <button class="cycle-tab ${activeSub==='primaire'?'active':''}" onclick="go('groupe','primaire')">📚 Primaire</button>
+      <button class="cycle-tab ${activeSub==='secondaire'?'active':''}" onclick="go('groupe','secondaire')">🎓 Secondaire & Lycée</button>
+    </div>
+
+    ${activeSub==='maternelle' ? `
+    <div class="cycle-content">
+      <div class="cycle-hero">
+        <div>
+          <div class="s-tag">Préscolaire</div>
+          <h2 class="s-h2 mb2">La <em>Maternelle</em> du Miri</h2>
+          <p class="text-md mb2">La maternelle du Groupe Scolaire Le Miri offre un environnement chaleureux, ludique et sécurisé pour les tout-petits. Notre équipe pédagogique spécialisée accompagne chaque enfant dans ses premiers apprentissages en favorisant l'éveil, la curiosité et la confiance en soi.</p>
+          <ul class="feature-list">
+            <li>Petite section, Moyenne section, Grande section</li>
+            <li>Effectifs réduits pour un suivi individualisé</li>
+            <li>Activités d'éveil : dessin, musique, motricité, langage</li>
+            <li>Préparation progressive à l'entrée en CP</li>
+            <li>Cantine et garderie disponibles</li>
+          </ul>
+        </div>
+        <img src="${IMG.g1}" alt="Maternelle Le Miri">
+      </div>
+      <table class="levels-table">
+        <thead><tr><th>Classe</th><th>Âge indicatif</th><th>Objectifs principaux</th></tr></thead>
+        <tbody>
+          <tr><td>Petite Section (PS)</td><td>3 ans</td><td>Socialisation, langage oral, motricité</td></tr>
+          <tr><td>Moyenne Section (MS)</td><td>4 ans</td><td>Enrichissement du langage, pré-lecture, numération</td></tr>
+          <tr><td>Grande Section (GS)</td><td>5 ans</td><td>Préparation CP, écriture, calcul, autonomie</td></tr>
+        </tbody>
+      </table>
+    </div>` : ''}
+
+    ${activeSub==='primaire' ? `
+    <div class="cycle-content">
+      <div class="cycle-hero">
+        <div>
+          <div class="s-tag">École Primaire</div>
+          <h2 class="s-h2 mb2">Le <em>Primaire</em> du Miri</h2>
+          <p class="text-md mb2">Le cycle primaire du Groupe Scolaire Le Miri construit des bases académiques solides en lecture, écriture, mathématiques et langues. Nos enseignants qualifiés accompagnent chaque élève du CP au CM2 avec méthode et bienveillance.</p>
+          <ul class="feature-list">
+            <li>Classes de CP, CE1, CE2, CM1, CM2</li>
+            <li>Programme officiel ivoirien conforme aux directives du MENA</li>
+            <li>Apprentissage du français, mathématiques, sciences, anglais</li>
+            <li>Préparation au Certificat d'Études Primaires (CEP)</li>
+            <li>Activités sportives et culturelles intégrées</li>
+          </ul>
+        </div>
+        <img src="${IMG.g2}" alt="Primaire Le Miri">
+      </div>
+      <table class="levels-table">
+        <thead><tr><th>Classe</th><th>Niveau</th><th>Examen</th></tr></thead>
+        <tbody>
+          <tr><td>CP (Cours Préparatoire)</td><td>1ère année</td><td>—</td></tr>
+          <tr><td>CE1 (Cours Élémentaire 1)</td><td>2ème année</td><td>—</td></tr>
+          <tr><td>CE2 (Cours Élémentaire 2)</td><td>3ème année</td><td>—</td></tr>
+          <tr><td>CM1 (Cours Moyen 1)</td><td>4ème année</td><td>—</td></tr>
+          <tr><td>CM2 (Cours Moyen 2)</td><td>5ème année</td><td>CEP / CEPE</td></tr>
+        </tbody>
+      </table>
+    </div>` : ''}
+
+    ${activeSub==='secondaire' ? `
+    <div class="cycle-content">
+      <div class="cycle-hero">
+        <div>
+          <div class="s-tag">Secondaire & Lycée</div>
+          <h2 class="s-h2 mb2">Le <em>Secondaire</em> du Miri</h2>
+          <p class="text-md mb2">Du collège jusqu'au Baccalauréat, nos équipes pédagogiques accompagnent chaque lycéen vers l'excellence. Des résultats remarquables : <strong>92% au BEPC 2024</strong> et <strong>95% au BAC 2024</strong> témoignent de notre engagement.</p>
+          <ul class="feature-list">
+            <li>Collège : 6ème, 5ème, 4ème, 3ème — préparation au BEPC</li>
+            <li>Lycée : 2nde, 1ère, Terminale — séries A, C, D disponibles</li>
+            <li>Encadrement renforcé pour les classes d'examen</li>
+            <li>Examens blancs réguliers tout au long de l'année</li>
+            <li>Concours nationaux : anglais, mathématiques, sciences</li>
+          </ul>
+        </div>
+        <img src="${IMG.recon}" alt="Secondaire Le Miri">
+      </div>
+      <div class="g2 mt3">
+        <div class="card"><div class="card-body">
+          <h3 class="s-h3 mb2">🏅 Palmarès BEPC 2024</h3>
+          <p class="text-md">Taux de réussite de <strong>92%</strong> à la session officielle du BEPC 2024.</p>
+          <img src="${IMG.res1}" alt="Résultats BEPC" style="width:100%;height:180px;object-fit:cover;margin-top:1rem;border:1px solid var(--cr3);">
+        </div></div>
+        <div class="card"><div class="card-body">
+          <h3 class="s-h3 mb2">🎓 Palmarès BAC 2024</h3>
+          <p class="text-md">Taux de réussite de <strong>95%</strong> à la session officielle du Baccalauréat 2024.</p>
+          <img src="${IMG.res2}" alt="Résultats BAC" style="width:100%;height:180px;object-fit:cover;margin-top:1rem;border:1px solid var(--cr3);">
+        </div></div>
+      </div>
+    </div>` : ''}
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: ENSEIGNANTS
+══════════════════════════════════════ */
+function pageEnseignants(sub) {
+  const activeSub = sub || 'infos';
+  const tabs = [
+    {id:'infos',label:'Infos enseignants'},
+    {id:'liste',label:'Liste 2025-2026'},
+    {id:'principaux',label:'Professeurs principaux'},
+    {id:'surveillance',label:'Surveillance'},
+    {id:'notes',label:'Saisie des notes'},
+    {id:'visites',label:'Visites de classe'},
+  ];
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Enseignants'}])}
+  ${pageBanner('Espace Enseignants', 'Ressources, informations et outils pour le corps enseignant du MIRI')}
+  <div class="page">
+    <div class="admin-grid">
+      <div class="sidebar">
+        <h3>Menu enseignant</h3>
+        <ul class="sidebar-links">
+          ${tabs.map(t=>`<li><button class="${activeSub===t.id?'active':''}" onclick="go('enseignants','${t.id}')">${t.label}</button></li>`).join('')}
+        </ul>
+      </div>
+      <div class="content-box">
+        ${activeSub==='infos' ? `
+          <h2>Informations aux Enseignants</h2>
+          <p>Cette section regroupe toutes les informations utiles aux membres du corps enseignant du Groupe Scolaire Le Miri pour l'année académique 2025-2026.</p>
+          <div class="info-cards mt2">
+            <div class="info-card" onclick="window.open('https://www.groupescolairelemiri.org/activites-de-fin-de-trimestre','_blank')">
+              <div class="info-card-icon">📅</div>
+              <div class="info-card-title">Activités de fin de trimestre</div>
+              <div class="info-card-desc">Calendrier et organisation des activités pédagogiques en fin de période.</div>
+            </div>
+            <div class="info-card" onclick="window.open('https://www.groupescolairelemiri.org/calendrier-de-surveillance','_blank')">
+              <div class="info-card-icon">👁️</div>
+              <div class="info-card-title">Calendrier de surveillance</div>
+              <div class="info-card-desc">Planning de surveillance des examens et épreuves de l'année.</div>
+            </div>
+            <div class="info-card" onclick="window.open('https://www.groupescolairelemiri.org/conseils-d-enseignements','_blank')">
+              <div class="info-card-icon">🤝</div>
+              <div class="info-card-title">Conseils d'Enseignements</div>
+              <div class="info-card-desc">Comptes rendus et documents des conseils d'enseignement.</div>
+            </div>
+          </div>` : ''}
+        ${activeSub==='liste' ? `
+          <h2>Liste des Enseignants 2025-2026</h2>
+          <p>La liste complète des enseignants du Groupe Scolaire Le Miri pour l'année 2025-2026 est disponible dans l'espace réservé au personnel.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/liste-des-enseignants','_blank')">
+            <span>👩‍🏫 Accéder à la liste des enseignants 2025-2026</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='principaux' ? `
+          <h2>Professeurs Principaux</h2>
+          <p>Les professeurs principaux assurent le suivi et la coordination pédagogique de leur classe respective. Ils sont l'interlocuteur privilégié des élèves et de leurs familles.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/professeurs-principaux','_blank')">
+            <span>📋 Consulter la liste des professeurs principaux</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='surveillance' ? `
+          <h2>Calendrier de Surveillance</h2>
+          <p>Le calendrier de surveillance des examens blancs et épreuves officielles est mis à jour régulièrement. Consultez-le pour connaître vos affectations de salle.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/calendrier-de-surveillance','_blank')">
+            <span>🗓️ Voir le calendrier de surveillance</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='notes' ? `
+          <h2>Saisie des Notes</h2>
+          <p>L'interface de saisie des notes permet aux enseignants d'enregistrer les résultats des évaluations de leurs élèves. Accès sécurisé réservé au personnel enseignant habilité.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/saisie-des-notes','_blank')">
+            <span>✏️ Accéder à la saisie des notes (espace sécurisé)</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='visites' ? `
+          <h2>Visites de Classe</h2>
+          <p>Le programme des visites de classe est établi chaque trimestre par la direction des études. Il permet un suivi régulier des pratiques pédagogiques.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/visites-de-classe','_blank')">
+            <span>🏫 Consulter le programme des visites de classe</span><span class="arrow">→</span>
+          </div>` : ''}
+      </div>
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: PARENTS D'ÉLÈVES
+══════════════════════════════════════ */
+function pageParents(sub) {
+  const activeSub = sub || 'infos';
+  const tabs = [
+    {id:'infos',label:'Informations'},
+    {id:'horaires',label:'Horaires des cours'},
+    {id:'examens',label:'Examens blancs'},
+    {id:'notes',label:'Consultations notes'},
+    {id:'evaluation',label:'Évaluation profs'},
+  ];
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Parents d\'Élèves'}])}
+  ${pageBanner('Espace <em>Parents d\'Élèves</em>', 'Toutes les informations pour suivre la scolarité de votre enfant')}
+  <div class="page">
+    <div class="admin-grid">
+      <div class="sidebar">
+        <h3>Menu parents</h3>
+        <ul class="sidebar-links">
+          ${tabs.map(t=>`<li><button class="${activeSub===t.id?'active':''}" onclick="go('parents','${t.id}')">${t.label}</button></li>`).join('')}
+        </ul>
+      </div>
+      <div class="content-box">
+        ${activeSub==='infos' ? `
+          <h2>Notes d'Information — Parents &amp; Élèves</h2>
+          <p>Retrouvez ici toutes les notes d'information publiées par la direction à destination des parents et des élèves pour l'année 2025-2026.</p>
+          <div class="note-list mt2">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_0f839d3a037144fe861b9632def30a37.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Ouverture de la piscine — Note d'information</div></div>
+              <div class="note-arr">→</div>
+            </div>
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_0fb0c1c8a8e84d9d8b9ea9e35cc7ac8a.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Nouvelle tenue du lundi</div></div>
+              <div class="note-arr">→</div>
+            </div>
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_7a042b67c8bd44de8e6f853f6b756636.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Note d'information — Réunion parents</div></div>
+              <div class="note-arr">→</div>
+            </div>
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_b0f616ff8cd44e2685f10d2cfe9c8282.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Note d'information — Retrait des bulletins</div></div>
+              <div class="note-arr">→</div>
+            </div>
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_f83ca99195d44e73a18523ea48bdeb2a.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Note d'information — Kermesse</div></div>
+              <div class="note-arr">→</div>
+            </div>
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_7410ccc7c4fa4c45ac755267f1ec7571.pdf','_blank')">
+              <div class="note-item-left"><div class="note-dot"></div><div class="note-title">🔸 Compte rendu de réunion</div></div>
+              <div class="note-arr">→</div>
+            </div>
+          </div>` : ''}
+        ${activeSub==='horaires' ? `
+          <h2>Horaires des Cours</h2>
+          <p>Les emplois du temps par classe sont disponibles en ligne. Les horaires peuvent évoluer en début d'année scolaire. Consultez régulièrement cette rubrique pour les mises à jour.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/horaires-des-cours','_blank')">
+            <span>🕐 Accéder aux horaires des cours</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='examens' ? `
+          <h2>Calendrier des Examens Blancs</h2>
+          <p>Les examens blancs sont organisés régulièrement tout au long de l'année pour préparer les élèves aux examens officiels (BEPC, BAC). Voici le calendrier 2025-2026.</p>
+          <div class="note-item mt2" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_99a49e505cc44b55aa509c1eff1a731e.pdf','_blank')">
+            <div class="note-item-left"><div class="note-dot"></div><div class="note-title">◊ Calendrier des Examens blancs 2025-2026</div></div>
+            <div class="note-arr">→</div>
+          </div>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/examens-blancs-interne','_blank')">
+            <span>📅 Calendrier complet des examens blancs internes</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='notes' ? `
+          <h2>Consultation des Notes</h2>
+          <p>Les parents et élèves peuvent consulter les notes et résultats en ligne via le portail sécurisé de l'établissement. Une connexion avec vos identifiants personnels est requise.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/consultations-notes','_blank')">
+            <span>📊 Accéder à la consultation des notes</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='evaluation' ? `
+          <h2>Évaluation des Professeurs</h2>
+          <p>Dans le cadre de notre démarche qualité, les parents d'élèves sont invités à évaluer les professeurs en fin de chaque trimestre. Vos retours nous permettent d'améliorer continuellement la qualité de l'enseignement.</p>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/evaluation-prof','_blank')">
+            <span>⭐ Accéder au formulaire d'évaluation</span><span class="arrow">→</span>
+          </div>` : ''}
+      </div>
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: VIE SCOLAIRE
+══════════════════════════════════════ */
+function pageVie(sub) {
+  const activeSub = sub || 'conseil';
+  const tabs = [
+    {id:'conseil',label:'Conseil Scolaire'},
+    {id:'clubs',label:'Les Clubs du MIRI'},
+    {id:'galerie',label:'Galerie'},
+  ];
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Vie Scolaire'}])}
+  ${pageBanner('Vie <em>Scolaire</em>', 'Clubs, galerie, conseil — La richesse de la vie au MIRI')}
+  <div class="page">
+    <div class="admin-grid">
+      <div class="sidebar">
+        <h3>Vie scolaire</h3>
+        <ul class="sidebar-links">
+          ${tabs.map(t=>`<li><button class="${activeSub===t.id?'active':''}" onclick="go('vie','${t.id}')">${t.label}</button></li>`).join('')}
+        </ul>
+      </div>
+      <div class="content-box">
+        ${activeSub==='conseil' ? `
+          <h2>Conseil Scolaire</h2>
+          <p>Le Conseil Scolaire du Groupe Scolaire Le Miri est l'instance représentative des élèves. Il joue un rôle actif dans la vie de l'établissement, en relayant les propositions et préoccupations des élèves auprès de la direction.</p>
+          <ul>
+            <li>Représentation des élèves dans les instances de l'établissement</li>
+            <li>Organisation d'événements et d'activités parascolaires</li>
+            <li>Participation aux décisions concernant la vie scolaire</li>
+            <li>Promotion du vivre-ensemble et de la citoyenneté</li>
+          </ul>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/conseil-scolaire','_blank')">
+            <span>🏛️ En savoir plus sur le Conseil Scolaire</span><span class="arrow">→</span>
+          </div>` : ''}
+        ${activeSub==='clubs' ? `
+          <h2>Les Clubs du MIRI</h2>
+          <p>Le Groupe Scolaire Le Miri propose une vie extrascolaire riche à travers ses différents clubs. Ces activités permettent aux élèves de développer des compétences variées et de s'épanouir au-delà des cours.</p>
+          <div class="clubs-grid mt2" style="grid-template-columns:1fr 1fr;">
+            <div class="club-card">
+              <div class="club-icon">🎨</div>
+              <div class="club-name">Club Art Visuel</div>
+              <div class="club-desc">Dessin, peinture, création plastique. Les élèves ont produit de remarquables tableaux exposés lors de la journée culturelle 2024-2025.</div>
+            </div>
+            <div class="club-card">
+              <div class="club-icon">📖</div>
+              <div class="club-name">Café Littéraire</div>
+              <div class="club-desc">Rencontres avec des auteurs ivoiriens, lectures, débats littéraires. En 2025, rencontre avec l'écrivain Goli Bi Mathurin Irié.</div>
+            </div>
+            <div class="club-card">
+              <div class="club-icon">🗣️</div>
+              <div class="club-name">Club Anglais</div>
+              <div class="club-desc">Pratique de l'anglais oral et écrit. BINTUNI JOËLLE (4ème) qualifiée à la finale du Concours national d'anglais 2025.</div>
+            </div>
+            <div class="club-card">
+              <div class="club-icon">⚽</div>
+              <div class="club-name">Sports & OISSU</div>
+              <div class="club-desc">Participation aux jeux scolaires et sportifs inter-établissements. Participation à l'OISSU 2024 et aux Jeux EMPT (52ème édition).</div>
+            </div>
+            <div class="club-card">
+              <div class="club-icon">🏊</div>
+              <div class="club-name">Club Natation</div>
+              <div class="club-desc">Accès à la piscine de l'établissement, cours de natation encadrés par des moniteurs qualifiés. Ouverte en 2025-2026.</div>
+            </div>
+            <div class="club-card">
+              <div class="club-icon">🎭</div>
+              <div class="club-name">Culture & Théâtre</div>
+              <div class="club-desc">Expression artistique, journées culturelles, préparation de spectacles de fin d'année pour toute la communauté.</div>
+            </div>
+          </div>` : ''}
+        ${activeSub==='galerie' ? `
+          <h2>Galerie Photos & Vidéos</h2>
+          <p>Retrouvez ici les photos des principaux événements et moments forts de la vie du Groupe Scolaire Le Miri.</p>
+          <div class="gallery-masonry mt2">
+            <img src="${IMG.culture}" alt="Journée culturelle 2024">
+            <img src="${IMG.femmes}" alt="Journée droits des femmes">
+            <img src="${IMG.jeux}" alt="Jeux culturels EMPT">
+            <img src="${IMG.merite}" alt="Journée mérite">
+            <img src="${IMG.art}" alt="Club art visuel">
+            <img src="${IMG.oissu}" alt="OISSU 2024">
+            <img src="${IMG.cafe}" alt="Café littéraire">
+            <img src="${IMG.anglais}" alt="Concours anglais">
+            <img src="${IMG.salon}" alt="Salon du livre">
+            <img src="${IMG.res1}" alt="Résultats 2024">
+            <img src="${IMG.res2}" alt="Palmarès">
+            <img src="${IMG.recon}" alt="Reconnaissance">
+          </div>
+          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/galerie-videos-photos','_blank')">
+            <span>🖼️ Voir la galerie complète sur le site officiel</span><span class="arrow">→</span>
+          </div>` : ''}
+      </div>
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: BLOG / ÉVÉNEMENTS
+══════════════════════════════════════ */
+function pageBlog() {
+  const events = [
+    {img:IMG.femmes, date:'Mars 2026', title:"Journée internationale des droits des femmes au Groupe Scolaire Le Miri", text:"Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. L'événement a réuni élèves, enseignant·e·s et personnel autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.", tag:"Vie scolaire"},
+    {img:IMG.merite, date:'21 Juin 2025', title:"Journée du mérite et de l'excellence au Groupe Scolaire Le Miri", text:"La journée du mérite et de l'excellence 2024-2025 aura lieu le samedi 21 juin 2025 à partir de 8 heures au sein de l'établissement.", tag:"Excellence"},
+    {img:IMG.bingerville, date:'Mai 2025', title:"Le prix d'excellence de meilleur élève de Bingerville", text:"L'élève BROU GRACE LYN (Tle A1) a reçu de la part du Maire de Bingerville le prix d'excellence de meilleur élève de Bingerville.", tag:"Prix"},
+    {img:IMG.anglais, date:'Mai 2025', title:"Concours national d'anglais", text:"L'élève BINTUNI JOËLLE, en classe de 4ème, qualifiée pour la finale du Concours national d'anglais. Félicitations !", tag:"Compétition"},
+    {img:IMG.salon, date:'Mai 2025', title:"Sortie des élèves du Miri au Salon du Livre 2025", text:"Sortie pédagogique des élèves au salon du livre 2025 au parc des expositions d'Abidjan.", tag:"Culture"},
+    {img:IMG.art, date:'2025', title:"Tableau d'art réalisé par le Club Art visuel du MIRI, promotion 2024-2025", text:"Magnifique tableau réalisé par les élèves membres du Club Art Visuel du Groupe Scolaire Le Miri, promotion 2024-2025.", tag:"Arts"},
+    {img:IMG.cafe, date:'2025', title:"Café littéraire avec l'écrivain Goli Bi Mathurin Irié", text:"Rencontre littéraire exceptionnelle entre les élèves du Miri et l'écrivain ivoirien Goli Bi Mathurin Irié.", tag:"Littérature"},
+    {img:IMG.recon, date:'2024', title:"Reconnaissance et mérite", text:"Cérémonie de reconnaissance et de mérite pour les élèves et personnels s'étant distingués au cours de l'année.", tag:"Excellence"},
+    {img:IMG.culture, date:'2024', title:"Journée culturelle 2024", text:"Grande fête culturelle rassemblant toute la communauté scolaire du Groupe Scolaire Le Miri autour de performances artistiques et culturelles.", tag:"Culture"},
+    {img:IMG.oissu, date:'2024', title:"OISSU 2024", text:"Participation du Groupe Scolaire Le Miri aux compétitions sportives inter-établissements OISSU 2024.", tag:"Sport"},
+    {img:IMG.jeux, date:'2024', title:"52ème édition des jeux culturels et sportifs de l'EMPT", text:"Les élèves du MIRI ont participé à la 52ème édition des jeux culturels et sportifs de l'EMPT.", tag:"Sport"},
+  ];
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Événements'}])}
+  ${pageBanner('Événements & <em>Actualités</em>', 'Toute la vie du Groupe Scolaire Le Miri en temps réel')}
+  <div class="page py4">
+    <div class="events-grid">
+      ${events.map(e=>`
+        <div class="ev-card">
+          <img src="${e.img}" alt="${e.title}">
+          <div class="ev-card-body">
+            <div class="ev-card-date">${e.date}</div>
+            <div class="ev-card-title">${e.title}</div>
+            <div class="ev-card-text">${e.text}</div>
+            <div class="ev-card-tag">${e.tag}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   PAGE: CONTACT
+══════════════════════════════════════ */
+function pageContact() {
+  return `
+  ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Contacts'}])}
+  ${pageBanner('Contacts', 'Pour tous renseignements et informations souhaités')}
+  <div class="page">
+    <div class="contacts-layout">
+      <div>
+        <div class="s-tag">Coordonnées</div>
+        <h2 class="s-h2 mb3">Nous <em>trouver</em></h2>
+        <div class="contact-info-grid">
+          <div class="ci-row"><span class="ci-key">Adresse</span><span class="ci-val">01 BP 8051, Abidjan 01<br>Bingerville, Côte d'Ivoire</span></div>
+          <div class="ci-row"><span class="ci-key">Téléphone</span><span class="ci-val"><a href="tel:+2252722527900">+225 27 22 52 79 00</a></span></div>
+          <div class="ci-row"><span class="ci-key">Email</span><span class="ci-val"><a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a></span></div>
+          <div class="ci-row"><span class="ci-key">Code étab.</span><span class="ci-val"><strong>041604</strong></span></div>
+          <div class="ci-row"><span class="ci-key">Horaires</span><span class="ci-val">Lun–Ven : 7h30 – 17h30<br>Samedi : 8h00 – 13h00</span></div>
+          <div class="ci-row"><span class="ci-key">Facebook</span><span class="ci-val"><a href="https://web.facebook.com/lycee.classique.abidjan.officiel/" target="_blank">Page officielle →</a></span></div>
+        </div>
+        <div class="map-box">
+          <strong>Bingerville, Abidjan</strong>
+          <span>Côte d'Ivoire</span>
+          <a href="https://maps.google.com?q=Bingerville+Abidjan+Cote+d+Ivoire" target="_blank" class="btn btn-fo" style="margin-top:.5rem;padding:.5rem 1.2rem;font-size:.75rem;">📍 Voir sur Google Maps</a>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-body" style="padding:2rem 2.5rem;">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;margin-bottom:1.5rem;">Envoyer un message</h3>
+            <p class="text-md mb2">Pour tous renseignements et informations souhaités, veuillez remplir ce formulaire. Nous vous répondrons dans les meilleurs délais.</p>
+            <div class="f-row">
+              <div class="f-group"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
+              <div class="f-group"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
+            </div>
+            <div class="f-group"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+            <div class="f-group"><label>Téléphone</label><input type="tel" placeholder="+225 ..."></div>
+            <div class="f-group">
+              <label>Objet</label>
+              <select>
+                <option>Demande d'inscription</option>
+                <option>Renseignements généraux</option>
+                <option>Frais de scolarité</option>
+                <option>Convocation / Rendez-vous</option>
+                <option>Autre demande</option>
+              </select>
+            </div>
+            <div class="f-group"><label>Message</label><textarea placeholder="Votre message..."></textarea></div>
+            <button class="btn-submit" onclick="fakeSubmit(this)">Envoyer le message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  ${footer_cta()}`;
+}
+
+/* ══════════════════════════════════════
+   TICKER
+══════════════════════════════════════ */
+const tickerItems = [
+  '🔸 Ouverture de la piscine du Groupe Scolaire Le Miri 2025-2026',
+  '🔸 Nouvelle tenue du lundi — consulter la note d\'information',
+  '🔸 Inscriptions 2025-2026 ouvertes — nouvel élève et réinscription',
+  '🔸 Calendrier des examens blancs 2025-2026 disponible',
+  '🔸 BROU GRACE LYN — Prix d\'excellence meilleur élève de Bingerville',
+  '🔸 BINTUNI JOËLLE (4ème) — Finaliste Concours national d\'anglais 2025',
+  '🔸 Note d\'information KERMESSE — consulter votre espace parents',
+  '🔸 BAC 2024 : 95% · BEPC 2024 : 92%',
+];
+const track = document.getElementById('tickerTrack');
+const doubled = [...tickerItems,...tickerItems];
+track.innerHTML = doubled.map(t=>`<span class="t-item"><span class="t-dot"></span>${t}</span>`).join('');
+
+/* ══════════════════════════════════════
+   COUNTERS
+══════════════════════════════════════ */
+function initCounters() {
+  const els = document.querySelectorAll('[data-target]');
+  if (!els.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      let start = null;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1800, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      obs.unobserve(el);
+    });
+  }, {threshold: .5});
+  els.forEach(el => obs.observe(el));
+}
+
+/* ══════════════════════════════════════
+   FORM
+══════════════════════════════════════ */
+function fakeSubmit(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '✓ Message envoyé !';
+  btn.style.background = 'var(--fo)';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>
