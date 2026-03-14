@@ -82,7 +82,7 @@ nav{
   max-width:1340px;margin:0 auto;
   padding:0 1.5rem;
   display:flex;align-items:center;
-  justify-content: space-between; /* Assure que le logo est à gauche et le hamburger à droite */
+  justify-content: space-between;
   height:60px;
   gap:0;
 }
@@ -139,7 +139,7 @@ nav{
 }
 .nav-item:hover .nav-link svg{transform:rotate(180deg);}
 
-/* Dropdown */
+/* Dropdown Desktop */
 .dropdown{
   position:absolute;top:calc(100% + 2px);left:0;
   min-width:210px;
@@ -184,47 +184,72 @@ nav{
 }
 .nav-cta:hover{background:var(--dk);transform:translateY(-1px);}
 
-/* Hamburger */
+/* Hamburger Button */
 .hamburger{
   display:none;background:none;border:none;cursor:pointer;
   padding:.4rem;flex-direction:column;gap:5px;
-  margin-left:auto; /* S'assure qu'il est collé à droite */
+  margin-left:auto; 
   flex-shrink:0;
 }
-.hamburger span{display:block;width:22px;height:2px;background:var(--dk);transition:.3s;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--dk);transition:.3s;}
 
-/* Mobile overlay */
-.mob-overlay{
-  display:none;position:fixed;inset:0;z-index:800;
-  background:var(--wh);flex-direction:column;
-  transform:translateX(100%);transition:transform .35s ease-in-out;overflow-y:auto;
+/* ══ MENU MOBILE INFAILLIBLE ══ */
+.mob-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--wh);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: block; 
 }
-.mob-overlay.open{transform:translateX(0);}
-.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:var(--dk);font-size:2rem;cursor:pointer;}
-.mob-nav{padding:4rem 2rem 2rem; display: flex; flex-direction: column;}
-.mob-nav a,.mob-nav button{
-  display:block;width:100%;text-align:left;
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem;font-weight:700;
-  color:var(--dk);text-decoration:none;cursor:pointer;
-  background:none;border:none;
-  padding:1rem 0;border-bottom:1px solid rgba(11,26,13,.1);
-  transition:color .2s;
+.mob-overlay.open {
+  transform: translateX(0);
 }
-.mob-nav a:hover,.mob-nav button:hover{color:var(--tr);}
-.mob-sub{
-  padding-left:1.5rem; 
-  border-left: 2px solid var(--cr3);
-  margin: 0.5rem 0 0.5rem 1rem;
+/* La croix bien visible et fonctionnelle */
+.mob-close {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  background: var(--fo); border: none; color: var(--cr);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; border-radius: 50%; transition: transform 0.2s, background 0.2s;
+  z-index: 10005; box-shadow: 0 4px 12px rgba(11,26,13,.15);
 }
-.mob-sub a{
-  font-family:'Outfit',sans-serif;
-  font-size:1.1rem;
-  font-weight:500;
-  color:var(--md);
-  padding: 0.6rem 0;
-  border: none;
+.mob-close:hover { background: var(--tr); transform: rotate(90deg); }
+
+.mob-nav {
+  padding: 5rem 2rem 2rem; display: flex; flex-direction: column;
 }
+.mob-nav-link {
+  display: block; width: 100%; text-align: left;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700;
+  color: var(--dk); text-decoration: none; cursor: pointer;
+  background: none; border: none; padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(11,26,13,.1); transition: color 0.2s;
+}
+.mob-nav-link:hover { color: var(--tr); }
+
+/* Accordéon natif pour les sous-menus */
+.mob-details { border-bottom: 1px solid rgba(11,26,13,.1); }
+.mob-details summary {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; text-align: left; padding: 1.2rem 0;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700;
+  color: var(--dk); cursor: pointer; list-style: none; outline: none;
+}
+.mob-details summary::-webkit-details-marker { display: none; }
+.mob-details[open] summary { color: var(--tr); }
+.mob-details summary .arr { font-size: 1rem; transition: transform 0.3s; color: var(--md); }
+.mob-details[open] summary .arr { transform: rotate(180deg); color: var(--tr); }
+
+.mob-sub {
+  padding-left: 1.5rem; border-left: 2px solid var(--cr3);
+  margin: 0.5rem 0 1.5rem 1rem;
+}
+.mob-sub a {
+  display: block; font-family: 'Outfit', sans-serif; font-size: 1.1rem;
+  font-weight: 500; color: var(--md); padding: 0.8rem 0;
+  text-decoration: none; cursor: pointer; transition: color 0.2s;
+}
+.mob-sub a:hover { color: var(--tr); }
 
 /* ══ PAGE LAYOUT ══ */
 .page{max-width:1280px;margin:0 auto;padding:0 2rem;}
@@ -263,6 +288,62 @@ nav{
 .card{background:var(--wh);border:1.5px solid var(--cr3);border-radius:var(--rad);}
 .card-body{padding:1.4rem;}
 
+/* Carte du Directeur (Design personnalisé) */
+.director-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--wh);
+  border: 1px solid var(--cr3);
+  padding: 1.5rem;
+  border-radius: var(--rad);
+  margin-top: 2rem;
+  box-shadow: 0 4px 20px rgba(11,26,13,.06);
+  max-width: 480px;
+}
+.director-card .imgBx {
+  width: 85px;
+  height: 85px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--fo);
+}
+.director-card .imgBx img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.director-card .content h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dk);
+  margin-bottom: 0.2rem;
+}
+.director-card .content h6 {
+  font-size: 0.8rem;
+  color: var(--md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.8rem;
+}
+.director-card .content a {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--tr);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--tr);
+  transition: color 0.2s, border-color 0.2s;
+  padding-bottom: 2px;
+}
+.director-card .content a:hover {
+  color: var(--fo);
+  border-color: var(--fo);
+}
+
 /* ══ BUTTONS ══ */
 .btn{display:inline-block;padding:.75rem 1.8rem;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:.2s;}
 .btn-fo{background:var(--fo);color:var(--cr);}
@@ -293,6 +374,27 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .foot-links a:hover,.foot-links button:hover{color:var(--go2);}
 .foot-bottom{max-width:1280px;margin:0 auto;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.72rem;}
 
+/* Footer Logos Partenaires Officiels (Vraies images extraites) */
+.footer-partners {
+  background: #061107;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(246,237,217,.05);
+}
+.footer-partners > span {
+  display: block; font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: rgba(246,237,217,.4); margin-bottom: 1.5rem;
+}
+.fp-logos {
+  display: flex; justify-content: center; align-items: center;
+  gap: 2.5rem; flex-wrap: wrap; max-width: 1000px; margin: 0 auto;
+}
+.fp-logos img {
+  height: 60px; width: auto; object-fit: contain;
+  transition: transform 0.2s ease;
+}
+.fp-logos img:hover { transform: scale(1.05); }
+
 /* ══ GRID UTILS ══ */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
@@ -320,7 +422,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   padding:2rem 3rem;
   display:flex;
   flex-direction:column;
-  justify-content:center; /* Centré verticalement parfaitement */
+  justify-content:center; 
   position:relative;
   overflow:hidden;
   border-right:2px solid var(--dk);
@@ -431,7 +533,7 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .carousel-btn.prev{left:1rem;}
 .carousel-btn.next{right:1rem;}
 
-/* Stats strip (Mise à jour avec les nouveaux chiffres) */
+/* Stats strip */
 .stats-strip{
   background:var(--fo);
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -598,8 +700,22 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
 .ci-val{font-size:.9rem;color:var(--dk);line-height:1.5;}
 .ci-val a{color:var(--fo);text-decoration:none;}
 .ci-val a:hover{color:var(--tr);}
-.map-box{background:var(--cr2);border:2px solid var(--dk);height:220px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--md);text-align:center;padding:1.5rem;flex-direction:column;gap:.5rem;margin-top:1.5rem;}
-.map-box strong{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--dk);}
+
+/* Conteneur Iframe Maps */
+.map-iframe-container {
+  border: 2px solid var(--dk);
+  height: 300px;
+  width: 100%;
+  margin-top: 1.5rem;
+  background: var(--cr2);
+  position: relative;
+}
+.map-iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 
 /* ══ RESPONSIVE ══ */
 
@@ -717,6 +833,16 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
   .cta-band{grid-template-columns:1fr;}
   .admin-grid,.parents-grid{grid-template-columns:1fr;}
   .social-feed { grid-template-columns: 1fr; }
+  
+  .fp-logos { gap: 1rem; }
+  .fp-logos img { height: 45px; }
+  
+  /* Ajustement de la carte directeur sur mobile */
+  .director-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
 }
 </style>
 </head>
@@ -830,29 +956,83 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
     <button class="nav-cta" onclick="window.open('https://www.expertpro-ci.net/accueilpreinscription.php','_blank')">
       Inscription 2025-2026
     </button>
-    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.toggle('open')" id="hamburger">
+    <!-- BOUTON HAMBURGER (Ouverture) -->
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')" id="hamburger">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
+<!-- MENU MOBILE INFAILLIBLE (AVEC BALISES NATIVES + GRANDE CROIX) -->
 <div class="mob-overlay" id="mobMenu">
-  <button class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">✕</button>
+  <!-- GRANDE CROIX DE FERMETURE BIEN VISIBLE -->
+  <button class="mob-close" onclick="closeMob()" aria-label="Fermer le menu">
+    <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
   <nav class="mob-nav">
-    <a onclick="go('accueil');document.getElementById('mobMenu').classList.remove('open')">Accueil</a>
-    <a onclick="go('admin');document.getElementById('mobMenu').classList.remove('open')">Administration</a>
-    <div class="mob-sub">
-      <a onclick="go('admin','historique');document.getElementById('mobMenu').classList.remove('open')">Historique / Le MIRI</a>
-      <a onclick="go('admin','reglement');document.getElementById('mobMenu').classList.remove('open')">Règlement intérieur</a>
-    </div>
-    <a onclick="go('groupe');document.getElementById('mobMenu').classList.remove('open')">Groupe Scolaire</a>
-    <a onclick="go('enseignants');document.getElementById('mobMenu').classList.remove('open')">Enseignants</a>
-    <a onclick="go('parents');document.getElementById('mobMenu').classList.remove('open')">Parents d'Élèves</a>
-    <a onclick="go('vie');document.getElementById('mobMenu').classList.remove('open')">Vie Scolaire</a>
-    <a onclick="go('blog');document.getElementById('mobMenu').classList.remove('open')">Événements</a>
-    <a onclick="go('contact');document.getElementById('mobMenu').classList.remove('open')">Contact</a>
-    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" style="color:var(--tr);margin-top:1rem;border:none;">→ Inscription 2025-2026</a>
+    <a class="mob-nav-link" onclick="go('accueil'); closeMob()">Accueil</a>
+    
+    <!-- ACCORDEON NATIF: AUCUN BUG POSSIBLE -->
+    <details class="mob-details">
+      <summary>Administration <span class="arr">▼</span></summary>
+      <div class="mob-sub">
+        <a onclick="go('admin','historique'); closeMob()">Historique / Le MIRI</a>
+        <a onclick="go('admin','reglement'); closeMob()">Règlement intérieur</a>
+        <a onclick="go('admin','organigramme'); closeMob()">Organigramme</a>
+        <a onclick="go('admin','notes-service'); closeMob()">Notes de service</a>
+        <a onclick="go('admin','liste-eleves'); closeMob()">Liste des élèves</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary>Groupe Scolaire <span class="arr">▼</span></summary>
+      <div class="mob-sub">
+        <a onclick="go('groupe','maternelle'); closeMob()">Maternelle</a>
+        <a onclick="go('groupe','primaire'); closeMob()">Primaire</a>
+        <a onclick="go('groupe','secondaire'); closeMob()">Secondaire & Lycée</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary>Enseignants <span class="arr">▼</span></summary>
+      <div class="mob-sub">
+        <a onclick="go('enseignants','infos'); closeMob()">Infos aux Enseignants</a>
+        <a onclick="go('enseignants','liste'); closeMob()">Liste 2025-2026</a>
+        <a onclick="go('enseignants','principaux'); closeMob()">Professeurs principaux</a>
+        <a onclick="go('enseignants','surveillance'); closeMob()">Calendrier de surveillance</a>
+        <a onclick="go('enseignants','notes'); closeMob()">Saisie des notes</a>
+        <a onclick="go('enseignants','visites'); closeMob()">Visites de classe</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary>Parents d'Élèves <span class="arr">▼</span></summary>
+      <div class="mob-sub">
+        <a onclick="go('parents','infos'); closeMob()">Informations</a>
+        <a onclick="go('parents','horaires'); closeMob()">Horaires des cours</a>
+        <a onclick="go('parents','examens'); closeMob()">Calendrier examens blancs</a>
+        <a onclick="go('parents','notes'); closeMob()">Consultations des notes</a>
+        <a onclick="go('parents','evaluation'); closeMob()">Évaluation professeurs</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary>Vie Scolaire <span class="arr">▼</span></summary>
+      <div class="mob-sub">
+        <a onclick="go('vie','conseil'); closeMob()">Conseil Scolaire</a>
+        <a onclick="go('vie','clubs'); closeMob()">Les Clubs du MIRI</a>
+        <a onclick="go('vie','galerie'); closeMob()">Galerie photos & vidéos</a>
+      </div>
+    </details>
+
+    <a class="mob-nav-link" onclick="go('blog'); closeMob()">Événements</a>
+    <a class="mob-nav-link" onclick="go('contact'); closeMob()">Contact</a>
+    
+    <a href="https://www.expertpro-ci.net/accueilpreinscription.php" target="_blank" style="color:var(--tr);margin-top:1.5rem;border:none;font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;text-decoration:none;">→ Inscription 2025-2026</a>
   </nav>
 </div>
 
@@ -908,6 +1088,18 @@ footer{background:var(--fo);color:rgba(246,237,217,.6);}
     <span>© 2025 Groupe Scolaire Le Miri — Bingerville, Abidjan, Côte d'Ivoire · Tous droits réservés</span>
     <span style="color:rgba(246,237,217,.25)">INFOS EDUCATION</span>
   </div>
+  
+  <!-- LOGOS PARTENAIRES OFFICIELS (EXTRAITS DE VOTRE WIX) -->
+  <div class="footer-partners">
+    <span>Partenaires & Institutions Officielles</span>
+    <div class="fp-logos">
+      <!-- VRAIS LOGOS EXTRAITS DE VOTRE CODE -->
+      <img src="https://static.wixstatic.com/media/568692_c76c8343da1a4bc4a2e27c7fa208a83a~mv2.png/v1/fit/w_146,h_130,q_90,enc_avif,quality_auto/568692_c76c8343da1a4bc4a2e27c7fa208a83a~mv2.png" alt="DRH">
+      <img src="https://static.wixstatic.com/media/568692_8f3d25223cf7489e8114a26ddee24564~mv2.png/v1/fit/w_152,h_130,q_90,enc_avif,quality_auto/568692_8f3d25223cf7489e8114a26ddee24564~mv2.png" alt="DESPS">
+      <img src="https://static.wixstatic.com/media/568692_78b9f81ef4234dc48badba45f86e194a~mv2.png/v1/fit/w_160,h_130,q_90,enc_avif,quality_auto/568692_78b9f81ef4234dc48badba45f86e194a~mv2.png" alt="DOB">
+      <img src="https://static.wixstatic.com/media/568692_f0e17f8ed5254430b2bc224fced84694~mv2.png/v1/fit/w_166,h_130,q_90,enc_avif,quality_auto/568692_f0e17f8ed5254430b2bc224fced84694~mv2.png" alt="DECO">
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -941,7 +1133,7 @@ const IMG = {
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('pageLoader').classList.add('hide');
-  }, 400); // Petit délai pour laisser l'animation respirer
+  }, 400);
 });
 
 let currentPage = 'accueil';
@@ -960,6 +1152,22 @@ function go(page, sub) {
   const el = document.getElementById('nav-' + page);
   if (el) el.classList.add('active');
 }
+
+/* EXCLUSIVITÉ DE L'ACCORDÉON MOBILE ET FERMETURE */
+window.closeMob = function() {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.querySelectorAll('.mob-details').forEach(d => d.removeAttribute('open'));
+};
+
+document.querySelectorAll('.mob-details').forEach(details => {
+  details.addEventListener('toggle', (e) => {
+    if (details.open) {
+      document.querySelectorAll('.mob-details').forEach(other => {
+        if (other !== details) other.removeAttribute('open');
+      });
+    }
+  });
+});
 
 function render() {
   const root = document.getElementById('root');
@@ -1016,10 +1224,10 @@ function renderFbPost(post) {
   
   return `
     <div class="fb-post">
-      <div class="fb-header" onclick="go('blog')">
-        <img src="${IMG.logo}" alt="Logo" class="fb-avatar">
+      <div class="fb-header">
+        <img src="${IMG.logo}" alt="Logo" class="fb-avatar" onclick="window.open('https://web.facebook.com/lycee.classique.abidjan.officiel/', '_blank')" style="cursor:pointer;">
         <div class="fb-author-info">
-          <div class="fb-name">Groupe Scolaire Le Miri</div>
+          <div class="fb-name" style="cursor:pointer" onclick="window.open('https://web.facebook.com/lycee.classique.abidjan.officiel/', '_blank')">Groupe Scolaire Le Miri</div>
           <div class="fb-date">${post.date} · 🌍</div>
         </div>
         <div class="fb-dots">...</div>
@@ -1033,7 +1241,7 @@ function renderFbPost(post) {
       </div>
       <div class="fb-stats">
         <div class="fb-stats-left">
-          <div class="fb-like-icon-circle"><svg viewBox="0 0 512 512" width="10" height="10" fill="currentColor"><path d="M225.8 468.2..."></path></svg>👍</div>
+          <div class="fb-like-icon-circle"><svg viewBox="0 0 512 512" width="10" height="10" fill="currentColor"><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-16.4 15.2-40.4 15.2-56.8 0z"></path></svg></div>
           <span class="like-count">${post.likes}</span>
         </div>
         <div>${post.comments} commentaires · ${post.shares} partages</div>
@@ -1042,10 +1250,10 @@ function renderFbPost(post) {
         <button class="fb-action-btn" onclick="toggleLike(this)">
           ${likeSvg} <span>J'aime</span>
         </button>
-        <button class="fb-action-btn" onclick="go('blog')">
+        <button class="fb-action-btn" onclick="window.open('https://web.facebook.com/lycee.classique.abidjan.officiel/', '_blank')">
           ${commentSvg} <span>Commenter</span>
         </button>
-        <button class="fb-action-btn" onclick="go('blog')">
+        <button class="fb-action-btn" onclick="window.open('https://web.facebook.com/lycee.classique.abidjan.officiel/', '_blank')">
           ${shareSvg} <span>Partager</span>
         </button>
       </div>
@@ -1159,7 +1367,7 @@ function pageAccueil() {
     <div class="stat-cell"><div class="stat-n" data-target="78" data-suffix="">0</div><div class="stat-l">Candidats au Bac</div></div>
   </div>
 
-  <!-- INTRO -->
+  <!-- INTRO & CARTE DU DIRECTEUR -->
   <div class="page">
     <div class="intro">
       <div class="intro-grid">
@@ -1167,7 +1375,20 @@ function pageAccueil() {
           <blockquote class="intro-quote">
             Relevez les défis, laissez libre cours à votre imagination et faisons de cette année une <em>année mémorable&nbsp;!</em>
           </blockquote>
-          <div class="intro-quote-author">Le Directeur des Études — Groupe Scolaire Le Miri</div>
+          
+          <!-- NOUVEAU BLOC : CARTE DU DIRECTEUR -->
+          <div class="director-card">
+            <div class="imgBx">
+              <img src="https://static.wixstatic.com/media/568692_3e5e5748f7054e3bb0d5a3576f283e20~mv2.jpeg" alt="M. LAWSON Silvere">
+            </div>
+            <div class="content">
+              <h4>M. LAWSON Silvere</h4>
+              <h6>Directeur des Études</h6>
+              <a href="https://www.groupescolairelemiri.org/mot-du-directeur" target="_blank">Lire le Mot du Directeur →</a>
+            </div>
+          </div>
+          <!-- FIN DU NOUVEAU BLOC -->
+
         </div>
         <div>
           <div class="s-tag">Notre mission</div>
@@ -1194,7 +1415,7 @@ function pageAccueil() {
           <div class="s-tag">L'actualité en direct</div>
           <h2 class="s-h2">Ce qui se passe <em>au Miri</em></h2>
         </div>
-        <button class="btn btn-outline" onclick="go('blog')">Voir tous les événements →</button>
+        <button class="btn btn-outline" onclick="window.open('https://web.facebook.com/lycee.classique.abidjan.officiel/', '_blank')">Rejoindre la Page Facebook →</button>
       </div>
       <div class="social-feed">
         ${newsPosts.map(p => renderFbPost(p)).join('')}
@@ -1754,10 +1975,10 @@ function pageContact() {
           <div class="ci-row"><span class="ci-key">Horaires</span><span class="ci-val">Lun–Ven : 7h30 – 17h30<br>Samedi : 8h00 – 13h00</span></div>
           <div class="ci-row"><span class="ci-key">Facebook</span><span class="ci-val"><a href="https://web.facebook.com/lycee.classique.abidjan.officiel/" target="_blank">Page officielle →</a></span></div>
         </div>
-        <div class="map-box">
-          <strong>Bingerville, Abidjan</strong>
-          <span>Côte d'Ivoire (93MQ+83G)</span>
-          <a href="https://www.google.com/maps/search/?api=1&query=93MQ%2B83G,+C%C3%B4te+d%E2%80%99Ivoire" target="_blank" class="btn btn-fo" style="margin-top:.5rem;padding:.5rem 1.2rem;font-size:.75rem;">📍 Voir sur Google Maps</a>
+        
+        <!-- INTEGRATION DIRECTE GOOGLE MAPS -->
+        <div class="map-iframe-container">
+          <iframe src="https://maps.google.com/maps?q=93MQ%2B83G%2C%20Bingerville%2C%20C%C3%B4te%20d%E2%80%99Ivoire&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
         </div>
       </div>
       <div>
@@ -1861,7 +2082,6 @@ function initCarousel() {
 
   function goTo(idx) {
     cur = (idx + total) % total;
-    /* Translate sur les slides (chaque slide = 100% de la largeur du track) */
     track.style.transform = `translateX(-${cur * 100}%)`;
     dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
       d.classList.toggle('active', i === cur)
@@ -1890,7 +2110,6 @@ function initCarousel() {
 
   startAuto();
 }
-
 
 function fakeSubmit(btn) {
   const orig = btn.textContent;
