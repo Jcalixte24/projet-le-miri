@@ -362,78 +362,6 @@ nav{
   border-color: var(--fo);
 }
 
-/* ══ PALMARÈS BANNER (NOUVEAU DESIGN) ══ */
-.palmares-banner {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  background: var(--wh);
-  border: 2px solid var(--go); /* Liseré doré */
-  border-radius: var(--rad);
-  padding: 2.5rem;
-  margin-top: 3rem;
-  box-shadow: 0 12px 32px rgba(244, 162, 97, 0.15);
-  position: relative;
-  overflow: hidden;
-}
-.palmares-banner::before {
-  content: '🏆';
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  font-size: 15rem;
-  opacity: 0.04;
-  transform: rotate(15deg);
-  pointer-events: none;
-}
-.palmares-content { flex: 1; position: relative; z-index: 1; }
-.palmares-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--fo);
-  margin-bottom: 0.5rem;
-}
-.palmares-score {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 4.5rem;
-  font-weight: 800;
-  color: var(--tr);
-  line-height: 1;
-  margin: 1rem 0;
-  letter-spacing: -0.03em;
-}
-.palmares-score small {
-  font-size: 1.2rem;
-  color: var(--md);
-  font-weight: 600;
-  vertical-align: middle;
-  letter-spacing: 0;
-}
-.palmares-img-wrap {
-  width: 45%;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-.palmares-img-wrap img {
-  width: 100%;
-  height: auto;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: var(--rad);
-  border: 1px solid var(--cr2);
-  box-shadow: 0 8px 24px rgba(26,26,26,.08);
-  background: var(--li);
-  padding: 10px;
-}
-@media(max-width: 900px) {
-  .palmares-banner { flex-direction: column; text-align: center; padding: 2rem 1.5rem; gap: 1.5rem; }
-  .palmares-img-wrap { width: 100%; }
-  .palmares-title { font-size: 1.5rem; }
-  .palmares-score { font-size: 3.5rem; }
-}
-
 /* ══ BUTTONS ══ */
 .btn{display:inline-block;padding:.75rem 1.8rem;font-family:'Open Sans', sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .2s; border-radius:2px;}
 .btn-fo{background:var(--fo);color:var(--wh);}
@@ -463,6 +391,15 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .foot-links a,.foot-links button{font-size:.85rem;color:rgba(253,252,248,.6);text-decoration:none;cursor:pointer;background:none;border:none;font-family:'Open Sans', sans-serif;text-align:left;transition:color .2s; font-weight:500;}
 .foot-links a:hover,.foot-links button:hover{color:var(--go2);}
 .foot-bottom{max-width:1280px;margin:0 auto;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.72rem;}
+
+/* Footer FB Widget */
+._1dro { display: flex; align-items: center; gap: 12px; background: var(--wh); padding: 12px; border-radius: var(--rad); text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 250px; margin-top: 1.5rem;}
+._1dro a { text-decoration: none; display: flex; }
+._1drn { border-radius: 50%; border: 1px solid var(--cr3); }
+.lfloat { display: flex; flex-direction: column; justify-content: center; }
+._1drp { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; color: #1877F2 !important; transition: color 0.2s; }
+._1drp:hover { text-decoration: underline; }
+._1drq { font-size: 0.85rem; color: var(--md); font-weight: 500; }
 
 /* Footer Logos Partenaires Officiels */
 .footer-partners {
@@ -678,19 +615,19 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .sn-readmore { font-family: 'Open Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--tr); transition: color 0.2s; }
 .simple-news-card:hover .sn-readmore { color: var(--fo); }
 
-/* ══ MODAL D'ACTUALITÉ (AGRANDISSEMENT IMAGE & TEXTE) ══ */
+/* ══ MODAL D'ACTUALITÉ / GALERIE (AGRANDISSEMENT IMAGE & TEXTE) ══ */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 100000; background: rgba(11,26,13,.85);
+  position: fixed; inset: 0; z-index: 100000; background: rgba(11,26,13,.9);
   display: flex; align-items: center; justify-content: center;
   opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
-  padding: 2rem; backdrop-filter: blur(4px);
+  padding: 2rem; backdrop-filter: blur(5px);
 }
 .modal-overlay.open { opacity: 1; visibility: visible; }
 .modal-box {
   background: var(--wh); border-radius: var(--rad); max-width: 800px; width: 100%;
   max-height: 90vh; overflow-y: auto; position: relative;
-  transform: translateY(20px); transition: transform 0.3s;
-  display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.3);
+  transform: translateY(20px); transition: transform 0.3s, opacity 0.3s ease;
+  display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.4);
 }
 .modal-overlay.open .modal-box { transform: translateY(0); }
 .modal-close-btn {
@@ -700,15 +637,32 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,.2); transition: background .2s, transform .2s;
 }
 .modal-close-btn:hover { background: var(--tr); transform: rotate(90deg); }
-.modal-box img { width: 100%; height: auto; max-height: 50vh; object-fit: contain; background: var(--cr2); }
+.modal-box img { width: 100%; height: auto; max-height: 50vh; object-fit: contain; background: var(--dk); }
 .modal-info { padding: 2rem; }
 .modal-date { font-family: 'Open Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--tr); text-transform: uppercase; margin-bottom: 0.8rem; }
 .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--fo); line-height: 1.3; margin-bottom: 1rem; }
 .modal-text { font-family: 'Open Sans', sans-serif; font-size: 1rem; color: var(--dk); line-height: 1.7; }
-@media(max-width: 600px) {
+
+/* Flèches de navigation Modal Galerie */
+.gallery-nav-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  color: var(--wh); width: 50px; height: 50px; border-radius: 50%;
+  font-size: 1.5rem; cursor: pointer; z-index: 100001; display: flex;
+  align-items: center; justify-content: center; backdrop-filter: blur(4px);
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+.gallery-nav-btn:hover { background: var(--tr); border-color: var(--tr); transform: translateY(-50%) scale(1.1); }
+.gallery-nav-btn.prev { left: 2rem; }
+.gallery-nav-btn.next { right: 2rem; }
+
+@media(max-width: 900px) {
   .modal-overlay { padding: 1rem; }
   .modal-title { font-size: 1.4rem; }
   .modal-info { padding: 1.5rem; }
+  .gallery-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+  .gallery-nav-btn.prev { left: 0.5rem; }
+  .gallery-nav-btn.next { right: 0.5rem; }
 }
 
 /* Inscription CTA */
@@ -805,9 +759,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .club-icon{font-size:3rem;margin-bottom:1.5rem;}
 .club-name{font-family:'Montserrat', sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:.8rem; color:var(--fo);}
 .club-desc{font-size:.95rem;color:var(--md);line-height:1.6;}
-.gallery-masonry{columns:3;gap:1.5rem;margin-top:3rem;}
-.gallery-masonry img{width:100%;margin-bottom:1.5rem;display:block;object-fit:cover;border-radius:var(--rad); transition:transform .4s ease;cursor:pointer;}
-.gallery-masonry img:hover{transform:scale(1.03); box-shadow:0 12px 24px rgba(26,26,26,.15);}
 
 /* ══ CONTACTS PAGE ══ */
 .contacts-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;padding:5rem 0;}
@@ -867,7 +818,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   .clubs-grid{grid-template-columns:1fr 1fr;}
   .events-grid{grid-template-columns:1fr 1fr;}
   .contacts-layout{grid-template-columns:1fr;}
-  .gallery-masonry{columns:2;}
   .g2{grid-template-columns:1fr;}
   .g3{grid-template-columns:1fr 1fr;}
   .g4{grid-template-columns:1fr 1fr;}
@@ -949,7 +899,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   .info-cards{grid-template-columns:1fr;}
   .events-grid{grid-template-columns:1fr;}
   .g3,.g4{grid-template-columns:1fr;}
-  .gallery-masonry{columns:1;}
   .cta-left,.cta-right{padding:3rem 1.5rem;}
   .cta-band{grid-template-columns:1fr;}
   .admin-grid,.parents-grid{grid-template-columns:1fr;}
@@ -1162,20 +1111,23 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- MODAL ACTUALITE (PLEIN ECRAN) -->
-<div id="newsModal" class="modal-overlay" onclick="closeNewsModal(event)">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <button class="modal-close-btn" onclick="closeNewsModal(event)">
+<!-- MODAL GALERIE D'ACTUALITES / EVENEMENTS -->
+<div id="galleryModal" class="modal-overlay" onclick="closeGalleryModal(event)">
+  <button class="gallery-nav-btn prev" onclick="prevGallery(event)">&#8592;</button>
+  <button class="gallery-nav-btn next" onclick="nextGallery(event)">&#8594;</button>
+
+  <div class="modal-box gallery-box" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeGalleryModal(event)">
       <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
-    <img id="modalImg" src="" alt="">
+    <img id="galleryModalImg" src="" alt="">
     <div class="modal-info">
-      <div id="modalDate" class="modal-date"></div>
-      <h3 id="modalTitle" class="modal-title"></h3>
-      <p id="modalText" class="modal-text"></p>
+      <div id="galleryModalDate" class="modal-date"></div>
+      <h3 id="galleryModalTitle" class="modal-title"></h3>
+      <p id="galleryModalText" class="modal-text"></p>
     </div>
   </div>
 </div>
@@ -1220,9 +1172,20 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
         <li><a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a></li>
         <li><span>01 BP 8051, Abidjan 01</span></li>
       </ul>
-      <div style="margin-top: 1.5rem;">
-        <img src="image_99ea9e.png" alt="Le Miri Facebook" style="max-width: 220px; width: 100%; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+      
+      <!-- WIDGET FACEBOOK DEMANDÉ -->
+      <div class="_1dro _2ph- clearfix" style="margin-top: 1.5rem;">
+        <a class="_3-8_ lfloat" href="https://www.facebook.com/116069090243128?ref=embed_page" target="_blank">
+          <img class="_1drn _-s img" src="https://scontent.xx.fbcdn.net/v/t39.30808-1/309658823_406073251685791_8689915241075780926_n.jpg?stp=cp0_dst-jpg_s50x50_tt6&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=f907e8&amp;_nc_ohc=gFbsmIXKZeQQ7kNvwFBugjW&amp;_nc_oc=Adnb3fN8vpZmDDHrU2K5W5GRvWost58YH_OKgwZUDBZnbDKIyxhxltAOgDyBJF4ftys&amp;_nc_zt=24&amp;_nc_ht=scontent.xx&amp;edm=AO9svC4EAAAA&amp;_nc_gid=7mwg2ds-bMC8wo6L3yJSOA&amp;oh=00_Afxd-U_pt0EvcVF2J2f6f-IBXRzv1uPGKx0N0DpTuP1pdA&amp;oe=69BBE2BD" height="50" width="50" alt="">
+        </a>
+        <div class="lfloat">
+          <div>
+            <a style="max-width: 200px;" class="_1drp _5lv6" title="Le Miri officiel" href="https://www.facebook.com/116069090243128?ref=embed_page" target="_blank">Le Miri officiel</a>
+          </div>
+          <div class="_1drq" style="max-width: 220px;">32 followers</div>
+        </div>
       </div>
+
     </div>
   </div>
   <div class="foot-bottom">
@@ -1245,13 +1208,8 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 
 <script>
 /* ══════════════════════════════════════
-   FONCTIONS UTILITAIRES ET DONNÉES
+   DONNEES GLOBALES (IMAGES ET EVENEMENTS)
 ══════════════════════════════════════ */
-function safeEncode(str) {
-  // Echappe la chaîne pour la passer de façon sécurisée dans onclick="" 
-  return encodeURIComponent(str || '').replace(/'/g, "%27");
-}
-
 const IMG = {
   logo: 'https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg',
   slide: 'https://static.wixstatic.com/media/568692_d2a38e66fee443b68e92efd88dfbc76b~mv2.jpg',
@@ -1273,6 +1231,20 @@ const IMG = {
   g3: 'https://static.wixstatic.com/media/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg/v1/fill/w_474,h_295,al_c,q_80,usm_0.66_1.00_0.01/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg',
   maternelle_vrai: 'https://static.wixstatic.com/media/568692_a5aca793d58d47b59307c0827299388c~mv2.jpg/v1/fill/w_976,h_672,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/maternelle.jpg'
 };
+
+const GLOBAL_EVENTS = [
+  { img: IMG.femmes, date: "Mars 2026", title: "Journée internationale des droits des femmes", text: "Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. Élèves, enseignant·e·s et personnel réunis autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.", tag: "Vie scolaire" },
+  { img: IMG.merite, date: "21 Juin 2025", title: "Journée du mérite et de l'excellence 2024-2025", text: "Célébration et récompense de nos meilleurs élèves pour cette année académique. Félicitations à tous nos lauréats !", tag: "Excellence" },
+  { img: IMG.bingerville, date: "Mai 2025", title: "Prix d'excellence — Meilleur élève de Bingerville", text: "L'élève BROU GRACE LYN (Tle A1) a reçu de la part du Maire de Bingerville le prix d'excellence de meilleur élève de Bingerville. Fierté !", tag: "Prix" },
+  { img: IMG.anglais, date: "Mai 2025", title: "Concours national d'anglais", text: "L'élève BINTUNI JOËLLE (4ème) qualifiée pour la finale du Concours national d'anglais. Tous nos vœux de succès !", tag: "Compétition" },
+  { img: IMG.salon, date: "Mai 2025", title: "Sortie au Salon du Livre 2025", text: "Les élèves du Miri ont visité le salon du livre au parc des expositions d'Abidjan. Une belle journée de découverte littéraire.", tag: "Culture" },
+  { img: IMG.art, date: "2025", title: "Tableau d'art — Club Art visuel", text: "Remarquable travail réalisé par les élèves membres du Club Art Visuel du MIRI, promotion 2024-2025.", tag: "Arts" },
+  { img: IMG.cafe, date: "2025", title: "Café littéraire avec l'écrivain Goli Bi Mathurin Irié", text: "Rencontre littéraire exceptionnelle entre les élèves du Miri et l'écrivain ivoirien Goli Bi Mathurin Irié.", tag: "Littérature" },
+  { img: IMG.recon, date: "2024", title: "Reconnaissance et mérite", text: "Cérémonie de reconnaissance et de mérite pour les élèves et personnels s'étant distingués au cours de l'année.", tag: "Excellence" },
+  { img: IMG.culture, date: "2024", title: "Journée culturelle 2024", text: "Grande fête culturelle rassemblant toute la communauté scolaire du Groupe Scolaire Le Miri autour de performances artistiques et culturelles.", tag: "Culture" },
+  { img: IMG.oissu, date: "2024", title: "OISSU 2024", text: "Participation du Groupe Scolaire Le Miri aux compétitions sportives inter-établissements OISSU 2024.", tag: "Sport" },
+  { img: IMG.jeux, date: "2024", title: "52ème édition des jeux culturels et sportifs de l'EMPT", text: "Les élèves du MIRI ont participé à la 52ème édition des jeux culturels et sportifs de l'EMPT.", tag: "Sport" }
+];
 
 /* ══════════════════════════════════════
    ROUTER & LOADER
@@ -1363,14 +1335,10 @@ function footer_cta() {
   </div>`;
 }
 
-/* Générateur de Carte Actualité Simple */
-function renderNewsCard(post) {
-  const encTitle = safeEncode(post.title);
-  const encDate = safeEncode(post.date);
-  const encText = safeEncode(post.text);
-  
+/* Générateur de Carte Actualité Simple avec l'index pour la Lightbox animée */
+function renderNewsCard(post, index) {
   return `
-    <div class="simple-news-card" onclick="openNewsModal('${post.img}', '${encTitle}', '${encDate}', '${encText}')">
+    <div class="simple-news-card" onclick="openGalleryModal(${index})">
       <div class="sn-img-wrap">
         <img src="${post.img}" alt="${post.title}" loading="lazy">
       </div>
@@ -1391,15 +1359,6 @@ function renderNewsCard(post) {
    PAGE: ACCUEIL
 ══════════════════════════════════════ */
 function pageAccueil() {
-  const newsPosts = [
-    { img: IMG.femmes, date: "Mars 2026", title: "Journée internationale des droits des femmes", text: "Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. Élèves, enseignant·e·s et personnel réunis autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.", likes: 214, comments: 45, shares: 12 },
-    { img: IMG.merite, date: "21 Juin 2025", title: "Journée du mérite et de l'excellence 2024-2025", text: "Célébration et récompense de nos meilleurs élèves pour cette année académique. Félicitations à tous nos lauréats !", likes: 342, comments: 89, shares: 34 },
-    { img: IMG.bingerville, date: "Mai 2025", title: "Prix d'excellence — Meilleur élève de Bingerville", text: "L'élève BROU GRACE LYN (Tle A1) a reçu de la part du Maire de Bingerville le prix d'excellence de meilleur élève de Bingerville. Fierté !", likes: 485, comments: 112, shares: 56 },
-    { img: IMG.anglais, date: "Mai 2025", title: "Concours national d'anglais", text: "L'élève BINTUNI JOËLLE (4ème) qualifiée pour la finale du Concours national d'anglais. Tous nos vœux de succès !", likes: 156, comments: 28, shares: 8 },
-    { img: IMG.salon, date: "Mai 2025", title: "Sortie au Salon du Livre 2025", text: "Les élèves du Miri ont visité le salon du livre au parc des expositions d'Abidjan. Une belle journée de découverte littéraire.", likes: 128, comments: 15, shares: 5 },
-    { img: IMG.art, date: "2025", title: "Tableau d'art — Club Art visuel", text: "Remarquable travail réalisé par les élèves membres du Club Art Visuel du MIRI, promotion 2024-2025.", likes: 275, comments: 54, shares: 22 }
-  ];
-
   return `
   <!-- HERO -->
   <div class="hero">
@@ -1520,7 +1479,7 @@ function pageAccueil() {
     </div>
   </div>
 
-  <!-- ACTUALITÉS LIGNE FACEBOOK -->
+  <!-- ACTUALITÉS LIGNE FACEBOOK (MODIFIEE EN CARTES INTERNES) -->
   <div class="news-section">
     <div class="page">
       <div class="flex-between">
@@ -1530,7 +1489,8 @@ function pageAccueil() {
         </div>
       </div>
       <div class="social-feed">
-        ${newsPosts.map(p => renderNewsCard(p)).join('')}
+        <!-- On affiche les 6 premiers événements sur l'accueil -->
+        ${GLOBAL_EVENTS.slice(0, 6).map((p, idx) => renderNewsCard(p, idx)).join('')}
       </div>
     </div>
   </div>
@@ -2115,26 +2075,13 @@ function pageVie(sub) {
    PAGE: BLOG / ÉVÉNEMENTS
 ══════════════════════════════════════ */
 function pageBlog() {
-  const events = [
-    {img:IMG.femmes, date:'Mars 2026', title:"Journée internationale des droits des femmes au Groupe Scolaire Le Miri", text:"Le Groupe scolaire le Miri a célébré la Journée internationale des droits des femmes avec la participation active du fondateur et du Directeur. L'événement a réuni élèves, enseignant·e·s et personnel autour de discussions sur l'égalité, l'autonomie et l'importance de l'éducation des filles.", tag:"Vie scolaire"},
-    {img:IMG.merite, date:'21 Juin 2025', title:"Journée du mérite et de l'excellence au Groupe Scolaire Le Miri", text:"La journée du mérite et de l'excellence 2024-2025 aura lieu le samedi 21 juin 2025 à partir de 8 heures au sein de l'établissement.", tag:"Excellence"},
-    {img:IMG.bingerville, date:'Mai 2025', title:"Le prix d'excellence de meilleur élève de Bingerville", text:"L'élève BROU GRACE LYN (Tle A1) a reçu de la part du Maire de Bingerville le prix d'excellence de meilleur élève de Bingerville.", tag:"Prix"},
-    {img:IMG.anglais, date:'Mai 2025', title:"Concours national d'anglais", text:"L'élève BINTUNI JOËLLE, en classe de 4ème, qualifiée pour la finale du Concours national d'anglais. Félicitations !", tag:"Compétition"},
-    {img:IMG.salon, date:'Mai 2025', title:"Sortie des élèves du Miri au Salon du Livre 2025", text:"Sortie pédagogique des élèves au salon du livre 2025 au parc des expositions d'Abidjan.", tag:"Culture"},
-    {img:IMG.art, date:'2025', title:"Tableau d'art réalisé par le Club Art visuel du MIRI, promotion 2024-2025", text:"Magnifique tableau réalisé par les élèves membres du Club Art Visuel du Groupe Scolaire Le Miri, promotion 2024-2025.", tag:"Arts"},
-    {img:IMG.cafe, date:'2025', title:"Café littéraire avec l'écrivain Goli Bi Mathurin Irié", text:"Rencontre littéraire exceptionnelle entre les élèves du Miri et l'écrivain ivoirien Goli Bi Mathurin Irié.", tag:"Littérature"},
-    {img:IMG.recon, date:'2024', title:"Reconnaissance et mérite", text:"Cérémonie de reconnaissance et de mérite pour les élèves et personnels s'étant distingués au cours de l'année.", tag:"Excellence"},
-    {img:IMG.culture, date:'2024', title:"Journée culturelle 2024", text:"Grande fête culturelle rassemblant toute la communauté scolaire du Groupe Scolaire Le Miri autour de performances artistiques et culturelles.", tag:"Culture"},
-    {img:IMG.oissu, date:'2024', title:"OISSU 2024", text:"Participation du Groupe Scolaire Le Miri aux compétitions sportives inter-établissements OISSU 2024.", tag:"Sport"},
-    {img:IMG.jeux, date:'2024', title:"52ème édition des jeux culturels et sportifs de l'EMPT", text:"Les élèves du MIRI ont participé à la 52ème édition des jeux culturels et sportifs de l'EMPT.", tag:"Sport"},
-  ];
   return `
   ${breadcrumb([{label:'Accueil',page:'accueil'},{label:'Événements'}])}
   ${pageBanner('Événements & <em>Actualités</em>', 'Toute la vie du Groupe Scolaire Le Miri en temps réel')}
   <div class="page py4">
     <div class="events-grid">
-      ${events.map(e=>`
-        <div class="ev-card" onclick="openNewsModal('${e.img}', '${safeEncode(e.title)}', '${safeEncode(e.date)}', '${safeEncode(e.text)}')">
+      ${GLOBAL_EVENTS.map((e, idx)=>`
+        <div class="ev-card" onclick="openGalleryModal(${idx})">
           <img src="${e.img}" alt="${e.title}">
           <div class="ev-card-body">
             <div class="ev-card-date">${e.date}</div>
@@ -2310,7 +2257,7 @@ function fakeSubmit(btn) {
   setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
 }
 
-/* ════ GESTION MODAL ACTUALITÉ ════ */
+/* ════ GESTION MODAL ACTUALITÉ & GALERIE ════ */
 window.openNewsModal = function(img, title, date, text) {
   document.getElementById('modalImg').src = img;
   document.getElementById('modalTitle').textContent = decodeURIComponent(title);
@@ -2321,6 +2268,45 @@ window.openNewsModal = function(img, title, date, text) {
 window.closeNewsModal = function(e) {
   if (e) e.preventDefault();
   document.getElementById('newsModal').classList.remove('open');
+};
+
+window.currentGalleryIndex = 0;
+
+window.openGalleryModal = function(index) {
+  window.currentGalleryIndex = index;
+  updateGalleryModal();
+  document.getElementById('galleryModal').classList.add('open');
+};
+
+window.closeGalleryModal = function(e) {
+  if (e) e.preventDefault();
+  document.getElementById('galleryModal').classList.remove('open');
+};
+
+window.prevGallery = function(e) {
+  if (e) e.stopPropagation();
+  window.currentGalleryIndex = (window.currentGalleryIndex - 1 + GLOBAL_EVENTS.length) % GLOBAL_EVENTS.length;
+  updateGalleryModal();
+};
+
+window.nextGallery = function(e) {
+  if (e) e.stopPropagation();
+  window.currentGalleryIndex = (window.currentGalleryIndex + 1) % GLOBAL_EVENTS.length;
+  updateGalleryModal();
+};
+
+window.updateGalleryModal = function() {
+  const box = document.querySelector('.gallery-box');
+  box.style.opacity = 0;
+  
+  setTimeout(() => {
+    const ev = GLOBAL_EVENTS[window.currentGalleryIndex];
+    document.getElementById('galleryModalImg').src = ev.img;
+    document.getElementById('galleryModalTitle').textContent = ev.title;
+    document.getElementById('galleryModalDate').textContent = ev.date;
+    document.getElementById('galleryModalText').textContent = ev.text;
+    box.style.opacity = 1;
+  }, 200);
 };
 
 /* ══════════════════════════════════════
