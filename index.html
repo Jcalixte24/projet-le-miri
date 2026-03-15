@@ -362,6 +362,78 @@ nav{
   border-color: var(--fo);
 }
 
+/* ══ PALMARÈS BANNER (NOUVEAU DESIGN) ══ */
+.palmares-banner {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  background: var(--wh);
+  border: 2px solid var(--go); /* Liseré doré */
+  border-radius: var(--rad);
+  padding: 2.5rem;
+  margin-top: 3rem;
+  box-shadow: 0 12px 32px rgba(244, 162, 97, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.palmares-banner::before {
+  content: '🏆';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 15rem;
+  opacity: 0.04;
+  transform: rotate(15deg);
+  pointer-events: none;
+}
+.palmares-content { flex: 1; position: relative; z-index: 1; }
+.palmares-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--fo);
+  margin-bottom: 0.5rem;
+}
+.palmares-score {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: var(--tr);
+  line-height: 1;
+  margin: 1rem 0;
+  letter-spacing: -0.03em;
+}
+.palmares-score small {
+  font-size: 1.2rem;
+  color: var(--md);
+  font-weight: 600;
+  vertical-align: middle;
+  letter-spacing: 0;
+}
+.palmares-img-wrap {
+  width: 45%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.palmares-img-wrap img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: var(--rad);
+  border: 1px solid var(--cr2);
+  box-shadow: 0 8px 24px rgba(26,26,26,.08);
+  background: var(--li);
+  padding: 10px;
+}
+@media(max-width: 900px) {
+  .palmares-banner { flex-direction: column; text-align: center; padding: 2rem 1.5rem; gap: 1.5rem; }
+  .palmares-img-wrap { width: 100%; }
+  .palmares-title { font-size: 1.5rem; }
+  .palmares-score { font-size: 3.5rem; }
+}
+
 /* ══ BUTTONS ══ */
 .btn{display:inline-block;padding:.75rem 1.8rem;font-family:'Open Sans', sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .2s; border-radius:2px;}
 .btn-fo{background:var(--fo);color:var(--wh);}
@@ -605,6 +677,39 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .sn-tag { font-family: 'Open Sans', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--fo); background: rgba(16,79,45,.08); padding: 0.4rem 0.8rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
 .sn-readmore { font-family: 'Open Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--tr); transition: color 0.2s; }
 .simple-news-card:hover .sn-readmore { color: var(--fo); }
+
+/* ══ MODAL D'ACTUALITÉ (AGRANDISSEMENT IMAGE & TEXTE) ══ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100000; background: rgba(11,26,13,.85);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+  padding: 2rem; backdrop-filter: blur(4px);
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal-box {
+  background: var(--wh); border-radius: var(--rad); max-width: 800px; width: 100%;
+  max-height: 90vh; overflow-y: auto; position: relative;
+  transform: translateY(20px); transition: transform 0.3s;
+  display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.3);
+}
+.modal-overlay.open .modal-box { transform: translateY(0); }
+.modal-close-btn {
+  position: absolute; top: 1rem; right: 1rem; background: var(--fo); color: var(--wh);
+  border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,.2); transition: background .2s, transform .2s;
+}
+.modal-close-btn:hover { background: var(--tr); transform: rotate(90deg); }
+.modal-box img { width: 100%; height: auto; max-height: 50vh; object-fit: contain; background: var(--cr2); }
+.modal-info { padding: 2rem; }
+.modal-date { font-family: 'Open Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--tr); text-transform: uppercase; margin-bottom: 0.8rem; }
+.modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--fo); line-height: 1.3; margin-bottom: 1rem; }
+.modal-text { font-family: 'Open Sans', sans-serif; font-size: 1rem; color: var(--dk); line-height: 1.7; }
+@media(max-width: 600px) {
+  .modal-overlay { padding: 1rem; }
+  .modal-title { font-size: 1.4rem; }
+  .modal-info { padding: 1.5rem; }
+}
 
 /* Inscription CTA */
 .cta-band{display:grid;grid-template-columns:1.1fr 1fr;border-top:3px solid var(--fo);border-bottom:3px solid var(--fo);}
@@ -1057,6 +1162,24 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
+<!-- MODAL ACTUALITE (PLEIN ECRAN) -->
+<div id="newsModal" class="modal-overlay" onclick="closeNewsModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeNewsModal(event)">
+      <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <img id="modalImg" src="" alt="">
+    <div class="modal-info">
+      <div id="modalDate" class="modal-date"></div>
+      <h3 id="modalTitle" class="modal-title"></h3>
+      <p id="modalText" class="modal-text"></p>
+    </div>
+  </div>
+</div>
+
 <!-- ROOT: pages render here -->
 <div id="root"></div>
 
@@ -1096,8 +1219,10 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
         <li><a href="tel:+22527225279 00">+225 27 22 52 79 00</a></li>
         <li><a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a></li>
         <li><span>01 BP 8051, Abidjan 01</span></li>
-        <li><a href="https://www.facebook.com/people/Le-Miri-officiel/100068493585174/?ref=embed_page" target="_blank">Facebook officiel</a></li>
       </ul>
+      <div style="margin-top: 1.5rem;">
+        <img src="image_99ea9e.png" alt="Le Miri Facebook" style="max-width: 220px; width: 100%; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+      </div>
     </div>
   </div>
   <div class="foot-bottom">
@@ -1120,8 +1245,13 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 
 <script>
 /* ══════════════════════════════════════
-   IMAGES (vraies URLs Wixstatic)
+   FONCTIONS UTILITAIRES ET DONNÉES
 ══════════════════════════════════════ */
+function safeEncode(str) {
+  // Echappe la chaîne pour la passer de façon sécurisée dans onclick="" 
+  return encodeURIComponent(str || '').replace(/'/g, "%27");
+}
+
 const IMG = {
   logo: 'https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg',
   slide: 'https://static.wixstatic.com/media/568692_d2a38e66fee443b68e92efd88dfbc76b~mv2.jpg',
@@ -1235,8 +1365,12 @@ function footer_cta() {
 
 /* Générateur de Carte Actualité Simple */
 function renderNewsCard(post) {
+  const encTitle = safeEncode(post.title);
+  const encDate = safeEncode(post.date);
+  const encText = safeEncode(post.text);
+  
   return `
-    <div class="simple-news-card" onclick="window.open('https://www.facebook.com/people/Le-Miri-officiel/100068493585174/?ref=embed_page', '_blank')">
+    <div class="simple-news-card" onclick="openNewsModal('${post.img}', '${encTitle}', '${encDate}', '${encText}')">
       <div class="sn-img-wrap">
         <img src="${post.img}" alt="${post.title}" loading="lazy">
       </div>
@@ -1246,7 +1380,7 @@ function renderNewsCard(post) {
         <p class="sn-text">${post.text}</p>
         <div class="sn-footer">
           <span class="sn-tag">${post.tag || 'Actualité'}</span>
-          <span class="sn-readmore">Lire sur Facebook →</span>
+          <span class="sn-readmore">Agrandir ⤢</span>
         </div>
       </div>
     </div>
@@ -1394,7 +1528,6 @@ function pageAccueil() {
           <div class="s-tag">L'actualité en direct</div>
           <h2 class="s-h2">Ce qui se passe <em>au Miri</em></h2>
         </div>
-        <button class="btn btn-outline" onclick="window.open('https://www.facebook.com/people/Le-Miri-officiel/100068493585174/?ref=embed_page', '_blank')">Rejoindre la Page Facebook →</button>
       </div>
       <div class="social-feed">
         ${newsPosts.map(p => renderNewsCard(p)).join('')}
@@ -1653,11 +1786,20 @@ function pageGroupe(sub) {
         </tbody>
       </table>
       
-          <div class="card"><div class="card-body">
-          <h3 class="s-h3 mb2"> Palmarès CEPE 2025</h3>
-          <p class="text-md">Taux de réussite de <strong>100%</strong> à la session officielle du CEPE 2025.</p>
-          <img src="${IMG.res2}" alt="Résultats BAC" style="width:100%;height:auto;max-height:280px;object-fit:contain;margin-top:1rem;border-radius:4px;background:var(--wh);padding:10px;border:1px solid var(--cr2);">
-        </div></div>
+      <!-- PALMARES CEPE -->
+      <div class="palmares-banner">
+        <div class="palmares-content">
+          <div class="s-tag">Excellence Académique</div>
+          <h3 class="palmares-title">Palmarès CEPE 2025</h3>
+          <div class="palmares-score">100% <small>de réussite</small></div>
+          <p class="text-md">Félicitations à tous nos élèves pour ce taux de réussite exceptionnel à la session officielle du CEPE 2025. Le fruit d'un travail rigoureux et d'un encadrement de qualité !</p>
+        </div>
+        <div class="palmares-img-wrap">
+          <img src="${IMG.res2}" alt="Résultats CEPE">
+        </div>
+      </div>
+      <!-- FIN PALMARES -->
+
     </div>` : ''}
 
     ${activeSub==='secondaire' ? `
@@ -1677,13 +1819,21 @@ function pageGroupe(sub) {
         </div>
         <img src="${IMG.lycee_vrai}" alt="Secondaire Le Miri">
       </div>
-      <div class="g2 mt3">
-        <div class="card"><div class="card-body">
-          <h3 class="s-h3 mb2"> Palmarès BEPC 2025</h3>
-          <p class="text-md">Taux de réussite de <strong>82.19%</strong> à la session officielle du BEPC 2025.</p>
-          <img src="${IMG.res1}" alt="Résultats BEPC" style="width:100%;height:auto;max-height:280px;object-fit:contain;margin-top:1rem;border-radius:4px;background:var(--wh);padding:10px;border:1px solid var(--cr2);">
-        </div></div>
+      
+      <!-- PALMARES BEPC -->
+      <div class="palmares-banner">
+        <div class="palmares-content">
+          <div class="s-tag">Excellence Académique</div>
+          <h3 class="palmares-title">Palmarès BEPC 2025</h3>
+          <div class="palmares-score">82.19% <small>de réussite</small></div>
+          <p class="text-md">Une belle performance à la session officielle du BEPC 2025. Félicitations à nos candidats et au corps enseignant pour ces résultats honorables qui font la fierté de notre établissement.</p>
+        </div>
+        <div class="palmares-img-wrap">
+          <img src="${IMG.res1}" alt="Résultats BEPC">
+        </div>
       </div>
+      <!-- FIN PALMARES -->
+
     </div>` : ''}
   </div>
   ${footer_cta()}`;
@@ -1944,12 +2094,16 @@ function pageVie(sub) {
             <img src="${IMG.cafe}" alt="Café littéraire">
             <img src="${IMG.anglais}" alt="Concours anglais">
             <img src="${IMG.salon}" alt="Salon du livre">
-            <img src="${IMG.res1}" alt="Résultats 2024">
-            <img src="${IMG.res2}" alt="Palmarès">
+            <img src="${IMG.bingerville}" alt="Prix Bingerville">
             <img src="${IMG.recon}" alt="Reconnaissance">
-          </div>
-          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/galerie-videos-photos','_blank')">
-            <span>🖼️ Voir la galerie complète sur le site officiel</span><span class="arrow">→</span>
+            <img src="${IMG.maternelle_vrai}" alt="Maternelle">
+            <img src="${IMG.primaire_vrai}" alt="Primaire">
+            <img src="${IMG.lycee_vrai}" alt="Lycée">
+            <img src="${IMG.g1}" alt="Activités">
+            <img src="${IMG.g2}" alt="Activités">
+            <img src="${IMG.g3}" alt="Activités">
+            <img src="${IMG.res1}" alt="Résultats">
+            <img src="${IMG.res2}" alt="Palmarès">
           </div>` : ''}
       </div>
     </div>
@@ -1980,7 +2134,7 @@ function pageBlog() {
   <div class="page py4">
     <div class="events-grid">
       ${events.map(e=>`
-        <div class="ev-card">
+        <div class="ev-card" onclick="openNewsModal('${e.img}', '${safeEncode(e.title)}', '${safeEncode(e.date)}', '${safeEncode(e.text)}')">
           <img src="${e.img}" alt="${e.title}">
           <div class="ev-card-body">
             <div class="ev-card-date">${e.date}</div>
@@ -2012,7 +2166,6 @@ function pageContact() {
           <div class="ci-row"><span class="ci-key">Email</span><span class="ci-val"><a href="mailto:lemiri2015ac@gmail.com">lemiri2015ac@gmail.com</a></span></div>
           <div class="ci-row"><span class="ci-key">Code étab.</span><span class="ci-val"><strong>041604</strong></span></div>
           <div class="ci-row"><span class="ci-key">Horaires</span><span class="ci-val">Lun–Ven : 7h30 – 17h30<br>Samedi : 8h00 – 13h00</span></div>
-          <div class="ci-row"><span class="ci-key">Facebook</span><span class="ci-val"><a href="https://www.facebook.com/people/Le-Miri-officiel/100068493585174/?ref=embed_page" target="_blank">Page officielle →</a></span></div>
         </div>
         
         <!-- INTEGRATION DIRECTE GOOGLE MAPS -->
@@ -2156,6 +2309,19 @@ function fakeSubmit(btn) {
   btn.style.background = 'var(--fo)';
   setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
 }
+
+/* ════ GESTION MODAL ACTUALITÉ ════ */
+window.openNewsModal = function(img, title, date, text) {
+  document.getElementById('modalImg').src = img;
+  document.getElementById('modalTitle').textContent = decodeURIComponent(title);
+  document.getElementById('modalDate').textContent = decodeURIComponent(date);
+  document.getElementById('modalText').textContent = decodeURIComponent(text);
+  document.getElementById('newsModal').classList.add('open');
+};
+window.closeNewsModal = function(e) {
+  if (e) e.preventDefault();
+  document.getElementById('newsModal').classList.remove('open');
+};
 
 /* ══════════════════════════════════════
    INIT
