@@ -668,7 +668,7 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .cycle-panel{display:none;}
 .cycle-panel.active{display:block;}
 .cycle-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center;margin-bottom:4rem;}
-.cycle-hero img{width:100%;height:350px;object-fit:cover;border-radius:var(--rad); box-shadow:0 8px 24px rgba(26,26,26,.08);}
+.cycle-hero img{width:100%;height:auto;max-height:450px;object-fit:contain;border-radius:var(--rad); box-shadow:0 8px 24px rgba(26,26,26,.08); background:var(--wh); padding: 12px; border: 1px solid var(--cr2);}
 .levels-table{width:100%;border-collapse:collapse;margin-top:2rem; background:var(--wh); border-radius:var(--rad); overflow:hidden; box-shadow:0 4px 12px rgba(26,26,26,.04);}
 .levels-table th{background:var(--fo);color:var(--wh);padding:1.2rem 1.5rem;text-align:left;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
 .levels-table td{padding:1.2rem 1.5rem;border-bottom:1px solid var(--cr2);font-size:1rem;color:var(--dk); font-weight:500;}
@@ -1592,9 +1592,9 @@ function pageGroupe(sub) {
   ${pageBanner('Groupe Scolaire', 'Du préscolaire au Baccalauréat — Un parcours d\'excellence complet')}
   <div class="page">
     <div class="cycle-tabs">
-      <button class="cycle-tab ${activeSub==='maternelle'?'active':''}" onclick="go('groupe','maternelle')">🌱 Maternelle</button>
-      <button class="cycle-tab ${activeSub==='primaire'?'active':''}" onclick="go('groupe','primaire')">📚 Primaire</button>
-      <button class="cycle-tab ${activeSub==='secondaire'?'active':''}" onclick="go('groupe','secondaire')">🎓 Secondaire & Lycée</button>
+      <button class="cycle-tab ${activeSub==='maternelle'?'active':''}" onclick="go('groupe','maternelle')"> Maternelle</button>
+      <button class="cycle-tab ${activeSub==='primaire'?'active':''}" onclick="go('groupe','primaire')"> Primaire</button>
+      <button class="cycle-tab ${activeSub==='secondaire'?'active':''}" onclick="go('groupe','secondaire')"> Secondaire & Lycée</button>
     </div>
 
     ${activeSub==='maternelle' ? `
@@ -1668,18 +1668,18 @@ function pageGroupe(sub) {
             <li>Concours nationaux : anglais, mathématiques, sciences</li>
           </ul>
         </div>
-        <img src="${IMG.recon}" alt="Secondaire Le Miri">
+        <img src="${IMG.g3}" alt="Secondaire Le Miri">
       </div>
       <div class="g2 mt3">
         <div class="card"><div class="card-body">
           <h3 class="s-h3 mb2">🏅 Palmarès BEPC 2024</h3>
           <p class="text-md">Taux de réussite de <strong>92%</strong> à la session officielle du BEPC 2024.</p>
-          <img src="${IMG.res1}" alt="Résultats BEPC" style="width:100%;height:180px;object-fit:cover;margin-top:1rem;border-radius:4px;">
+          <img src="${IMG.res1}" alt="Résultats BEPC" style="width:100%;height:auto;max-height:280px;object-fit:contain;margin-top:1rem;border-radius:4px;background:var(--wh);padding:10px;border:1px solid var(--cr2);">
         </div></div>
         <div class="card"><div class="card-body">
           <h3 class="s-h3 mb2">🎓 Palmarès BAC 2024</h3>
           <p class="text-md">Taux de réussite de <strong>95%</strong> à la session officielle du Baccalauréat 2024.</p>
-          <img src="${IMG.res2}" alt="Résultats BAC" style="width:100%;height:180px;object-fit:cover;margin-top:1rem;border-radius:4px;">
+          <img src="${IMG.res2}" alt="Résultats BAC" style="width:100%;height:auto;max-height:280px;object-fit:contain;margin-top:1rem;border-radius:4px;background:var(--wh);padding:10px;border:1px solid var(--cr2);">
         </div></div>
       </div>
     </div>` : ''}
