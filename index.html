@@ -390,9 +390,9 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .foot-links{list-style:none;display:flex;flex-direction:column;gap:.7rem;}
 .foot-links a,.foot-links button{font-size:.85rem;color:rgba(253,252,248,.6);text-decoration:none;cursor:pointer;background:none;border:none;font-family:'Open Sans', sans-serif;text-align:left;transition:color .2s; font-weight:500;}
 .foot-links a:hover,.foot-links button:hover{color:var(--go2);}
-.foot-bottom{max-width:1280px;margin:0 auto;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.75rem;}
+.foot-bottom{max-width:1280px;margin:0 auto;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.72rem;}
 
-/* Footer Logos Partenaires Officiels (Vraies images extraites) */
+/* Footer Logos Partenaires Officiels */
 .footer-partners {
   background: var(--dk);
   padding: 3rem 2rem;
@@ -1135,12 +1135,13 @@ const IMG = {
   oissu: 'https://static.wixstatic.com/media/568692_dc37e82b251f4539a2197bfce1bb7473~mv2.jpg',
   jeux: 'https://static.wixstatic.com/media/568692_cf5e087dc01145bd9f1d4e17833baaf2~mv2.jpg',
   culture: 'https://static.wixstatic.com/media/568692_1b54c000148f481cb510501377260cb5~mv2.jpg',
-  res1: 'https://static.wixstatic.com/media/568692_a65331c5584f43638b715742c86f8512~mv2.jpeg',
-  res2: 'https://static.wixstatic.com/media/568692_ec3af11afc7a40a488d0ff31d17b873e~mv2.jpeg',
+  res1: 'https://static.wixstatic.com/media/568692_ec3af11afc7a40a488d0ff31d17b873e~mv2.jpeg',
+  res2: 'https://static.wixstatic.com/media/568692_a65331c5584f43638b715742c86f8512~mv2.jpeg',
   recon: 'https://static.wixstatic.com/media/568692_985f0dc45b2a4f4eb4c53032c4101f70~mv2.jpeg',
-  g1: 'https://static.wixstatic.com/media/568692_dc618a84ed8344a1b57b50feffab7725~mv2.jpg',
+  g1: 'https://static.wixstatic.com/media/568692_f0fe17f8ed5254430b2bc224fced84694~mv2.png/v1/fit/w_83,h_65,q_90,enc_avif,quality_auto/568692_f0fe17f8ed5254430b2bc224fced84694~mv2.png',
   g2: 'https://static.wixstatic.com/media/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg/v1/fill/w_600,h_488,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg',
   g3: 'https://static.wixstatic.com/media/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg/v1/fill/w_474,h_295,al_c,q_80,usm_0.66_1.00_0.01/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg',
+  maternelle_vrai: 'https://static.wixstatic.com/media/568692_a5aca793d58d47b59307c0827299388c~mv2.jpg/v1/fill/w_976,h_672,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/maternelle.jpg'
 };
 
 /* ══════════════════════════════════════
@@ -1559,7 +1560,7 @@ function pageAdmin(sub) {
       <h2>Liste des Élèves & Effectifs</h2>
       <p>Aperçu des effectifs et statistiques des élèves inscrits au Groupe Scolaire Le Miri pour l'année académique en cours.</p>
       <div class="mt2">
-        <img fetchpriority="high" sizes="(max-width: 872px) 100vw, 872px" srcset="https://static.wixstatic.com/media/568692_5c95e6c9fa284d90a13fc87f8a0c8ea7~mv2.jpg/v1/fill/w_938,h_519,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/EFF.jpg 1x, https://static.wixstatic.com/media/568692_5c95e6c9fa284d90a13fc87f8a0c8ea7~mv2.jpg/v1/fill/w_1875,h_1038,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/EFF.jpg 2x" src="https://static.wixstatic.com/media/568692_5c95e6c9fa284d90a13fc87f8a0c8ea7~mv2.jpg/v1/fill/w_938,h_519,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/EFF.jpg" alt="Tableau des effectifs" style="width: 100%; height: auto; object-fit: contain; border-radius: var(--rad); box-shadow: 0 4px 16px rgba(16,79,45,.08); border: 1px solid var(--cr2);">
+        <img fetchpriority="high" sizes="(max-width: 872px) 100vw, 872px" src="https://static.wixstatic.com/media/568692_5c95e6c9fa284d90a13fc87f8a0c8ea7~mv2.jpg/v1/fill/w_938,h_519,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/EFF.jpg" alt="Tableau des effectifs" style="width: 100%; height: auto; object-fit: contain; border-radius: var(--rad); box-shadow: 0 4px 16px rgba(16,79,45,.08); border: 1px solid var(--cr2);">
       </div>`,
   };
 
@@ -1612,7 +1613,7 @@ function pageGroupe(sub) {
             <li>Cantine et garderie disponibles</li>
           </ul>
         </div>
-        <img src="${IMG.g1}" alt="Maternelle Le Miri">
+        <img src="${IMG.maternelle_vrai}" alt="Maternelle Le Miri">
       </div>
       <table class="levels-table">
         <thead><tr><th>Classe</th><th>Âge indicatif</th><th>Objectifs principaux</th></tr></thead>
@@ -1639,7 +1640,7 @@ function pageGroupe(sub) {
             <li>Activités sportives et culturelles intégrées</li>
           </ul>
         </div>
-        <img src="${IMG.g2}" alt="Primaire Le Miri">
+        <img src="${IMG.primaire_vrai}" alt="Primaire Le Miri">
       </div>
       <table class="levels-table">
         <thead><tr><th>Classe</th><th>Niveau</th><th>Examen</th></tr></thead>
@@ -1674,7 +1675,7 @@ function pageGroupe(sub) {
             <li>Concours nationaux : anglais, mathématiques, sciences</li>
           </ul>
         </div>
-        <img src="${IMG.g3}" alt="Secondaire Le Miri">
+        <img src="${IMG.lycee_vrai}" alt="Secondaire Le Miri">
       </div>
       <div class="g2 mt3">
         <div class="card"><div class="card-body">
@@ -1682,7 +1683,6 @@ function pageGroupe(sub) {
           <p class="text-md">Taux de réussite de <strong>82.19%</strong> à la session officielle du BEPC 2025.</p>
           <img src="${IMG.res1}" alt="Résultats BEPC" style="width:100%;height:auto;max-height:280px;object-fit:contain;margin-top:1rem;border-radius:4px;background:var(--wh);padding:10px;border:1px solid var(--cr2);">
         </div></div>
-        
       </div>
     </div>` : ''}
   </div>
@@ -1798,7 +1798,7 @@ function pageParents(sub) {
           <h2>Notes d'Information — Parents &amp; Élèves</h2>
           <p>Retrouvez ici toutes les notes d'information publiées par la direction à destination des parents et des élèves pour l'année 2025-2026.</p>
           <div class="note-list mt2">
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_0f839d3a037144fe861b9632def30a37.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1806,8 +1806,9 @@ function pageParents(sub) {
                   <div class="note-title">Ouverture de la piscine — Note d'information</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_0fb0c1c8a8e84d9d8b9ea9e35cc7ac8a.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1815,8 +1816,9 @@ function pageParents(sub) {
                   <div class="note-title">Nouvelle tenue du lundi</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_7a042b67c8bd44de8e6f853f6b756636.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1824,8 +1826,9 @@ function pageParents(sub) {
                   <div class="note-title">Note d'information — Réunion parents</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_b0f616ff8cd44e2685f10d2cfe9c8282.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1833,8 +1836,9 @@ function pageParents(sub) {
                   <div class="note-title">Note d'information — Retrait des bulletins</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_f83ca99195d44e73a18523ea48bdeb2a.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1842,8 +1846,9 @@ function pageParents(sub) {
                   <div class="note-title">Note d'information — Kermesse</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
-            <div class="note-item" style="cursor:default; transform:none; box-shadow:none;">
+            <div class="note-item" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_7410ccc7c4fa4c45ac755267f1ec7571.pdf','_blank')">
               <div class="note-item-left">
                 <div class="note-dot"></div>
                 <div>
@@ -1851,13 +1856,16 @@ function pageParents(sub) {
                   <div class="note-title">Compte rendu de réunion</div>
                 </div>
               </div>
+              <div class="note-arr">→</div>
             </div>
           </div>` : ''}
         ${activeSub==='horaires' ? `
           <h2>Horaires des Cours</h2>
-          <p>Les emplois du temps par classe sont disponibles en ligne. Les horaires peuvent évoluer en début d'année scolaire. Consultez régulièrement cette rubrique pour les mises à jour.</p>
-          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/horaires-des-cours','_blank')">
-            <span> Accéder aux horaires des cours</span><span class="arrow">→</span>
+          <p>Les emplois du temps par classe pour l'année académique 2025-2026. Consultez régulièrement cette rubrique pour les mises à jour.</p>
+          <div class="mt2">
+            <img src="https://static.wixstatic.com/media/568692_ec9b0fbdfae54281af849d06ec158f78~mv2.jpg/v1/crop/x_0,y_0,w_352,h_509/fill/w_422,h_611,al_c,lg_1,q_80,enc_avif,quality_auto/horaires_JPG.jpg" 
+                 alt="Horaires des cours" 
+                 style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; border-radius: var(--rad); box-shadow: 0 4px 16px rgba(16,79,45,.08); border: 1px solid var(--cr2);">
           </div>` : ''}
         ${activeSub==='examens' ? `
           <h2>Calendrier des Examens Blancs</h2>
@@ -1865,21 +1873,18 @@ function pageParents(sub) {
           <div class="note-item mt2" onclick="window.open('https://www.groupescolairelemiri.org/_files/ugd/568692_99a49e505cc44b55aa509c1eff1a731e.pdf','_blank')">
             <div class="note-item-left"><div class="note-dot"></div><div class="note-title">◊ Calendrier des Examens blancs 2025-2026</div></div>
             <div class="note-arr">→</div>
-          </div>
-          <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/examens-blancs-interne','_blank')">
-            <span>📅 Calendrier complet des examens blancs internes</span><span class="arrow">→</span>
           </div>` : ''}
         ${activeSub==='notes' ? `
           <h2>Consultation des Notes</h2>
           <p>Les parents et élèves peuvent consulter les notes et résultats en ligne via le portail sécurisé de l'établissement. Une connexion avec vos identifiants personnels est requise.</p>
           <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/consultations-notes','_blank')">
-            <span>📊 Accéder à la consultation des notes</span><span class="arrow">→</span>
+            <span> Accéder à la consultation des notes</span><span class="arrow">→</span>
           </div>` : ''}
         ${activeSub==='evaluation' ? `
           <h2>Évaluation des Professeurs</h2>
           <p>Dans le cadre de notre démarche qualité, les parents d'élèves sont invités à évaluer les professeurs en fin de chaque trimestre. Vos retours nous permettent d'améliorer continuellement la qualité de l'enseignement.</p>
           <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/evaluation-prof','_blank')">
-            <span>⭐ Accéder au formulaire d'évaluation</span><span class="arrow">→</span>
+            <span> Accéder au formulaire d'évaluation</span><span class="arrow">→</span>
           </div>` : ''}
       </div>
     </div>
@@ -1919,42 +1924,12 @@ function pageVie(sub) {
             <li>Promotion du vivre-ensemble et de la citoyenneté</li>
           </ul>
           <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/conseil-scolaire','_blank')">
-            <span>🏛️ En savoir plus sur le Conseil Scolaire</span><span class="arrow">→</span>
+            <span> En savoir plus sur le Conseil Scolaire</span><span class="arrow">→</span>
           </div>` : ''}
         ${activeSub==='clubs' ? `
           <h2>Les Clubs du MIRI</h2>
-          <p>Le Groupe Scolaire Le Miri propose une vie extrascolaire riche à travers ses différents clubs. Ces activités permettent aux élèves de développer des compétences variées et de s'épanouir au-delà des cours.</p>
-          <div class="clubs-grid mt2" style="grid-template-columns:1fr 1fr;">
-            <div class="club-card">
-              <div class="club-icon">🎨</div>
-              <div class="club-name">Club Art Visuel</div>
-              <div class="club-desc">Dessin, peinture, création plastique. Les élèves ont produit de remarquables tableaux exposés lors de la journée culturelle 2024-2025.</div>
-            </div>
-            <div class="club-card">
-              <div class="club-icon">📖</div>
-              <div class="club-name">Café Littéraire</div>
-              <div class="club-desc">Rencontres avec des auteurs ivoiriens, lectures, débats littéraires. En 2025, rencontre avec l'écrivain Goli Bi Mathurin Irié.</div>
-            </div>
-            <div class="club-card">
-              <div class="club-icon">🗣️</div>
-              <div class="club-name">Club Anglais</div>
-              <div class="club-desc">Pratique de l'anglais oral et écrit. BINTUNI JOËLLE (4ème) qualifiée à la finale du Concours national d'anglais 2025.</div>
-            </div>
-            <div class="club-card">
-              <div class="club-icon">⚽</div>
-              <div class="club-name">Sports & OISSU</div>
-              <div class="club-desc">Participation aux jeux scolaires et sportifs inter-établissements. Participation à l'OISSU 2024 et aux Jeux EMPT (52ème édition).</div>
-            </div>
-            <div class="club-card">
-              <div class="club-icon">🏊</div>
-              <div class="club-name">Club Natation</div>
-              <div class="club-desc">Accès à la piscine de l'établissement, cours de natation encadrés par des moniteurs qualifiés. Ouverte en 2025-2026.</div>
-            </div>
-            <div class="club-card">
-              <div class="club-icon">🎭</div>
-              <div class="club-name">Culture & Théâtre</div>
-              <div class="club-desc">Expression artistique, journées culturelles, préparation de spectacles de fin d'année pour toute la communauté.</div>
-            </div>
+          <div class="mt2">
+            <img fetchpriority="high" src="https://static.wixstatic.com/media/568692_9739a111bf9543dd94d6102587b4fc52~mv2.jpg/v1/fill/w_2030,h_1450,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/LISTE%20DES%20CLUBS%202025%20-%202026.jpg" alt="Liste des clubs" style="width: 100%; height: auto; object-fit: contain; border-radius: var(--rad); box-shadow: 0 4px 16px rgba(16,79,45,.08); border: 1px solid var(--cr2);">
           </div>` : ''}
         ${activeSub==='galerie' ? `
           <h2>Galerie Photos & Vidéos</h2>
@@ -1974,7 +1949,7 @@ function pageVie(sub) {
             <img src="${IMG.recon}" alt="Reconnaissance">
           </div>
           <div class="info-link-card mt2" onclick="window.open('https://www.groupescolairelemiri.org/galerie-videos-photos','_blank')">
-            <span> Voir la galerie complète sur le site officiel</span><span class="arrow">→</span>
+            <span>🖼️ Voir la galerie complète sur le site officiel</span><span class="arrow">→</span>
           </div>` : ''}
       </div>
     </div>
