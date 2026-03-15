@@ -362,85 +362,6 @@ nav{
   border-color: var(--fo);
 }
 
-/* ══ PALMARÈS BANNER (DESIGN AMELIORE) ══ */
-.palmares-banner {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  background: var(--wh);
-  border: 2px solid var(--go);
-  border-radius: var(--rad);
-  padding: 2.5rem;
-  margin-top: 3rem;
-  box-shadow: 0 12px 32px rgba(244, 162, 97, 0.15);
-  position: relative;
-  overflow: hidden;
-}
-.palmares-banner::before {
-  content: '🏆';
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  font-size: 15rem;
-  opacity: 0.04;
-  transform: rotate(15deg);
-  pointer-events: none;
-}
-.palmares-content { flex: 1; position: relative; z-index: 1; }
-.palmares-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--fo);
-  margin-bottom: 0.5rem;
-}
-.palmares-score {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 4.5rem;
-  font-weight: 800;
-  color: var(--tr);
-  line-height: 1;
-  margin: 1rem 0;
-  letter-spacing: -0.03em;
-}
-.palmares-score small {
-  font-size: 1.2rem;
-  color: var(--md);
-  font-weight: 600;
-  vertical-align: middle;
-  letter-spacing: 0;
-}
-/* Style "Photo / Certificat" pour les images de palmarès */
-.palmares-img-wrap {
-  width: 25%;
-  min-width: 180px;
-  max-width: 220px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.palmares-img-wrap:hover {
-  transform: scale(1.05) rotate(2deg);
-}
-.palmares-img-wrap img {
-  width: 100%;
-  height: auto;
-  max-height: 250px;
-  object-fit: contain;
-  border-radius: 4px;
-  border: 6px solid var(--wh);
-  box-shadow: 0 10px 24px rgba(26,26,26,.15);
-  background: var(--wh);
-}
-@media(max-width: 900px) {
-  .palmares-banner { flex-direction: column-reverse; text-align: center; padding: 2rem 1.5rem; gap: 1.5rem; }
-  .palmares-title { font-size: 1.5rem; }
-  .palmares-score { font-size: 3.5rem; }
-  .palmares-img-wrap { width: 50%; max-width: 250px; margin: 0 auto; }
-}
-
 /* ══ BUTTONS ══ */
 .btn{display:inline-block;padding:.75rem 1.8rem;font-family:'Open Sans', sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .2s; border-radius:2px;}
 .btn-fo{background:var(--fo);color:var(--wh);}
@@ -694,7 +615,7 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .sn-readmore { font-family: 'Open Sans', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--tr); transition: color 0.2s; }
 .simple-news-card:hover .sn-readmore { color: var(--fo); }
 
-/* ══ MODALS (ACTUALITES, PHOTOS, PALMARES) ══ */
+/* ══ MODAL D'ACTUALITÉ / GALERIE (AGRANDISSEMENT IMAGE & TEXTE) ══ */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 100000; background: rgba(11,26,13,.9);
   display: flex; align-items: center; justify-content: center;
@@ -722,21 +643,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--fo); line-height: 1.3; margin-bottom: 1rem; }
 .modal-text { font-family: 'Open Sans', sans-serif; font-size: 1rem; color: var(--dk); line-height: 1.7; }
 
-/* Photo Box pour la galerie d'images et les palmares */
-.photo-box {
-  background: transparent; box-shadow: none; display: flex; align-items: center; justify-content: center;
-  max-width: 90vw; padding: 2rem 0; overflow: visible;
-}
-.photo-box img {
-  max-height: 80vh; max-width: 100%; object-fit: contain; border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: var(--wh); transition: opacity 0.2s ease;
-}
-.photo-caption {
-  position: absolute; bottom: -2rem; left: 0; right: 0;
-  color: var(--wh); text-align: center; font-size: 1.2rem;
-  font-family: 'Montserrat', sans-serif; font-weight: 600; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-}
-
 /* Flèches de navigation Modal Galerie */
 .gallery-nav-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -757,7 +663,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   .gallery-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
   .gallery-nav-btn.prev { left: 0.5rem; }
   .gallery-nav-btn.next { right: 0.5rem; }
-  .photo-caption { font-size: 1rem; bottom: -1.5rem; }
 }
 
 /* Inscription CTA */
@@ -854,9 +759,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
 .club-icon{font-size:3rem;margin-bottom:1.5rem;}
 .club-name{font-family:'Montserrat', sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:.8rem; color:var(--fo);}
 .club-desc{font-size:.95rem;color:var(--md);line-height:1.6;}
-.gallery-masonry{columns:3;gap:1.5rem;margin-top:3rem;}
-.gallery-masonry img{width:100%;margin-bottom:1.5rem;display:block;object-fit:cover;border-radius:var(--rad); transition:transform .4s ease;cursor:pointer;}
-.gallery-masonry img:hover{transform:scale(1.03); box-shadow:0 12px 24px rgba(26,26,26,.15);}
 
 /* ══ CONTACTS PAGE ══ */
 .contacts-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;padding:5rem 0;}
@@ -916,7 +818,6 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   .clubs-grid{grid-template-columns:1fr 1fr;}
   .events-grid{grid-template-columns:1fr 1fr;}
   .contacts-layout{grid-template-columns:1fr;}
-  .gallery-masonry{columns:2;}
   .g2{grid-template-columns:1fr;}
   .g3{grid-template-columns:1fr 1fr;}
   .g4{grid-template-columns:1fr 1fr;}
@@ -1210,38 +1111,24 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- MODAL ACTUALITE (PLEIN ECRAN AVEC TEXTE) -->
-<div id="newsModal" class="modal-overlay" onclick="closeNewsModal(event)">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <button class="modal-close-btn" onclick="closeNewsModal(event)">
+<!-- MODAL GALERIE D'ACTUALITES / EVENEMENTS -->
+<div id="galleryModal" class="modal-overlay" onclick="closeGalleryModal(event)">
+  <button class="gallery-nav-btn prev" onclick="prevGallery(event)">&#8592;</button>
+  <button class="gallery-nav-btn next" onclick="nextGallery(event)">&#8594;</button>
+
+  <div class="modal-box gallery-box" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeGalleryModal(event)">
       <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
-    <img id="modalImg" src="" alt="">
+    <img id="galleryModalImg" src="" alt="">
     <div class="modal-info">
-      <div id="modalDate" class="modal-date"></div>
-      <h3 id="modalTitle" class="modal-title"></h3>
-      <p id="modalText" class="modal-text"></p>
+      <div id="galleryModalDate" class="modal-date"></div>
+      <h3 id="galleryModalTitle" class="modal-title"></h3>
+      <p id="galleryModalText" class="modal-text"></p>
     </div>
-  </div>
-</div>
-
-<!-- MODAL PHOTO SIMPLE (POUR LA GALERIE & PALMARES) -->
-<div id="photoModal" class="modal-overlay" onclick="closePhotoModal(event)">
-  <button class="gallery-nav-btn prev" onclick="prevPhoto(event)">&#8592;</button>
-  <button class="gallery-nav-btn next" onclick="nextPhoto(event)">&#8594;</button>
-
-  <div class="modal-box photo-box" onclick="event.stopPropagation()">
-    <button class="modal-close-btn" onclick="closePhotoModal(event)" style="top: -2rem; right: 0;">
-      <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-    <img id="photoModalImg" src="" alt="">
-    <div id="photoModalCaption" class="photo-caption"></div>
   </div>
 </div>
 
@@ -1287,15 +1174,15 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
       </ul>
       
       <!-- WIDGET FACEBOOK DEMANDÉ -->
-      <div class="_1dro _2ph- clearfix" style="margin-top: 1.5rem; display: flex; align-items: center; gap: 12px; background: var(--wh); padding: 12px; border-radius: var(--rad); text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 250px;">
-        <a class="_3-8_ lfloat" href="https://www.facebook.com/people/Le-Miri-officiel/100068493585174/" target="_blank">
-          <img class="_1drn _-s img" src="https://scontent.xx.fbcdn.net/v/t39.30808-1/309658823_406073251685791_8689915241075780926_n.jpg?stp=cp0_dst-jpg_s50x50_tt6&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=f907e8&amp;_nc_ohc=gFbsmIXKZeQQ7kNvwFBugjW&amp;_nc_oc=Adnb3fN8vpZmDDHrU2K5W5GRvWost58YH_OKgwZUDBZnbDKIyxhxltAOgDyBJF4ftys&amp;_nc_zt=24&amp;_nc_ht=scontent.xx&amp;edm=AO9svC4EAAAA&amp;_nc_gid=7mwg2ds-bMC8wo6L3yJSOA&amp;oh=00_Afxd-U_pt0EvcVF2J2f6f-IBXRzv1uPGKx0N0DpTuP1pdA&amp;oe=69BBE2BD" height="50" width="50" alt="" style="border-radius: 50%; border: 1px solid var(--cr3);">
+      <div class="_1dro _2ph- clearfix" style="margin-top: 1.5rem;">
+        <a class="_3-8_ lfloat" href="https://www.facebook.com/116069090243128?ref=embed_page" target="_blank">
+          <img class="_1drn _-s img" src="https://scontent.xx.fbcdn.net/v/t39.30808-1/309658823_406073251685791_8689915241075780926_n.jpg?stp=cp0_dst-jpg_s50x50_tt6&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=f907e8&amp;_nc_ohc=gFbsmIXKZeQQ7kNvwFBugjW&amp;_nc_oc=Adnb3fN8vpZmDDHrU2K5W5GRvWost58YH_OKgwZUDBZnbDKIyxhxltAOgDyBJF4ftys&amp;_nc_zt=24&amp;_nc_ht=scontent.xx&amp;edm=AO9svC4EAAAA&amp;_nc_gid=7mwg2ds-bMC8wo6L3yJSOA&amp;oh=00_Afxd-U_pt0EvcVF2J2f6f-IBXRzv1uPGKx0N0DpTuP1pdA&amp;oe=69BBE2BD" height="50" width="50" alt="">
         </a>
-        <div class="lfloat" style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="lfloat">
           <div>
-            <a style="max-width: 200px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; color: #1877F2; text-decoration: none;" title="Le Miri officiel" href="https://www.facebook.com/people/Le-Miri-officiel/100068493585174/" target="_blank">Le Miri officiel</a>
+            <a style="max-width: 200px;" class="_1drp _5lv6" title="Le Miri officiel" href="https://www.facebook.com/116069090243128?ref=embed_page" target="_blank">Le Miri officiel</a>
           </div>
-          <div class="_1drq" style="max-width: 220px; font-size: 0.85rem; color: var(--md); font-weight: 500;">32 followers</div>
+          <div class="_1drq" style="max-width: 220px;">32 followers</div>
         </div>
       </div>
 
@@ -1306,25 +1193,23 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
     <span style="color:rgba(253,252,248,.3)">INFOS EDUCATION</span>
   </div>
   
-  <!-- LOGOS PARTENAIRES OFFICIELS -->
+  <!-- LOGOS PARTENAIRES OFFICIELS (EXTRAITS DE VOTRE WIX) -->
   <div class="footer-partners">
     <span>Partenaires & Institutions Officielles</span>
     <div class="fp-logos">
-      <!-- Image groupée partagée par l'utilisateur -->
-      <img src="image_4dd27f.png" alt="Logos Partenaires MENA: DRH, DSPS, DOB, DECO">
+      <!-- VRAIS LOGOS EXTRAITS DE VOTRE CODE -->
+      <img src="https://static.wixstatic.com/media/568692_c76c8343da1a4bc4a2e27c7fa208a83a~mv2.png/v1/fit/w_146,h_130,q_90,enc_avif,quality_auto/568692_c76c8343da1a4bc4a2e27c7fa208a83a~mv2.png" alt="DRH">
+      <img src="https://static.wixstatic.com/media/568692_8f3d25223cf7489e8114a26ddee24564~mv2.png/v1/fit/w_152,h_130,q_90,enc_avif,quality_auto/568692_8f3d25223cf7489e8114a26ddee24564~mv2.png" alt="DESPS">
+      <img src="https://static.wixstatic.com/media/568692_78b9f81ef4234dc48badba45f86e194a~mv2.png/v1/fit/w_160,h_130,q_90,enc_avif,quality_auto/568692_78b9f81ef4234dc48badba45f86e194a~mv2.png" alt="DOB">
+      <img src="https://static.wixstatic.com/media/568692_f0e17f8ed5254430b2bc224fced84694~mv2.png/v1/fit/w_166,h_130,q_90,enc_avif,quality_auto/568692_f0e17f8ed5254430b2bc224fced84694~mv2.png" alt="DECO">
     </div>
   </div>
 </footer>
 
 <script>
 /* ══════════════════════════════════════
-   FONCTIONS UTILITAIRES ET DONNÉES
+   DONNEES GLOBALES (IMAGES ET EVENEMENTS)
 ══════════════════════════════════════ */
-function safeEncode(str) {
-  // Echappe la chaîne pour la passer de façon sécurisée dans onclick="" 
-  return encodeURIComponent(str || '').replace(/'/g, "%27");
-}
-
 const IMG = {
   logo: 'https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg',
   slide: 'https://static.wixstatic.com/media/568692_d2a38e66fee443b68e92efd88dfbc76b~mv2.jpg',
@@ -1359,26 +1244,6 @@ const GLOBAL_EVENTS = [
   { img: IMG.culture, date: "2024", title: "Journée culturelle 2024", text: "Grande fête culturelle rassemblant toute la communauté scolaire du Groupe Scolaire Le Miri autour de performances artistiques et culturelles.", tag: "Culture" },
   { img: IMG.oissu, date: "2024", title: "OISSU 2024", text: "Participation du Groupe Scolaire Le Miri aux compétitions sportives inter-établissements OISSU 2024.", tag: "Sport" },
   { img: IMG.jeux, date: "2024", title: "52ème édition des jeux culturels et sportifs de l'EMPT", text: "Les élèves du MIRI ont participé à la 52ème édition des jeux culturels et sportifs de l'EMPT.", tag: "Sport" }
-];
-
-const GALLERY_IMAGES = [
-  { src: IMG.culture, caption: "Journée culturelle 2024" },
-  { src: IMG.femmes, caption: "Journée droits des femmes" },
-  { src: IMG.jeux, caption: "Jeux culturels EMPT" },
-  { src: IMG.merite, caption: "Journée mérite" },
-  { src: IMG.art, caption: "Club art visuel" },
-  { src: IMG.oissu, caption: "OISSU 2024" },
-  { src: IMG.cafe, caption: "Café littéraire" },
-  { src: IMG.anglais, caption: "Concours anglais" },
-  { src: IMG.salon, caption: "Sortie au Salon du livre" },
-  { src: IMG.bingerville, caption: "Prix Bingerville" },
-  { src: IMG.recon, caption: "Reconnaissance et mérite" },
-  { src: IMG.maternelle_vrai, caption: "Maternelle" },
-  { src: IMG.primaire_vrai, caption: "Primaire" },
-  { src: IMG.lycee_vrai, caption: "Secondaire & Lycée" },
-  { src: IMG.g1, caption: "Activités préscolaires" },
-  { src: IMG.g2, caption: "Activités primaires" },
-  { src: IMG.g3, caption: "Activités secondaires" }
 ];
 
 /* ══════════════════════════════════════
@@ -1470,14 +1335,10 @@ function footer_cta() {
   </div>`;
 }
 
-/* Générateur de Carte Actualité Simple */
-function renderNewsCard(post) {
-  const encTitle = safeEncode(post.title);
-  const encDate = safeEncode(post.date);
-  const encText = safeEncode(post.text);
-  
+/* Générateur de Carte Actualité Simple avec l'index pour la Lightbox animée */
+function renderNewsCard(post, index) {
   return `
-    <div class="simple-news-card" onclick="openNewsModal('${post.img}', '${encTitle}', '${encDate}', '${encText}')">
+    <div class="simple-news-card" onclick="openGalleryModal(${index})">
       <div class="sn-img-wrap">
         <img src="${post.img}" alt="${post.title}" loading="lazy">
       </div>
@@ -1618,7 +1479,7 @@ function pageAccueil() {
     </div>
   </div>
 
-  <!-- ACTUALITÉS LIGNE -->
+  <!-- ACTUALITÉS LIGNE FACEBOOK (MODIFIEE EN CARTES INTERNES) -->
   <div class="news-section">
     <div class="page">
       <div class="flex-between">
@@ -1629,7 +1490,7 @@ function pageAccueil() {
       </div>
       <div class="social-feed">
         <!-- On affiche les 6 premiers événements sur l'accueil -->
-        ${GLOBAL_EVENTS.slice(0, 6).map((p) => renderNewsCard(p)).join('')}
+        ${GLOBAL_EVENTS.slice(0, 6).map((p, idx) => renderNewsCard(p, idx)).join('')}
       </div>
     </div>
   </div>
@@ -1893,8 +1754,8 @@ function pageGroupe(sub) {
           <div class="palmares-score">100% <small>de réussite</small></div>
           <p class="text-md">Félicitations à tous nos élèves pour ce taux de réussite exceptionnel à la session officielle du CEPE 2025. Le fruit d'un travail rigoureux et d'un encadrement de qualité !</p>
         </div>
-        <div class="palmares-img-wrap" onclick="openSinglePhoto('${IMG.res2}', '${safeEncode('Palmarès CEPE 2025')}')">
-          <img src="${IMG.res2}" alt="Résultats CEPE" title="Cliquez pour agrandir">
+        <div class="palmares-img-wrap">
+          <img src="${IMG.res2}" alt="Résultats CEPE">
         </div>
       </div>
       <!-- FIN PALMARES -->
@@ -1927,8 +1788,8 @@ function pageGroupe(sub) {
           <div class="palmares-score">82.19% <small>de réussite</small></div>
           <p class="text-md">Une belle performance à la session officielle du BEPC 2025. Félicitations à nos candidats et au corps enseignant pour ces résultats honorables qui font la fierté de notre établissement.</p>
         </div>
-        <div class="palmares-img-wrap" onclick="openSinglePhoto('${IMG.res1}', '${safeEncode('Palmarès BEPC 2025')}')">
-          <img src="${IMG.res1}" alt="Résultats BEPC" title="Cliquez pour agrandir">
+        <div class="palmares-img-wrap">
+          <img src="${IMG.res1}" alt="Résultats BEPC">
         </div>
       </div>
       <!-- FIN PALMARES -->
@@ -2182,11 +2043,27 @@ function pageVie(sub) {
           </div>` : ''}
         ${activeSub==='galerie' ? `
           <h2>Galerie Photos & Vidéos</h2>
-          <p>Retrouvez ici les photos des principaux événements et moments forts de la vie du Groupe Scolaire Le Miri. Cliquez sur une image pour l'agrandir.</p>
+          <p>Retrouvez ici les photos des principaux événements et moments forts de la vie du Groupe Scolaire Le Miri.</p>
           <div class="gallery-masonry mt2">
-            ${GALLERY_IMAGES.map((item, idx) => `
-              <img src="${item.src}" alt="${safeEncode(item.caption)}" onclick="openPhotoGallery(${idx})">
-            `).join('')}
+            <img src="${IMG.culture}" alt="Journée culturelle 2024">
+            <img src="${IMG.femmes}" alt="Journée droits des femmes">
+            <img src="${IMG.jeux}" alt="Jeux culturels EMPT">
+            <img src="${IMG.merite}" alt="Journée mérite">
+            <img src="${IMG.art}" alt="Club art visuel">
+            <img src="${IMG.oissu}" alt="OISSU 2024">
+            <img src="${IMG.cafe}" alt="Café littéraire">
+            <img src="${IMG.anglais}" alt="Concours anglais">
+            <img src="${IMG.salon}" alt="Salon du livre">
+            <img src="${IMG.bingerville}" alt="Prix Bingerville">
+            <img src="${IMG.recon}" alt="Reconnaissance">
+            <img src="${IMG.maternelle_vrai}" alt="Maternelle">
+            <img src="${IMG.primaire_vrai}" alt="Primaire">
+            <img src="${IMG.lycee_vrai}" alt="Lycée">
+            <img src="${IMG.g1}" alt="Activités">
+            <img src="${IMG.g2}" alt="Activités">
+            <img src="${IMG.g3}" alt="Activités">
+            <img src="${IMG.res1}" alt="Résultats">
+            <img src="${IMG.res2}" alt="Palmarès">
           </div>` : ''}
       </div>
     </div>
@@ -2204,7 +2081,7 @@ function pageBlog() {
   <div class="page py4">
     <div class="events-grid">
       ${GLOBAL_EVENTS.map((e, idx)=>`
-        <div class="ev-card" onclick="openNewsModal('${e.img}', '${safeEncode(e.title)}', '${safeEncode(e.date)}', '${safeEncode(e.text)}')">
+        <div class="ev-card" onclick="openGalleryModal(${idx})">
           <img src="${e.img}" alt="${e.title}">
           <div class="ev-card-body">
             <div class="ev-card-date">${e.date}</div>
@@ -2393,50 +2270,42 @@ window.closeNewsModal = function(e) {
   document.getElementById('newsModal').classList.remove('open');
 };
 
-/* Galerie simple (Images uniques) */
-window.openSinglePhoto = function(src, caption) {
-  document.getElementById('photoModalImg').src = src;
-  document.getElementById('photoModalCaption').textContent = decodeURIComponent(caption);
-  document.querySelectorAll('#photoModal .gallery-nav-btn').forEach(btn => btn.style.display = 'none');
-  document.getElementById('photoModal').classList.add('open');
+window.currentGalleryIndex = 0;
+
+window.openGalleryModal = function(index) {
+  window.currentGalleryIndex = index;
+  updateGalleryModal();
+  document.getElementById('galleryModal').classList.add('open');
 };
 
-/* Galerie avec navigation Multiple */
-window.currentPhotoIndex = 0;
-window.openPhotoGallery = function(index) {
-  window.currentPhotoIndex = index;
-  document.querySelectorAll('#photoModal .gallery-nav-btn').forEach(btn => btn.style.display = 'flex');
-  updatePhotoModal();
-  document.getElementById('photoModal').classList.add('open');
-};
-
-window.closePhotoModal = function(e) {
+window.closeGalleryModal = function(e) {
   if (e) e.preventDefault();
-  document.getElementById('photoModal').classList.remove('open');
+  document.getElementById('galleryModal').classList.remove('open');
 };
 
-window.prevPhoto = function(e) {
+window.prevGallery = function(e) {
   if (e) e.stopPropagation();
-  window.currentPhotoIndex = (window.currentPhotoIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
-  updatePhotoModal();
+  window.currentGalleryIndex = (window.currentGalleryIndex - 1 + GLOBAL_EVENTS.length) % GLOBAL_EVENTS.length;
+  updateGalleryModal();
 };
 
-window.nextPhoto = function(e) {
+window.nextGallery = function(e) {
   if (e) e.stopPropagation();
-  window.currentPhotoIndex = (window.currentPhotoIndex + 1) % GALLERY_IMAGES.length;
-  updatePhotoModal();
+  window.currentGalleryIndex = (window.currentGalleryIndex + 1) % GLOBAL_EVENTS.length;
+  updateGalleryModal();
 };
 
-window.updatePhotoModal = function() {
-  const imgEl = document.getElementById('photoModalImg');
-  const capEl = document.getElementById('photoModalCaption');
-  imgEl.style.opacity = 0;
+window.updateGalleryModal = function() {
+  const box = document.querySelector('.gallery-box');
+  box.style.opacity = 0;
   
   setTimeout(() => {
-    const item = GALLERY_IMAGES[window.currentPhotoIndex];
-    imgEl.src = item.src;
-    capEl.textContent = item.caption;
-    imgEl.style.opacity = 1;
+    const ev = GLOBAL_EVENTS[window.currentGalleryIndex];
+    document.getElementById('galleryModalImg').src = ev.img;
+    document.getElementById('galleryModalTitle').textContent = ev.title;
+    document.getElementById('galleryModalDate').textContent = ev.date;
+    document.getElementById('galleryModalText').textContent = ev.text;
+    box.style.opacity = 1;
   }, 200);
 };
 
