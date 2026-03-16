@@ -913,6 +913,96 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
     text-align: center;
     padding: 1.8rem;
   }
+  /* Styles de la bannière */
+  .palmares-banner {
+    display: flex;
+    flex-direction: column; /* Empilé par défaut (mobile) */
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+  }
+
+  .palmares-content {
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* L'étiquette (Tag) */
+  .s-tag {
+    display: inline-block;
+    align-self: flex-start;
+    background-color: #e3f2fd; /* Bleu clair */
+    color: #1976d2; /* Bleu foncé */
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+
+  /* Le Titre */
+  .palmares-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    font-weight: 800;
+  }
+
+  /* Le Score (100%) */
+  .palmares-score {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #27ae60; /* Vert pour le succès */
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .palmares-score small {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    display: block; /* Met le texte "de réussite" en dessous du 100% */
+  }
+
+  /* Le texte descriptif */
+  .text-md {
+    font-size: 1.1rem;
+    color: #555555;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* L'image */
+  .palmares-img-wrap {
+    flex: 1;
+    min-height: 300px;
+  }
+
+  .palmares-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Assure que l'image remplit l'espace sans se déformer */
+    display: block;
+  }
+
+  /* Écrans plus larges (Tablettes et Ordinateurs) */
+  @media (min-width: 768px) {
+    .palmares-banner {
+      flex-direction: row; /* Met le texte et l'image côte à côte */
+    }
+    .palmares-score small {
+      display: inline; /* Remet le texte à côté du 100% sur grand écran */
+    }
+  }
 }
 </style>
 </head>
@@ -1229,7 +1319,9 @@ const IMG = {
   g1: 'https://static.wixstatic.com/media/568692_f0fe17f8ed5254430b2bc224fced84694~mv2.png/v1/fit/w_83,h_65,q_90,enc_avif,quality_auto/568692_f0fe17f8ed5254430b2bc224fced84694~mv2.png',
   g2: 'https://static.wixstatic.com/media/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg/v1/fill/w_600,h_488,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg',
   g3: 'https://static.wixstatic.com/media/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg/v1/fill/w_474,h_295,al_c,q_80,usm_0.66_1.00_0.01/568692_e5a42b745f714f78a9485fb655064a40~mv2.jpg',
-  maternelle_vrai: 'https://static.wixstatic.com/media/568692_a5aca793d58d47b59307c0827299388c~mv2.jpg/v1/fill/w_976,h_672,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/maternelle.jpg'
+  maternelle_vrai: 'https://static.wixstatic.com/media/568692_dc618a84ed8344a1b57b50feffab7725~mv2.jpg/v1/fill/w_960,h_476,al_c,q_85,enc_avif,quality_auto/568692_dc618a84ed8344a1b57b50feffab7725~mv2.jpg',
+  primaire_vrai: 'https://static.wixstatic.com/media/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg/v1/fill/w_960,h_476,al_c,q_85,enc_avif,quality_auto/568692_a9d899be366e4dea94d62b5607afc86a~mv2.jpg',
+  lycee_vrai:  'https://static.wixstatic.com/media/568692_c6d0ae0ba7524a4cb2580af797e751c7~mv2.jpg/v1/fill/w_526,h_328,al_c,q_80,usm_0.66_1.00_0.01/568692_c6d0ae0ba7524a4cb2580af797e751c7~mv2.jpg'
 };
 
 const GLOBAL_EVENTS = [
