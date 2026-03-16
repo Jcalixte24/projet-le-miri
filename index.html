@@ -913,95 +913,94 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
     text-align: center;
     padding: 1.8rem;
   }
-  /* Styles de la bannière */
+  /* ══ PALMARÈS (CEPE / BEPC) ══ */
+.palmares-banner {
+  display: flex;
+  flex-direction: column;
+  background: var(--wh);
+  border: 1px solid var(--cr2);
+  border-radius: var(--rad);
+  box-shadow: 0 4px 12px rgba(26,26,26,.04);
+  overflow: hidden;
+  margin-top: 2rem;
+  max-width: 100%;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.palmares-banner:hover {
+  box-shadow: 0 12px 24px rgba(16,79,45,.08);
+  border-color: var(--fo);
+}
+.palmares-content {
+  padding: 2.5rem;
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.palmares-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.6rem;
+  color: var(--fo);
+  margin-bottom: 0.8rem;
+  font-weight: 800;
+}
+.palmares-score {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--tr); /* Orange de la charte pour marquer l'impact */
+  line-height: 1;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.02em;
+}
+.palmares-score small {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--md);
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.palmares-img-wrap {
+  flex: 1;
+  background: var(--cr);
+  position: relative;
+  min-height: 250px;
+}
+.palmares-img-wrap img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Adaptation sur grands écrans */
+@media (min-width: 768px) {
   .palmares-banner {
-    display: flex;
-    flex-direction: column; /* Empilé par défaut (mobile) */
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    max-width: 900px;
-    margin: 20px auto;
+    flex-direction: row;
+    align-items: stretch;
   }
+}
 
+/* Adaptation sur petits téléphones */
+@media (max-width: 600px) {
   .palmares-content {
-    padding: 40px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 1.8rem;
   }
-
-  /* L'étiquette (Tag) */
-  .s-tag {
-    display: inline-block;
-    align-self: flex-start;
-    background-color: #e3f2fd; /* Bleu clair */
-    color: #1976d2; /* Bleu foncé */
-    padding: 6px 16px;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 20px;
-  }
-
-  /* Le Titre */
-  .palmares-title {
-    font-size: 2rem;
-    color: #2c3e50;
-    margin: 0 0 15px 0;
-    font-weight: 800;
-  }
-
-  /* Le Score (100%) */
   .palmares-score {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: #27ae60; /* Vert pour le succès */
-    line-height: 1.1;
-    margin-bottom: 20px;
+    font-size: 2.4rem;
   }
-
   .palmares-score small {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #7f8c8d;
-    display: block; /* Met le texte "de réussite" en dessous du 100% */
-  }
-
-  /* Le texte descriptif */
-  .text-md {
-    font-size: 1.1rem;
-    color: #555555;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* L'image */
-  .palmares-img-wrap {
-    flex: 1;
-    min-height: 300px;
-  }
-
-  .palmares-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Assure que l'image remplit l'espace sans se déformer */
     display: block;
+    margin-left: 0;
+    margin-top: 0.3rem;
   }
-
-  /* Écrans plus larges (Tablettes et Ordinateurs) */
-  @media (min-width: 768px) {
-    .palmares-banner {
-      flex-direction: row; /* Met le texte et l'image côte à côte */
-    }
-    .palmares-score small {
-      display: inline; /* Remet le texte à côté du 100% sur grand écran */
-    }
+  .palmares-img-wrap {
+    min-height: 200px;
   }
 }
 </style>
