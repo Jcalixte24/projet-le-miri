@@ -217,6 +217,23 @@ body{background:var(--bg);color:var(--dk);font-family:'Open Sans',sans-serif;min
 .vis-row-info strong{font-size:.88rem;font-weight:700;color:var(--dk);display:block;margin-bottom:.1rem;}
 .vis-row-info small{font-size:.72rem;color:var(--lt);}
 
+/* TOGGLE SWITCH */
+.toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:12px;transition:.3s;cursor:pointer;}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:var(--wh);border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle input:checked+.toggle-slider{background:var(--fo);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
+
+/* VIS ROWS */
+.vis-group{border:1px solid var(--cr);border-radius:var(--rad);overflow:hidden;margin-bottom:1.2rem;}
+.vis-group-title{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lt);padding:.6rem 1.2rem;background:var(--bg);border-bottom:1px solid var(--cr);}
+.vis-row{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;border-bottom:1px solid var(--cr);gap:1rem;}
+.vis-row:last-child{border-bottom:none;}
+.vis-row-info{flex:1;}
+.vis-row-info strong{font-size:.88rem;font-weight:700;color:var(--dk);display:block;margin-bottom:.1rem;}
+.vis-row-info small{font-size:.72rem;color:var(--lt);}
+
 @media(max-width:900px){
   .a-sidebar{transform:translateX(-100%);transition:transform .3s;}
   .a-main{margin-left:0; padding:1.5rem;}
@@ -434,11 +451,25 @@ body{background:var(--bg);color:var(--dk);font-family:'Open Sans',sans-serif;min
           </div>
         </div>
         <div class="ac"><h3>Statistiques (chiffres clés de l'accueil)</h3>
-          <div class="fg" style="margin-bottom:1rem;">
-            <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none;">
-              <input type="checkbox" id="cfg-showStats" style="width:16px;height:16px;accent-color:var(--tr);cursor:pointer;">
-              <span>Afficher la bande de statistiques sur l'accueil</span>
-            </label>
+          <p style="font-size:.8rem;color:var(--md);margin-bottom:1.2rem;">Activez ou désactivez chaque chiffre pour le masquer ou l'afficher sur la page d'accueil.</p>
+          <div class="vis-group">
+            <div class="vis-group-title">Visibilité des chiffres</div>
+            <div class="vis-row">
+              <div class="vis-row-info"><strong>Élèves inscrits</strong><small>Grand chiffre animé à gauche de la bande</small></div>
+              <label class="toggle"><input type="checkbox" id="cfg-show-s1" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="vis-row">
+              <div class="vis-row-info"><strong>Réussite CEPE</strong><small>Taux affiché en pourcentage</small></div>
+              <label class="toggle"><input type="checkbox" id="cfg-show-s3" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="vis-row">
+              <div class="vis-row-info"><strong>Réussite BEPC</strong><small>Taux affiché en pourcentage</small></div>
+              <label class="toggle"><input type="checkbox" id="cfg-show-s4" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="vis-row">
+              <div class="vis-row-info"><strong>Réussite BAC</strong><small>Taux affiché en pourcentage</small></div>
+              <label class="toggle"><input type="checkbox" id="cfg-show-s5" checked><span class="toggle-slider"></span></label>
+            </div>
           </div>
           <div class="fr">
             <div class="fg"><label>Élèves inscrits</label><input id="cfg-s1" type="number"></div>
@@ -1140,7 +1171,8 @@ async function loadConfig(){
   set('cfg-name',c.name);set('cfg-code',c.code);set('cfg-tel',c.tel);set('cfg-email',c.email);
   set('cfg-address',c.address);set('cfg-year',c.year);
   set('cfg-s1',c.s1);set('cfg-s2',c.s2);set('cfg-s3',c.s3);set('cfg-s4',c.s4);set('cfg-s5',c.s5||95);
-  const ss=document.getElementById('cfg-showStats');if(ss)ss.checked=(c.showStats!==false);
+  const chk=(id,val)=>{const el=document.getElementById(id);if(el)el.checked=val!==false;};
+  chk('cfg-show-s1',c.showS1);chk('cfg-show-s3',c.showS3);chk('cfg-show-s4',c.showS4);chk('cfg-show-s5',c.showS5);
   set('cfg-dname',c.dname);set('cfg-dtitle',c.dtitle);set('cfg-dphoto',c.dphoto);set('cfg-dmsg',c.dmsg);
   set('cfg-fichesPdf',c.fichesPdf||'');set('cfg-paiementPdf',c.paiementPdf||'');set('cfg-reglementPdf',c.reglementPdf||'');
   set('cfg-hero-t1',c.heroT1);set('cfg-hero-t2',c.heroT2);set('cfg-hero-desc',c.heroDesc);set('cfg-hero-btn',c.heroBtn);
@@ -1150,8 +1182,8 @@ async function loadConfig(){
 }
 async function saveConfig(){
   showLoader();
-  const _ss=document.getElementById('cfg-showStats');
-  const c={name:v('cfg-name'),code:v('cfg-code'),tel:v('cfg-tel'),email:v('cfg-email'),address:v('cfg-address'),year:v('cfg-year'),s1:+v('cfg-s1')||0,s2:+v('cfg-s2')||0,s3:+v('cfg-s3')||0,s4:+v('cfg-s4')||0,s5:+v('cfg-s5')||95,showStats:_ss?_ss.checked:true,dname:v('cfg-dname'),dtitle:v('cfg-dtitle'),dphoto:v('cfg-dphoto'),dmsg:v('cfg-dmsg'),fichesPdf:v('cfg-fichesPdf'),paiementPdf:v('cfg-paiementPdf'),reglementPdf:v('cfg-reglementPdf'),heroT1:v('cfg-hero-t1'),heroT2:v('cfg-hero-t2'),heroDesc:v('cfg-hero-desc'),heroBtn:v('cfg-hero-btn'),logo:v('cfg-logo-v')};
+  const ck=(id)=>!!document.getElementById(id)?.checked;
+  const c={name:v('cfg-name'),code:v('cfg-code'),tel:v('cfg-tel'),email:v('cfg-email'),address:v('cfg-address'),year:v('cfg-year'),s1:+v('cfg-s1')||0,s2:+v('cfg-s2')||0,s3:+v('cfg-s3')||0,s4:+v('cfg-s4')||0,s5:+v('cfg-s5')||95,showS1:ck('cfg-show-s1'),showS3:ck('cfg-show-s3'),showS4:ck('cfg-show-s4'),showS5:ck('cfg-show-s5'),dname:v('cfg-dname'),dtitle:v('cfg-dtitle'),dphoto:v('cfg-dphoto'),dmsg:v('cfg-dmsg'),fichesPdf:v('cfg-fichesPdf'),paiementPdf:v('cfg-paiementPdf'),reglementPdf:v('cfg-reglementPdf'),heroT1:v('cfg-hero-t1'),heroT2:v('cfg-hero-t2'),heroDesc:v('cfg-hero-desc'),heroBtn:v('cfg-hero-btn'),logo:v('cfg-logo-v')};
   await sSet('site:config',c);
   hideLoader();
   toast('Paramètres enregistrés');

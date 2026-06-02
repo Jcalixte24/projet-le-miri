@@ -136,22 +136,4 @@
   if (cfg.year) {
     document.querySelectorAll('.cms-year').forEach(el => { el.textContent = cfg.year; });
   }
-
-  // ── Stats d'accueil : valeurs + visibilité ────────────────────
-  const statsStrip = document.getElementById('cms-stats-strip');
-  if (statsStrip) {
-    if (cfg.showStats === false) {
-      statsStrip.classList.add('stats-strip--hidden');
-    } else {
-      statsStrip.classList.remove('stats-strip--hidden');
-    }
-    const s1El = document.getElementById('cms-stat-s1');
-    const s3El = document.getElementById('cms-stat-s3');
-    const s4El = document.getElementById('cms-stat-s4');
-    const s5El = document.getElementById('cms-stat-s5');
-    if (s1El && cfg.s1) { s1El.dataset.target = cfg.s1; }
-    if (s3El && cfg.s3 !== undefined) { s3El.textContent = cfg.s3 + '%'; }
-    if (s4El && cfg.s4 !== undefined) { s4El.textContent = cfg.s4 + '%'; }
-    if (s5El && cfg.s5 !== undefined) { s5El.textContent = cfg.s5 + '%'; }
-  }
 })();
