@@ -1,0 +1,40 @@
+# netlify.toml — Configuration Netlify production
+# Groupe Scolaire Le Miri
+# Site HTML pur — aucun framework, aucun build
+
+[build]
+  publish = "."
+  command = ""
+
+# ─── En-têtes de sécurité — toutes les pages ───
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# ─── Cache HTML : jamais mis en cache ───
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# ─── Cache JS : 1 journée ───
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# ─── Redirections ───
+[[redirects]]
+  from = "/admin"
+  to   = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200

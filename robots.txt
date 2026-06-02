@@ -1,0 +1,12 @@
+# robots.txt — Instructions pour les moteurs de recherche
+# Groupe Scolaire Le Miri
+
+User-agent: *
+# Autoriser tout le site public
+Allow: /
+
+# Interdire l'indexation de l'admin (ne doit pas apparaître dans Google)
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://www.groupescolairelemiri.com/sitemap.xml

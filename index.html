@@ -569,6 +569,16 @@ footer{background:var(--fo2);color:rgba(253,252,248,.7);}
   background:var(--fo);
   display:grid;grid-template-columns:repeat(4,1fr);
   border-bottom: 4px solid var(--tr);
+  overflow:hidden;
+  max-height:200px;
+  opacity:1;
+  transition:max-height .5s ease, opacity .4s ease, border-width .4s ease;
+}
+.stats-strip--hidden{
+  max-height:0;
+  opacity:0;
+  border-bottom-width:0;
+  pointer-events:none;
 }
 .stat-cell{
   padding:2.5rem 1.5rem;
@@ -1621,11 +1631,11 @@ function pageAccueil() {
   </div>
 
   <!-- STATS -->
-  <div class="stats-strip">
-    <div class="stat-cell"><div class="stat-n" data-target="542" data-suffix="">0</div><div class="stat-l">Élèves inscrits</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="105" data-suffix="">0</div><div class="stat-l">Préscolaire-primaire</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="77" data-suffix="">0</div><div class="stat-l">Candidats au Bepc</div></div>
-    <div class="stat-cell"><div class="stat-n" data-target="78" data-suffix="">0</div><div class="stat-l">Candidats au Bac</div></div>
+  <div class="stats-strip" id="cms-stats-strip">
+    <div class="stat-cell"><div class="stat-n" id="cms-stat-s1" data-target="542" data-suffix="">0</div><div class="stat-l">Élèves inscrits</div></div>
+    <div class="stat-cell"><div class="stat-n" id="cms-stat-s3" data-suffix="%">100</div><div class="stat-l">Réussite CEPE</div></div>
+    <div class="stat-cell"><div class="stat-n" id="cms-stat-s4" data-suffix="%">82</div><div class="stat-l">Réussite BEPC</div></div>
+    <div class="stat-cell"><div class="stat-n" id="cms-stat-s5" data-suffix="%">95</div><div class="stat-l">Réussite BAC</div></div>
   </div>
 
   <!-- INTRO & CARTE DU DIRECTEUR -->

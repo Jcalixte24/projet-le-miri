@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — Groupe Scolaire Le Miri</title>
+<link rel="icon" sizes="192x192" href="https://static.wixstatic.com/media/568692_d208ed65917a482280a345ef2a14eba6%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/568692_d208ed65917a482280a345ef2a14eba6%7Emv2.jpg" type="image/jpeg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://static.wixstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- SCRIPTS FIREBASE AUTH -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<style>
+:root {
+  /* Bruns (Institutionnel) */
+  --fo:#5C3D1A; --fo2:#3E2911;
+  /* Ors (Actions et engagements) */
+  --tr:#C4A93D; --tr2:#9B8322;
+  /* Ors (Excellence, Succès) */
+  --go:#E8D98A;
+  /* Textes (Bruns foncés) */
+  --dk:#2A1C11; --md:#5A4E46; --lt:#9A8F85;
+  /* Fonds (Crème et Blanc) */
+  --bg:#F5EDD8; --bg2:#FFFFFF;
+  /* Bordures et séparateurs */
+  --cr:#EAE0C8; --cr2:#E8D98A; --cr3:#C4A93D;
+  --wh:#FFFFFF;
+  --rad: 8px; /* Plus arrondi pour un design moderne */
+  --sidebar:260px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--dk);font-family:'Open Sans',sans-serif;min-height:100vh;}
+
+/* LOADER (Nouveau) */
+#appLoader { position:fixed; inset:0; z-index:10000; background:rgba(253, 252, 248, 0.9); backdrop-filter: blur(5px); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:all .3s ease; }
+#appLoader.active { opacity:1; visibility:visible; }
+.spinner { width:40px; height:40px; border:4px solid var(--cr2); border-top-color:var(--fo); border-radius:50%; animation:spin 1s linear infinite; margin-bottom:1rem; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;z-index:9999;background:var(--fo2);display:flex;align-items:center;justify-content:center; background-image: radial-gradient(circle at top right, var(--fo), var(--fo2));}
+.login-box{background:var(--wh);width:400px;padding:3rem;border-radius:12px; border-top:5px solid var(--tr);box-shadow:0 25px 50px -12px rgba(0,0,0,.5);}
+.login-logo{display:block;width:80px;height:80px;object-fit:contain;margin:0 auto 1.5rem;}
+.login-box h1{font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;color:var(--fo);text-align:center;margin-bottom:.3rem;}
+.login-box p{text-align:center;color:var(--md);font-size:.82rem;margin-bottom:2rem;}
+.lf{margin-bottom:1.2rem;}
+.lf label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dk);margin-bottom:.5rem;}
+.lf input{width:100%;padding:.9rem 1rem;border:1.5px solid var(--cr2);border-radius:var(--rad);font-family:'Open Sans',sans-serif;font-size:.9rem;color:var(--dk);outline:none;transition:all .2s;background:var(--bg2);}
+.lf input:focus{border-color:var(--fo); box-shadow:0 0 0 4px rgba(92,61,26,.1);}
+.login-btn{width:100%;padding:1rem;background:var(--fo);border-radius:var(--rad);color:var(--wh);font-family:'Open Sans',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.login-btn:hover{background:var(--fo2); transform:translateY(-2px); box-shadow:0 4px 12px rgba(62,41,17,.2);}
+.login-err{background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:var(--rad);padding:.7rem 1rem;font-size:.82rem;margin-top:1rem;display:none;text-align:center; font-weight:600;}
+
+/* APP */
+#adminApp{display:none;min-height:100vh;}
+
+/* TOPBAR */
+.a-topbar{position:fixed;top:0;left:0;right:0;height:60px;background:var(--fo2);z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:3px solid var(--tr); box-shadow:0 2px 10px rgba(0,0,0,.15);}
+.a-topbar-l{display:flex;align-items:center;gap:1rem;}
+.a-topbar-l img{height:36px;object-fit:contain;}
+.a-topbar-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;color:var(--wh);letter-spacing:.06em;text-transform:uppercase;}
+.a-topbar-title span{color:var(--go);}
+.a-topbar-r{display:flex;align-items:center;gap:.8rem;}
+.tbtn{background:rgba(255,255,255,.1);border-radius:var(--rad);color:var(--wh);border:1px solid rgba(255,255,255,.2);padding:.4rem 1rem;font-family:'Open Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.tbtn:hover{background:var(--tr); border-color:var(--tr);}
+.tbtn.danger{background:rgba(220,38,38,.15);border-color:rgba(220,38,38,.3);}
+.tbtn.danger:hover{background:#DC2626; border-color:#DC2626;}
+
+/* LAYOUT */
+.a-layout{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.a-sidebar{width:var(--sidebar);background:var(--wh);border-right:1px solid var(--cr);position:fixed;top:60px;left:0;bottom:0;overflow-y:auto;z-index:400; box-shadow:2px 0 10px rgba(0,0,0,.02);}
+.sb-who{padding:1.2rem 1.5rem;border-bottom:1px solid var(--cr); background:var(--bg2);}
+.sb-who-label{font-size:.65rem;color:var(--lt);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+.sb-who-name{font-size:.88rem;font-weight:700;color:var(--fo);margin-top:.2rem;}
+.sb-section{font-size:.63rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lt);padding:1rem 1.5rem .4rem;margin-top:.3rem;}
+.sb-btn{display:flex;align-items:center;gap:.8rem;padding:.7rem 1.5rem;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--md);border:none;background:none;width:100%;text-align:left;font-family:'Open Sans',sans-serif;border-left:4px solid transparent;transition:all .2s ease;}
+.sb-btn:hover{background:var(--bg);color:var(--tr); padding-left:1.8rem;}
+.sb-btn.active{background:rgba(92,61,26,.06);color:var(--fo);border-left-color:var(--fo);font-weight:700;}
+.sb-btn svg{width:16px;height:16px;flex-shrink:0;opacity:.5; transition:all .2s;}
+.sb-btn.active svg{opacity:1;}
+.sb-btn:hover svg{transform:scale(1.1);}
+
+/* MAIN */
+.a-main{margin-left:var(--sidebar);flex:1;padding:2.5rem;min-height:calc(100vh - 60px);}
+
+/* PANELS */
+.panel{display:none; animation:fadeIn .3s ease;}
+.panel.active{display:block;}
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+.panel-hd{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid var(--cr);}
+.panel-hd h2{font-family:'Montserrat',sans-serif;font-size:1.8rem;font-weight:800;color:var(--fo);margin-bottom:.3rem;}
+.panel-hd p{color:var(--md);font-size:.9rem;}
+
+/* CARDS */
+.ac{background:var(--wh);border:1px solid var(--cr);border-radius:10px;padding:1.8rem;margin-bottom:1.5rem;box-shadow:0 4px 15px rgba(26,26,26,.03);}
+.ac h3{font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:700;color:var(--fo);margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid var(--cr);}
+
+/* FORM */
+.fg{margin-bottom:1.2rem;}
+.fg label{display:block;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dk);margin-bottom:.5rem;}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg2);border:1.5px solid var(--cr2);border-radius:var(--rad);padding:.8rem 1rem;font-family:'Open Sans',sans-serif;font-size:.9rem;color:var(--dk);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--fo);box-shadow:0 0 0 4px rgba(92,61,26,.08); background:var(--wh);}
+.fg textarea{height:100px;resize:vertical;}
+.fg small{display:block;color:var(--lt);font-size:.72rem;margin-top:.3rem;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;}
+
+/* IMG INPUT */
+.ig{margin-bottom:1.2rem;}
+.ig>label{display:block;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dk);margin-bottom:.5rem;}
+.ig-tabs{display:flex;gap:0;margin-bottom:.6rem; background:var(--cr); border-radius:var(--rad); padding:3px; width:fit-content;}
+.ig-tab{padding:.4rem 1rem;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:calc(var(--rad) - 2px);background:transparent;color:var(--md);cursor:pointer;font-family:'Open Sans',sans-serif;transition:all .2s;}
+.ig-tab.active{background:var(--wh);color:var(--fo);box-shadow:0 2px 5px rgba(0,0,0,.08);}
+.ig-url{display:none;}.ig-file{display:none;}
+.ig-url.show,.ig-file.show{display:block;}
+.ig-url input,.ig-file input{width:100%;background:var(--bg2);border:1.5px solid var(--cr2);border-radius:var(--rad);padding:.8rem 1rem;font-family:'Open Sans',sans-serif;font-size:.9rem;color:var(--dk);outline:none; transition:all .2s;}
+.ig-url input:focus, .ig-file input:focus {border-color:var(--fo); box-shadow:0 0 0 4px rgba(92,61,26,.08); background:var(--wh);}
+.ig-prev{width:120px;height:80px;object-fit:cover;border:2px solid var(--cr2);border-radius:var(--rad);margin-top:.6rem;display:none;background:var(--cr); box-shadow:0 4px 10px rgba(0,0,0,.05);}
+.ig-prev.show{display:block;}
+
+/* BUTTONS */
+.bp{background:var(--fo);color:var(--wh);padding:.7rem 1.6rem;border-radius:var(--rad);font-family:'Open Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;display:inline-block; box-shadow:0 4px 12px rgba(92,61,26,.15);}
+.bp:hover{background:var(--fo2); transform:translateY(-2px); box-shadow:0 6px 15px rgba(92,61,26,.25);}
+.bd{background:#DC2626;color:var(--wh);padding:.5rem 1rem;border-radius:var(--rad);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all .2s;}
+.bd:hover{background:#B91C1C; box-shadow:0 4px 10px rgba(220,38,38,.2);}
+.be{background:var(--wh);color:var(--fo);border:1.5px solid var(--fo);border-radius:var(--rad);padding:.5rem 1rem;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all .2s;}
+.be:hover{background:var(--fo);color:var(--wh); box-shadow:0 4px 10px rgba(92,61,26,.15);}
+.ba{background:var(--tr);color:var(--wh);padding:.65rem 1.4rem;border-radius:var(--rad);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;font-family:'Open Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem; box-shadow:0 4px 12px rgba(196,169,61,.2);}
+.ba:hover{background:var(--tr2); transform:translateY(-2px); box-shadow:0 6px 15px rgba(196,169,61,.3);}
+
+/* TOAST */
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--fo);border-radius:var(--rad);color:var(--wh);padding:1rem 1.8rem;font-family:'Open Sans',sans-serif;font-size:.9rem;font-weight:600;box-shadow:0 10px 30px rgba(92,61,26,.3);transform:translateY(20px);opacity:0;transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);pointer-events:none;border-left:5px solid var(--go);}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.error{background:#DC2626;border-left-color:#FCA5A5; box-shadow:0 10px 30px rgba(220,38,38,.3);}
+
+/* DASH STATS */
+.ds-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:1.2rem;margin-bottom:2rem;}
+.ds-cell{background:var(--wh);border:1px solid var(--cr);border-radius:10px;padding:1.6rem;border-top:4px solid var(--fo); box-shadow:0 4px 15px rgba(0,0,0,.03); transition:transform .2s;}
+.ds-cell:hover{transform:translateY(-3px); box-shadow:0 8px 25px rgba(0,0,0,.06);}
+.ds-cell.orange{border-top-color:var(--tr);}
+.ds-cell.gold{border-top-color:var(--go);}
+.ds-n{font-family:'Montserrat',sans-serif;font-size:2.4rem;font-weight:800;color:var(--fo);line-height:1;margin-bottom:.4rem;}
+.ds-cell.orange .ds-n{color:var(--tr);}
+.ds-cell.gold .ds-n{color:var(--go);}
+.ds-l{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--md);}
+
+/* ITEMS LIST */
+.ilist{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem;}
+.irow{background:var(--wh);border:1px solid var(--cr);border-radius:var(--rad);padding:1rem 1.2rem;display:grid;align-items:center;gap:1rem; box-shadow:0 2px 8px rgba(0,0,0,.02); transition:border-color .2s, box-shadow .2s;}
+.irow:hover{border-color:var(--cr2); box-shadow:0 4px 12px rgba(0,0,0,.05);}
+.irow.wi{grid-template-columns:60px 1fr auto;}
+.drag-handle{cursor:grab;padding:0 .5rem;color:var(--md);font-size:1.2rem;display:flex;align-items:center;user-select:none;transition:color .15s;}
+.drag-handle:hover{color:var(--fo);}
+.irow.wi.sortable-drag-enabled{grid-template-columns:28px 60px 1fr auto;}
+.sortable-ghost{opacity:.4;background:var(--cr);}
+.sortable-chosen{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+.irow.ni{grid-template-columns:1fr auto;}
+.irow.fc{grid-template-columns:60px 1fr 1fr auto;}
+.ithumb{width:60px;height:45px;object-fit:cover;border-radius:4px;border:1px solid var(--cr2);flex-shrink:0;background:var(--cr);}
+.iinfo h4{font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:700;color:var(--fo);margin-bottom:.2rem;}
+.iinfo p{font-size:.78rem;color:var(--md);}
+.iacts{display:flex;gap:.5rem;flex-shrink:0;align-items:center;flex-wrap:wrap;}
+
+/* MODAL */
+.mb{position:fixed;inset:0;z-index:2000;background:rgba(42,28,17,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;visibility:hidden;transition:all .3s ease;backdrop-filter:blur(5px);}
+.mb.open{opacity:1;visibility:visible;}
+.mbox{background:var(--wh);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;border-radius:12px;border-top:5px solid var(--tr);box-shadow:0 25px 60px rgba(0,0,0,.4);transform:scale(0.95) translateY(10px);opacity:0;transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;}
+.mb.open .mbox{transform:scale(1) translateY(0);opacity:1;}
+.mhead{padding:1.4rem 2rem;border-bottom:1px solid var(--cr);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--wh);z-index:10;}
+.mhead h3{font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:800;color:var(--fo);}
+.mclose{background:var(--cr);color:var(--md);border-radius:50%;border:none;width:32px;height:32px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.mclose:hover{background:var(--tr);color:var(--wh); transform:rotate(90deg);}
+.mbody{padding:1.8rem 2rem;}
+.mfoot{padding:1.2rem 2rem;border-top:1px solid var(--cr);display:flex;justify-content:flex-end;gap:.8rem;position:sticky;bottom:0;background:var(--wh); border-radius:0 0 12px 12px;}
+
+/* TABS */
+.atabs{display:flex;gap:0;border-bottom:2px solid var(--cr);margin-bottom:1.5rem;}
+.atab{padding:.7rem 1.4rem;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:none;background:transparent;cursor:pointer;font-family:'Open Sans',sans-serif;color:var(--md);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.atab:hover{color:var(--fo);}
+.atab.active{color:var(--fo);border-bottom-color:var(--fo);}
+.atpanel{display:none; animation:fadeIn .3s ease;}
+.atpanel.active{display:block;}
+
+/* PAGE GRID */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.pitem{background:var(--wh);border:1.5px solid var(--cr2);border-radius:10px;padding:1.2rem 1.4rem;cursor:pointer;transition:all .2s; box-shadow:0 2px 8px rgba(0,0,0,.02);}
+.pitem:hover{border-color:var(--fo);background:var(--bg2); transform:translateY(-2px); box-shadow:0 6px 15px rgba(92,61,26,.08);}
+.pitem h4{font-family:'Montserrat',sans-serif;font-size:.95rem;font-weight:700;color:var(--fo);margin-bottom:.3rem;}
+.pitem p{font-size:.78rem;color:var(--md);}
+
+/* TICKER */
+.ticker-row{display:flex;align-items:center;gap:.8rem;background:var(--wh);border:1px solid var(--cr);border-radius:var(--rad);padding:.8rem 1rem;margin-bottom:.6rem; box-shadow:0 2px 5px rgba(0,0,0,.02);}
+.ticker-row input{flex:1;border:1px solid var(--cr2);border-radius:4px;padding:.5rem .8rem;font-family:'Open Sans',sans-serif;font-size:.85rem;background:var(--bg2);color:var(--dk);outline:none; transition:border-color .2s;}
+.ticker-row input:focus{border-color:var(--fo); background:var(--wh);}
+
+/* TOGGLE SWITCH */
+.toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;inset:0;background:var(--cr2);border-radius:12px;transition:.3s;cursor:pointer;}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:var(--wh);border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle input:checked+.toggle-slider{background:var(--fo);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(20px);}
+
+/* VISIBILITY PANEL */
+.vis-group{margin-bottom:1.5rem;}
+.vis-group-title{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lt);padding:.6rem 1.2rem;background:var(--bg);border-bottom:1px solid var(--cr);}
+.vis-row{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;border-bottom:1px solid var(--cr);gap:1rem;}
+.vis-row:last-child{border-bottom:none;}
+.vis-row-info{flex:1;}
+.vis-row-info strong{font-size:.88rem;font-weight:700;color:var(--dk);display:block;margin-bottom:.1rem;}
+.vis-row-info small{font-size:.72rem;color:var(--lt);}
+
+@media(max-width:900px){
+  .a-sidebar{transform:translateX(-100%);transition:transform .3s;}
+  .a-main{margin-left:0; padding:1.5rem;}
+  .fr,.fr3{grid-template-columns:1fr;}
+  .pgrid{grid-template-columns:1fr;}
+  .atabs {flex-wrap: wrap;}
+  .ds-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .ds-grid{grid-template-columns:1fr;}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="appLoader">
+  <div class="spinner"></div>
+  <p style="font-weight:700; color:var(--fo); font-size:.85rem; letter-spacing:.05em; text-transform:uppercase;">Chargement en cours...</p>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <img class="login-logo" src="https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg" alt="Logo Le Miri">
+    <h1>Groupe Scolaire Le Miri</h1>
+    <p>Panneau d'administration sécurisé</p>
+    <div class="lf"><label>Email administrateur</label><input type="email" id="loginUser" placeholder="admin@lemiri.ci" autocomplete="username"></div>
+    <div class="lf"><label>Mot de passe</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Accéder au panneau</button>
+    <div class="login-err" id="loginError">Email ou mot de passe incorrect.</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="a-topbar">
+    <div class="a-topbar-l">
+      <img src="https://static.wixstatic.com/media/568692_f9b4440e8b2e4586bd61ffab50a3f1d2~mv2.jpg" alt="Logo">
+      <span class="a-topbar-title">Administration <span>Le Miri</span></span>
+    </div>
+    <div class="a-topbar-r">
+      <button class="tbtn" onclick="openSite()">Voir le site</button>
+      <button class="tbtn danger" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="a-layout">
+    <aside class="a-sidebar" id="adminSidebar">
+      <div class="sb-who">
+        <div class="sb-who-label">Connecté en tant que</div>
+        <div class="sb-who-name" id="sbUser">Admin</div>
+      </div>
+
+      <div class="sb-section">Tableau de bord</div>
+      <button class="sb-btn active" onclick="showPanel('dashboard')" data-panel="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Tableau de bord
+      </button>
+
+      <div class="sb-section">Contenu du site</div>
+      <button class="sb-btn" onclick="showPanel('config')" data-panel="config">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Paramètres généraux
+      </button>
+      <button class="sb-btn" onclick="showPanel('hero')" data-panel="hero">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+        Carrousel accueil
+      </button>
+      <button class="sb-btn" onclick="showPanel('actualites')" data-panel="actualites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2z"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Actualités et évènements
+      </button>
+      <button class="sb-btn" onclick="showPanel('ticker')" data-panel="ticker">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 12h20M2 6h20M2 18h20"/></svg>
+        Bandeau défilant
+      </button>
+
+      <div class="sb-section">Administration</div>
+      <button class="sb-btn" onclick="showPanel('liste_eleves')" data-panel="liste_eleves">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        Listes des élèves
+      </button>
+
+      <div class="sb-section">Parents d'élèves</div>
+      <button class="sb-btn" onclick="showPanel('parents_notes')" data-panel="parents_notes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Notes d'information
+      </button>
+      <button class="sb-btn" onclick="showPanel('parents_horaires')" data-panel="parents_horaires">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Horaires des cours
+      </button>
+      <button class="sb-btn" onclick="showPanel('parents_examens')" data-panel="parents_examens">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Examens blancs
+      </button>
+
+      <button class="sb-btn" onclick="showPanel('notes')" data-panel="notes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Notes de service
+      </button>
+      <button class="sb-btn" onclick="showPanel('notes_parents')" data-panel="notes_parents">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        Notes parents d'élèves
+      </button>
+      <button class="sb-btn" onclick="showPanel('palmares')" data-panel="palmares">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Palmarès et résultats
+      </button>
+
+      <div class="sb-section">Enseignants</div>
+      <button class="sb-btn" onclick="showPanel('ens_infos')" data-panel="ens_infos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Infos enseignants
+      </button>
+      <button class="sb-btn" onclick="showPanel('activites')" data-panel="activites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Activités fin trimestre
+      </button>
+      <button class="sb-btn" onclick="showPanel('conseils_ens')" data-panel="conseils_ens">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Conseils d'enseignements
+      </button>
+      <button class="sb-btn" onclick="showPanel('enseignants')" data-panel="enseignants">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Liste des enseignants
+      </button>
+
+      <div class="sb-section">Pages du site</div>
+      <button class="sb-btn" onclick="showPanel('pages')" data-panel="pages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editeur de pages
+      </button>
+      <button class="sb-btn" onclick="showPanel('galerie')" data-panel="galerie">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Galerie photos
+      </button>
+      <button class="sb-btn" onclick="showPanel('clubs')" data-panel="clubs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Clubs et vie scolaire
+      </button>
+
+      <div class="sb-section">Visibilité</div>
+      <button class="sb-btn" onclick="showPanel('visibility')" data-panel="visibility">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Visibilité des pages
+      </button>
+
+      <div class="sb-section">Sécurité</div>
+      <button class="sb-btn" onclick="showPanel('security')" data-panel="security">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Mot de passe admin
+      </button>
+    </aside>
+
+    <main class="a-main">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="panel-hd"><h2>Tableau de bord</h2><p>Vue d'ensemble — Année académique 2026-2027</p></div>
+        
+        <!-- BANDEAU CMS LIÉ -->
+        <div style="background:linear-gradient(135deg,var(--fo),var(--fo2));color:#fff;padding:1.4rem 1.8rem;border-radius:10px;margin-bottom:2rem;border-left:5px solid var(--go);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; box-shadow:0 8px 20px rgba(62,41,17,.2);">
+          <div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:.3rem;">CMS actif — Modifications en direct</div>
+            <div style="font-size:.85rem;opacity:.9;">Les changements (actualités, slides, ticker) sont immédiatement visibles sur la page principale.</div>
+          </div>
+          <button class="tbtn" onclick="openSite()" style="background:var(--go);color:var(--fo2);border:none;font-weight:800; padding:.6rem 1.2rem; font-size:.8rem;">→ Voir le site</button>
+        </div>
+
+        <div class="ds-grid">
+          <div class="ds-cell"><div class="ds-n" id="ds-ev">-</div><div class="ds-l">Actualités</div></div>
+          <div class="ds-cell orange"><div class="ds-n" id="ds-ns">-</div><div class="ds-l">Notes service</div></div>
+          <div class="ds-cell gold"><div class="ds-n" id="ds-te">-</div><div class="ds-l">Enseignants</div></div>
+          <div class="ds-cell"><div class="ds-n" id="ds-np">-</div><div class="ds-l">Notes parents</div></div>
+          <div class="ds-cell orange"><div class="ds-n" id="ds-el">-</div><div class="ds-l">Listes Élèves</div></div>
+          <div class="ds-cell gold"><div class="ds-n" id="ds-gl">-</div><div class="ds-l">Médias Galerie</div></div>
+          <div class="ds-cell"><div class="ds-n" id="ds-sl">-</div><div class="ds-l">Slides carrousel</div></div>
+        </div>
+
+        <div class="ac"><h3>Actions rapides</h3>
+          <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+            <button class="ba" onclick="showPanel('actualites')">Nouvelle actualité</button>
+            <button class="ba" onclick="showPanel('liste_eleves')">Liste élèves (PDF)</button>
+            <button class="ba" onclick="showPanel('enseignants')">Ajouter enseignant</button>
+            <button class="ba" onclick="showPanel('parents_notes')">Nouvelle note parent</button>
+            <button class="ba" onclick="showPanel('galerie')">Ajouter photo/vidéo</button>
+          </div>
+        </div>
+        
+        <div class="ac"><h3>Informations de l'établissement</h3><div id="dashInfo" style="font-size:.9rem;line-height:2.2;color:var(--md);"></div></div>
+      </div>
+
+      <!-- PARAMETRES -->
+      <div class="panel" id="panel-config">
+        <div class="panel-hd"><h2>Paramètres généraux</h2><p>Modifiez les informations principales affichées sur le site</p></div>
+        <div class="ac"><h3>Identité de l'établissement</h3>
+          <div class="fr">
+            <div class="fg"><label>Nom complet</label><input id="cfg-name" type="text"></div>
+            <div class="fg"><label>Code établissement</label><input id="cfg-code" type="text"></div>
+          </div>
+          <div class="fr">
+            <div class="fg"><label>Téléphone</label><input id="cfg-tel" type="text"></div>
+            <div class="fg"><label>Email</label><input id="cfg-email" type="email"></div>
+          </div>
+          <div class="fg"><label>Adresse</label><input id="cfg-address" type="text"></div>
+          <div class="fg"><label>Année académique</label><input id="cfg-year" type="text"></div>
+          <div class="ig"><label>Logo de l'établissement</label>
+            <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('cfg-logo','url')">URL</button><button class="ig-tab" onclick="swImg('cfg-logo','file')">Fichier</button></div>
+            <div class="ig-url show" id="cfg-logo-url"><input type="text" id="cfg-logo-v" placeholder="https://..." oninput="prevImg('cfg-logo-p',this.value)"></div>
+            <div class="ig-file" id="cfg-logo-file"><input type="file" accept="image/*" onchange="fileImg(this,'cfg-logo-v','cfg-logo-p')"></div>
+            <img id="cfg-logo-p" class="ig-prev" src="" alt="">
+          </div>
+        </div>
+        <div class="ac"><h3>Statistiques (chiffres clés de l'accueil)</h3>
+          <div class="fg" style="margin-bottom:1rem;">
+            <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none;">
+              <input type="checkbox" id="cfg-showStats" style="width:16px;height:16px;accent-color:var(--tr);cursor:pointer;">
+              <span>Afficher la bande de statistiques sur l'accueil</span>
+            </label>
+          </div>
+          <div class="fr">
+            <div class="fg"><label>Élèves inscrits</label><input id="cfg-s1" type="number"></div>
+            <div class="fg"><label>Préscolaire-Primaire</label><input id="cfg-s2" type="number"></div>
+          </div>
+          <div class="fr3">
+            <div class="fg"><label>Réussite CEPE (%)</label><input id="cfg-s3" type="number" placeholder="100"></div>
+            <div class="fg"><label>Réussite BEPC (%)</label><input id="cfg-s4" type="number" placeholder="82"></div>
+            <div class="fg"><label>Réussite BAC (%)</label><input id="cfg-s5" type="number" placeholder="95"></div>
+          </div>
+        </div>
+        <div class="ac"><h3>Directeur des études</h3>
+          <div class="fr">
+            <div class="fg"><label>Nom et prénom</label><input id="cfg-dname" type="text"></div>
+            <div class="fg"><label>Titre / Poste</label><input id="cfg-dtitle" type="text"></div>
+          </div>
+          <div class="ig">
+            <label>Photo du directeur</label>
+            <div class="ig-tabs">
+              <button class="ig-tab active" onclick="swImg('dphoto','url')">URL</button>
+              <button class="ig-tab" onclick="swImg('dphoto','file')">Fichier</button>
+            </div>
+            <div class="ig-url show" id="dphoto-url"><input type="text" id="cfg-dphoto" placeholder="https://..." oninput="prevImg('dphoto-p',this.value)"></div>
+            <div class="ig-file" id="dphoto-file"><input type="file" accept="image/*" onchange="fileImg(this,'cfg-dphoto','dphoto-p')"></div>
+            <img id="dphoto-p" class="ig-prev" src="" alt="">
+          </div>
+          <div class="fg"><label>Mot du directeur</label><textarea id="cfg-dmsg" rows="7"></textarea></div>
+        </div>
+        <div class="ac"><h3>Documents PDF — Inscriptions & Administration</h3>
+          <div class="fg"><label>Fiche de renseignement (URL Google Drive /preview)</label><input id="cfg-fichesPdf" type="text" placeholder="https://drive.google.com/file/d/.../preview"></div>
+          <div class="fg"><label>Mode de paiement (URL Google Drive /preview)</label><input id="cfg-paiementPdf" type="text" placeholder="https://drive.google.com/file/d/.../preview"></div>
+          <div class="fg"><label>Règlement intérieur complet (URL Google Drive /preview)</label><input id="cfg-reglementPdf" type="text" placeholder="https://drive.google.com/file/d/.../preview"></div>
+          <small style="color:#888;font-size:.75rem;display:block;margin-top:.3rem;">💡 Hébergez vos PDF sur Google Drive → Partager → "Tout le monde" → remplacer <strong>/view</strong> par <strong>/preview</strong> dans l'URL</small>
+        </div>
+        <div class="ac"><h3>Texte de la page d'accueil (Hero)</h3>
+          <div class="fg"><label>Titre principal (ligne 1)</label><input id="cfg-hero-t1" type="text" placeholder="Élever chaque esprit,"></div>
+          <div class="fg"><label>Titre principal (ligne 2 — en italique)</label><input id="cfg-hero-t2" type="text" placeholder="construire l'avenir."></div>
+          <div class="fg"><label>Description sous le titre</label><textarea id="cfg-hero-desc" rows="3" placeholder="Du préscolaire au Baccalauréat..."></textarea></div>
+          <div class="fg"><label>URL du bouton principal (Inscription)</label><input id="cfg-hero-btn" type="text" placeholder="https://www.expertpro-ci.net/..."></div>
+        </div>
+        <button class="bp" onclick="saveConfig()">Enregistrer les paramètres</button>
+      </div>
+
+      <!-- CARROUSEL -->
+      <div class="panel" id="panel-hero">
+        <div class="panel-hd"><h2>Carrousel accueil</h2><p>Gérez les slides du carrousel de la page d'accueil</p></div>
+        <button class="ba" onclick="openSlideMod(null)" style="margin-bottom:1.5rem;">Ajouter un slide</button>
+        <div class="ilist" id="slidesList"></div>
+      </div>
+
+      <!-- ACTUALITES -->
+      <div class="panel" id="panel-actualites">
+        <div class="panel-hd"><h2>Actualités et évènements</h2><p>Gérez toutes les actualités affichées sur le site et la page évènements</p></div>
+        <button class="ba" onclick="openEvMod(null)" style="margin-bottom:1.5rem;">Ajouter une actualité</button>
+        <div class="ilist" id="eventsList"></div>
+      </div>
+
+      <!-- TICKER -->
+      <div class="panel" id="panel-ticker">
+        <div class="panel-hd"><h2>Bandeau défilant</h2><p>Modifiez les messages qui défilent sous la navigation</p></div>
+        <div class="ac"><h3>Messages du bandeau</h3>
+          <div id="tickerItems"></div>
+          <button class="ba" onclick="addTicker()" style="margin-top:1rem;">Ajouter un message</button>
+          <div style="margin-top:1.5rem;"><button class="bp" onclick="saveTicker()">Enregistrer le bandeau</button></div>
+        </div>
+      </div>
+
+      <!-- NOTES DE SERVICE -->
+      <div class="panel" id="panel-notes">
+        <div class="panel-hd"><h2>Notes de service</h2><p>Espace Administration et Enseignants</p></div>
+        <button class="ba" onclick="openNoteMod('service',null)" style="margin-bottom:1.5rem;">Ajouter une note</button>
+        <div class="ilist" id="notesList"></div>
+      </div>
+
+      <!-- NOTES PARENTS -->
+      <div class="panel" id="panel-notes_parents">
+        <div class="panel-hd"><h2>Notes parents d'élèves</h2><p>Informations destinées aux parents</p></div>
+        <button class="ba" onclick="openNoteMod('parents',null)" style="margin-bottom:1.5rem;">Ajouter une note</button>
+        <div class="ilist" id="notesParentsList"></div>
+      </div>
+
+      <!-- PARENTS NOTES INFO (Redondance) -->
+      <div class="panel" id="panel-parents_notes">
+        <div class="panel-hd"><h2>Notes d'information parents</h2><p>Notes et circulaires destinées aux parents d'élèves</p></div>
+        <button class="ba" onclick="openNoteMod('parents',null)" style="margin-bottom:1.5rem;">Ajouter une note</button>
+        <div class="ilist" id="parentsNotesListRedondant"></div>
+      </div>
+
+      <!-- PALMARES -->
+      <div class="panel" id="panel-palmares">
+        <div class="panel-hd"><h2>Palmarès et résultats</h2><p>Mettez à jour les résultats aux examens nationaux</p></div>
+        <div class="ac"><h3>Résultats CEPE (Primaire)</h3>
+          <div class="fr">
+            <div class="fg"><label>Taux de réussite</label><input id="p-cepe-r" type="text" placeholder="100%"></div>
+            <div class="fg"><label>Année</label><input id="p-cepe-y" type="text" placeholder="2025"></div>
+          </div>
+          <div class="fg"><label>Texte descriptif</label><textarea id="p-cepe-t" rows="3"></textarea></div>
+          <div class="ig">
+            <label>Image palmarès CEPE</label>
+            <div class="ig-tabs">
+              <button class="ig-tab active" onclick="swImg('cepe','url')">URL</button>
+              <button class="ig-tab" onclick="swImg('cepe','file')">Fichier</button>
+            </div>
+            <div class="ig-url show" id="cepe-url"><input type="text" id="p-cepe-i" placeholder="https://..." oninput="prevImg('cepe-p',this.value)"></div>
+            <div class="ig-file" id="cepe-file"><input type="file" accept="image/*" onchange="fileImg(this,'p-cepe-i','cepe-p')"></div>
+            <img id="cepe-p" class="ig-prev" src="" alt="">
+          </div>
+        </div>
+        <div class="ac"><h3>Résultats BEPC (Secondaire)</h3>
+          <div class="fr">
+            <div class="fg"><label>Taux de réussite</label><input id="p-bepc-r" type="text" placeholder="82.19%"></div>
+            <div class="fg"><label>Année</label><input id="p-bepc-y" type="text" placeholder="2025"></div>
+          </div>
+          <div class="fg"><label>Texte descriptif</label><textarea id="p-bepc-t" rows="3"></textarea></div>
+          <div class="ig">
+            <label>Image palmarès BEPC</label>
+            <div class="ig-tabs">
+              <button class="ig-tab active" onclick="swImg('bepc','url')">URL</button>
+              <button class="ig-tab" onclick="swImg('bepc','file')">Fichier</button>
+            </div>
+            <div class="ig-url show" id="bepc-url"><input type="text" id="p-bepc-i" placeholder="https://..." oninput="prevImg('bepc-p',this.value)"></div>
+            <div class="ig-file" id="bepc-file"><input type="file" accept="image/*" onchange="fileImg(this,'p-bepc-i','bepc-p')"></div>
+            <img id="bepc-p" class="ig-prev" src="" alt="">
+          </div>
+        </div>
+        <div class="ac"><h3>Résultats BAC (Lycée)</h3>
+          <div class="fr">
+            <div class="fg"><label>Taux de réussite</label><input id="p-bac-r" type="text" placeholder="95%"></div>
+            <div class="fg"><label>Année</label><input id="p-bac-y" type="text" placeholder="2024"></div>
+          </div>
+          <div class="fg"><label>Texte descriptif</label><textarea id="p-bac-t" rows="3"></textarea></div>
+          <div class="ig">
+            <label>Image palmarès BAC</label>
+            <div class="ig-tabs">
+              <button class="ig-tab active" onclick="swImg('bac','url')">URL</button>
+              <button class="ig-tab" onclick="swImg('bac','file')">Fichier</button>
+            </div>
+            <div class="ig-url show" id="bac-url"><input type="text" id="p-bac-i" placeholder="https://..." oninput="prevImg('bac-p',this.value)"></div>
+            <div class="ig-file" id="bac-file"><input type="file" accept="image/*" onchange="fileImg(this,'p-bac-i','bac-p')"></div>
+            <img id="bac-p" class="ig-prev" src="" alt="">
+          </div>
+        </div>
+        <button class="bp" onclick="savePalmares()">Enregistrer les palmarès</button>
+      </div>
+
+      <!-- ENSEIGNANTS -->
+      <div class="panel" id="panel-enseignants">
+        <div class="panel-hd"><h2>Corps enseignant & Surveillances</h2><p>Annuaire, visites de classe et plan de surveillance</p></div>
+        <div class="atabs">
+          <button class="atab active" onclick="swTab('ens','list',this)">Liste générale</button>
+          <button class="atab" onclick="swTab('ens','principals',this)">Professeurs principaux</button>
+          <button class="atab" onclick="swTab('ens','surveil',this)">Surveillances</button>
+          <button class="atab" onclick="swTab('ens','visites',this)">Visites de classe</button>
+        </div>
+        <div class="atpanel active" id="ens-list">
+          <button class="ba" onclick="openTchMod(null)" style="margin-bottom:1rem;">Ajouter un enseignant</button>
+          <div class="ilist" id="teachersList"></div>
+        </div>
+        <div class="atpanel" id="ens-principals">
+          <button class="ba" onclick="openPrMod(null)" style="margin-bottom:1rem;">Ajouter un principal</button>
+          <div class="ilist" id="principalsList"></div>
+        </div>
+        <div class="atpanel" id="ens-surveil">
+          <div class="ac" style="margin-bottom:1.5rem;">
+            <h3>PDF — Calendrier de surveillance complet</h3>
+            <div class="fg"><label>URL du PDF calendrier complet</label>
+              <div class="ig-tabs">
+                <button class="ig-tab active" onclick="swPdf('surveil-pdf','url')">URL PDF</button>
+                <button class="ig-tab" onclick="swPdf('surveil-pdf','file')">Upload PDF</button>
+              </div>
+              <div class="ig-url show" id="surveil-pdf-url"><input type="text" id="surveil-pdf-v" placeholder="https://...pdf"></div>
+              <div class="ig-file" id="surveil-pdf-file"><input type="file" accept=".pdf" onchange="filePdf(this,'surveil-pdf-v')"></div>
+              <small style="color:var(--lt);font-size:.72rem;margin-top:.4rem;display:block;">Ce PDF s'ouvre via le bouton "Voir le calendrier complet"</small>
+            </div>
+            <button class="bp" onclick="saveSurveillancePdf()">Enregistrer le PDF</button>
+          </div>
+          <button class="ba" onclick="openSvMod(null)" style="margin-bottom:1rem;">Ajouter une surveillance</button>
+          <div class="ilist" id="surveilList"></div>
+        </div>
+        <div class="atpanel" id="ens-visites">
+          <button class="ba" onclick="openViMod(null)" style="margin-bottom:1rem;">Ajouter une visite</button>
+          <div class="ilist" id="visitesList"></div>
+        </div>
+      </div>
+
+      <!-- PAGES -->
+      <div class="panel" id="panel-pages">
+        <div class="panel-hd"><h2>Éditeur de pages</h2><p>Modifiez les textes de chaque section du site</p></div>
+        <div class="pgrid" id="pagesGrid"></div>
+      </div>
+
+      <!-- GALERIE -->
+      <div class="panel" id="panel-galerie">
+        <div class="panel-hd"><h2>Galerie photos et vidéos</h2><p>Ajoutez, modifiez ou supprimez photos et vidéos de la galerie vie scolaire</p></div>
+        <div style="display:flex;gap:.8rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+          <button class="ba" onclick="openGalMod('photo')">Ajouter une photo</button>
+          <button class="ba" onclick="openGalMod('video')" style="background:var(--fo);">Ajouter une vidéo</button>
+        </div>
+        <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.2rem;margin-top:1rem;"></div>
+      </div>
+
+      <!-- CLUBS -->
+      <div class="panel" id="panel-clubs">
+        <div class="panel-hd"><h2>Clubs et vie scolaire</h2><p>Gérez les clubs de l'établissement — ajoutez, modifiez ou supprimez chaque club</p></div>
+        <div class="atabs">
+          <button class="atab active" onclick="swTab('clubs','liste',this)">Liste des clubs</button>
+          <button class="atab" onclick="swTab('clubs','conseil',this)">Conseil scolaire</button>
+        </div>
+        <div class="atpanel active" id="clubs-liste">
+          <button class="ba" onclick="openClubMod(null)" style="margin-bottom:1rem;">Ajouter un club</button>
+          <div class="ilist" id="clubsList"></div>
+        </div>
+        <div class="atpanel" id="clubs-conseil">
+          <div class="ac"><h3>Texte du Conseil Scolaire</h3>
+            <div class="fg"><label>Contenu</label><textarea id="conseil-text" rows="6"></textarea></div>
+            <div class="fg"><label>PDF — Document Conseil Scolaire (URL)</label>
+              <div class="ig-tabs">
+                <button class="ig-tab active" onclick="swPdf('conseil-pdf','url')">URL PDF</button>
+                <button class="ig-tab" onclick="swPdf('conseil-pdf','file')">Upload PDF</button>
+              </div>
+              <div class="ig-url show" id="conseil-pdf-url"><input type="text" id="conseil-pdf-v" placeholder="https://...pdf"></div>
+              <div class="ig-file" id="conseil-pdf-file"><input type="file" accept=".pdf" onchange="filePdf(this,'conseil-pdf-v')"></div>
+              <small style="color:var(--lt);font-size:.72rem;margin-top:.4rem;display:block;">Laisser vide si pas de PDF</small>
+            </div>
+            <button class="bp" onclick="saveConseil()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTE DES ELEVES -->
+      <div class="panel" id="panel-liste_eleves">
+        <div class="panel-hd"><h2>Listes des élèves</h2><p>Gérez les listes d'élèves par niveau — PDF par classe</p></div>
+        <button class="ba" onclick="openPdfDocMod('eleves',null)" style="margin-bottom:1.5rem;">Ajouter une liste PDF</button>
+        <div class="ilist" id="elevesList"></div>
+      </div>
+
+      <!-- ENS INFOS -->
+      <div class="panel" id="panel-ens_infos">
+        <div class="panel-hd"><h2>Informations enseignants</h2><p>Documents d'information pour le corps enseignant — PDF</p></div>
+        <button class="ba" onclick="openPdfDocMod('ens_infos',null)" style="margin-bottom:1.5rem;">Ajouter un document PDF</button>
+        <div class="ilist" id="ensInfosList"></div>
+      </div>
+
+      <!-- ACTIVITES FIN DE TRIMESTRE -->
+      <div class="panel" id="panel-activites">
+        <div class="panel-hd"><h2>Activités de fin de trimestre</h2><p>Documents PDF des activités pédagogiques en fin de période</p></div>
+        <button class="ba" onclick="openPdfDocMod('activites',null)" style="margin-bottom:1.5rem;">Ajouter un document PDF</button>
+        <div class="ilist" id="activitesList"></div>
+      </div>
+
+      <!-- CONSEILS D'ENSEIGNEMENTS -->
+      <div class="panel" id="panel-conseils_ens">
+        <div class="panel-hd"><h2>Conseils d'Enseignements</h2><p>Comptes rendus et documents des conseils d'enseignement — PDF</p></div>
+        <button class="ba" onclick="openPdfDocMod('conseils_ens',null)" style="margin-bottom:1.5rem;">Ajouter un document PDF</button>
+        <div class="ilist" id="conseilsEnsList"></div>
+      </div>
+
+      <!-- PARENTS HORAIRES -->
+      <div class="panel" id="panel-parents_horaires">
+        <div class="panel-hd"><h2>Horaires des cours</h2><p>PDF des emplois du temps par classe</p></div>
+        <button class="ba" onclick="openPdfDocMod('horaires',null)" style="margin-bottom:1.5rem;">Ajouter un horaire PDF</button>
+        <div class="ilist" id="horairesList"></div>
+      </div>
+
+      <!-- PARENTS EXAMENS BLANCS -->
+      <div class="panel" id="panel-parents_examens">
+        <div class="panel-hd"><h2>Examens blancs</h2><p>Calendriers et sujets des examens blancs — PDF</p></div>
+        <button class="ba" onclick="openPdfDocMod('examens',null)" style="margin-bottom:1.5rem;">Ajouter un document examens PDF</button>
+        <div class="ilist" id="examensList"></div>
+      </div>
+
+      <!-- VISIBILITE -->
+      <div class="panel" id="panel-visibility">
+        <div class="panel-hd"><h2>Visibilité des pages</h2><p>Activez ou désactivez l'affichage de chaque section du site public</p></div>
+        <div id="visibilityPanelContent"></div>
+        <div style="margin-top:1.5rem;"><button class="bp" onclick="saveVisibility()">Enregistrer la visibilité</button></div>
+      </div>
+
+      <!-- SECURITE -->
+      <div class="panel" id="panel-security">
+        <div class="panel-hd"><h2>Mot de passe administrateur</h2><p>Sécurité Firebase activée</p></div>
+        <div class="ac" style="max-width:500px;">
+          <h3>Modification des accès</h3>
+          <p style="font-size:.85rem; color:var(--md); line-height:1.6; margin-bottom:1.5rem;">
+            Votre site est désormais protégé par <strong>Firebase Authentication</strong> de Google.<br><br>
+            Pour changer votre mot de passe, modifier votre email ou ajouter un nouvel administrateur, veuillez vous rendre directement sur votre <strong>Console Firebase > Authentication</strong>.
+          </p>
+          <button class="bp" onclick="window.open('https://console.firebase.google.com/', '_blank')">Ouvrir Firebase Console</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL SLIDE -->
+<div class="mb" id="mod-slide">
+  <div class="mbox">
+    <div class="mhead"><h3 id="slide-mt">Slide carrousel</h3><button class="mclose" onclick="closeMod('mod-slide')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="ig"><label>Image du slide</label>
+        <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('sl-img','url')">URL</button><button class="ig-tab" onclick="swImg('sl-img','file')">Fichier</button></div>
+        <div class="ig-url show" id="sl-img-url"><input type="text" id="sl-img-v" placeholder="https://..." oninput="prevImg('sl-img-p',this.value)"></div>
+        <div class="ig-file" id="sl-img-file"><input type="file" accept="image/*" onchange="fileImg(this,'sl-img-v','sl-img-p')"></div>
+        <img id="sl-img-p" class="ig-prev" src="" alt="">
+      </div>
+      <div class="fg"><label>Tag (ex: Excellence)</label><input id="sl-tag" type="text"></div>
+      <div class="fg"><label>Titre du slide</label><input id="sl-title" type="text"></div>
+      <input type="hidden" id="sl-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-slide')">Annuler</button><button class="bp" onclick="saveSlide()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL EVENT -->
+<div class="mb" id="mod-ev">
+  <div class="mbox">
+    <div class="mhead"><h3 id="ev-mt">Actualité</h3><button class="mclose" onclick="closeMod('mod-ev')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="ig"><label>Image</label>
+        <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('ev-img','url')">URL</button><button class="ig-tab" onclick="swImg('ev-img','file')">Fichier</button></div>
+        <div class="ig-url show" id="ev-img-url"><input type="text" id="ev-img-v" placeholder="https://..." oninput="prevImg('ev-img-p',this.value)"></div>
+        <div class="ig-file" id="ev-img-file"><input type="file" accept="image/*" onchange="fileImg(this,'ev-img-v','ev-img-p')"></div>
+        <img id="ev-img-p" class="ig-prev" src="" alt="">
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Date</label><input id="ev-date" type="text" placeholder="Mars 2026"></div>
+        <div class="fg"><label>Catégorie</label><input id="ev-tag" type="text" placeholder="Vie scolaire"></div>
+      </div>
+      <div class="fg"><label>Titre</label><input id="ev-title" type="text"></div>
+      <div class="fg"><label>Description</label><textarea id="ev-text" rows="4"></textarea></div>
+      <input type="hidden" id="ev-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-ev')">Annuler</button><button class="bp" onclick="saveEvent()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL NOTE -->
+<div class="mb" id="mod-note">
+  <div class="mbox">
+    <div class="mhead"><h3 id="note-mt">Note</h3><button class="mclose" onclick="closeMod('mod-note')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Date</label><input id="note-date" type="text"></div>
+        <div class="fg"><label>Titre</label><input id="note-title" type="text"></div>
+      </div>
+      <div class="ig" style="margin-bottom:.8rem;">
+        <label>PDF associé</label>
+        <div class="ig-tabs">
+          <button class="ig-tab active" onclick="swPdf('note-pdf','url')">URL PDF</button>
+          <button class="ig-tab" onclick="swPdf('note-pdf','file')">Upload PDF</button>
+        </div>
+        <div class="ig-url show" id="note-pdf-url"><input type="text" id="note-pdf-v" placeholder="https://...pdf"></div>
+        <div class="ig-file" id="note-pdf-file"><input type="file" accept=".pdf" onchange="filePdf(this,'note-pdf-v')"></div>
+        <small style="color:var(--lt);font-size:.72rem;margin-top:.4rem;display:block;">Laisser vide si pas de PDF</small>
+      </div>
+      <input type="hidden" id="note-type-v">
+      <input type="hidden" id="note-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-note')">Annuler</button><button class="bp" onclick="saveNote()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL ENSEIGNANT -->
+<div class="mb" id="mod-tch">
+  <div class="mbox">
+    <div class="mhead"><h3>Enseignant</h3><button class="mclose" onclick="closeMod('mod-tch')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Nom et Prénoms</label><input id="tch-name" type="text"></div>
+        <div class="fg"><label>Discipline / Matière</label><input id="tch-subj" type="text"></div>
+      </div>
+      <div class="fg"><label>Cycle d'intervention</label><input id="tch-cycle" type="text" placeholder="Secondaire & Lycée"></div>
+      <input type="hidden" id="tch-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-tch')">Annuler</button><button class="bp" onclick="saveTch()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL PROF PRINCIPAL -->
+<div class="mb" id="mod-pr">
+  <div class="mbox">
+    <div class="mhead"><h3>Professeur principal</h3><button class="mclose" onclick="closeMod('mod-pr')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Classe</label><input id="pr-class" type="text" placeholder="6ème A"></div>
+        <div class="fg"><label>Nom du professeur</label><input id="pr-name" type="text"></div>
+      </div>
+      <div class="fg"><label>Contact interne</label><input id="pr-contact" type="text" placeholder="Poste 112"></div>
+      <input type="hidden" id="pr-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-pr')">Annuler</button><button class="bp" onclick="savePr()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL SURVEILLANCE -->
+<div class="mb" id="mod-sv">
+  <div class="mbox">
+    <div class="mhead"><h3>Surveillance</h3><button class="mclose" onclick="closeMod('mod-sv')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fg"><label>Date</label><input id="sv-date" type="text" placeholder="12 Mars 2026"></div>
+      <div class="fg"><label>Épreuve</label><input id="sv-exam" type="text"></div>
+      <div class="fg"><label>Salles et surveillants</label><input id="sv-room" type="text"></div>
+      <input type="hidden" id="sv-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-sv')">Annuler</button><button class="bp" onclick="saveSv()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL VISITES DE CLASSE -->
+<div class="mb" id="mod-vi">
+  <div class="mbox">
+    <div class="mhead"><h3 id="vi-mt">Visite de classe</h3><button class="mclose" onclick="closeMod('mod-vi')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Date prévue</label><input id="vi-date" type="text" placeholder="20 Mars 2026"></div>
+        <div class="fg"><label>Classe</label><input id="vi-class" type="text" placeholder="6ème A"></div>
+      </div>
+      <div class="fg"><label>Enseignant visité</label><input id="vi-teacher" type="text" placeholder="M. TOURE Ali"></div>
+      <div class="fg"><label>Observations / Notes</label><textarea id="vi-obs" rows="3"></textarea></div>
+      <input type="hidden" id="vi-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-vi')">Annuler</button><button class="bp" onclick="saveVi()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL PAGE EDITOR -->
+<div class="mb" id="mod-page">
+  <div class="mbox" style="max-width:720px;">
+    <div class="mhead"><h3 id="page-mt">Éditer la page</h3><button class="mclose" onclick="closeMod('mod-page')">&#x2715;</button></div>
+    <div class="mbody" id="page-body"></div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-page')">Annuler</button><button class="bp" onclick="savePage()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL GALERIE VIDEO/PHOTO -->
+<div class="mb" id="mod-gal">
+  <div class="mbox">
+    <div class="mhead"><h3 id="gal-mt">Ajouter un média</h3><button class="mclose" onclick="closeMod('mod-gal')">&#x2715;</button></div>
+    <div class="mbody">
+      <div id="gal-photo-section">
+        <div class="ig"><label>Photo</label>
+          <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('gal-img','url')">URL</button><button class="ig-tab" onclick="swImg('gal-img','file')">Fichier</button></div>
+          <div class="ig-url show" id="gal-img-url"><input type="text" id="gal-img-v" placeholder="https://..." oninput="prevImg('gal-img-p',this.value)"></div>
+          <div class="ig-file" id="gal-img-file"><input type="file" accept="image/*" onchange="fileImg(this,'gal-img-v','gal-img-p')"></div>
+          <img id="gal-img-p" class="ig-prev" src="" alt="">
+        </div>
+      </div>
+      <div id="gal-video-section" style="display:none;">
+        <div class="fg">
+          <label>URL de la vidéo</label>
+          <input type="text" id="gal-video-v" placeholder="https://youtube.com/... ou https://...mp4">
+          <small>Accepte YouTube, Vimeo ou lien direct MP4</small>
+        </div>
+        <div class="fg">
+          <label>Image de couverture (miniature)</label>
+          <div class="ig">
+            <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('gal-vthumb','url')">URL</button><button class="ig-tab" onclick="swImg('gal-vthumb','file')">Fichier</button></div>
+            <div class="ig-url show" id="gal-vthumb-url"><input type="text" id="gal-vthumb-v" placeholder="https://..." oninput="prevImg('gal-vthumb-p',this.value)"></div>
+            <div class="ig-file" id="gal-vthumb-file"><input type="file" accept="image/*" onchange="fileImg(this,'gal-vthumb-v','gal-vthumb-p')"></div>
+            <img id="gal-vthumb-p" class="ig-prev" src="" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="fg"><label>Légende (optionnel)</label><input id="gal-cap" type="text"></div>
+      <input type="hidden" id="gal-type-v" value="photo">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-gal')">Annuler</button><button class="bp" onclick="saveGal()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL PDF DOC GENERIQUE -->
+<div class="mb" id="mod-pdfdoc">
+  <div class="mbox">
+    <div class="mhead"><h3 id="pdfdoc-mt">Document PDF</h3><button class="mclose" onclick="closeMod('mod-pdfdoc')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Titre du document</label><input id="pdfdoc-title" type="text"></div>
+        <div class="fg"><label>Date / Année</label><input id="pdfdoc-date" type="text" placeholder="Année 2026-2027"></div>
+      </div>
+      <div class="fg"><label>Description (optionnel)</label><input id="pdfdoc-desc" type="text"></div>
+      <div class="ig" style="margin-bottom:.8rem;">
+        <label>Fichier PDF</label>
+        <div class="ig-tabs">
+          <button class="ig-tab active" onclick="swPdf('pdfdoc-pdf','url')">URL PDF</button>
+          <button class="ig-tab" onclick="swPdf('pdfdoc-pdf','file')">Upload PDF</button>
+        </div>
+        <div class="ig-url show" id="pdfdoc-pdf-url"><input type="text" id="pdfdoc-pdf-v" placeholder="https://...pdf"></div>
+        <div class="ig-file" id="pdfdoc-pdf-file"><input type="file" accept=".pdf" onchange="filePdf(this,'pdfdoc-pdf-v')"></div>
+        <small style="color:var(--lt);font-size:.72rem;margin-top:.4rem;display:block;">Laissez vide si pas de PDF</small>
+      </div>
+      <input type="hidden" id="pdfdoc-cat-v">
+      <input type="hidden" id="pdfdoc-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-pdfdoc')">Annuler</button><button class="bp" onclick="savePdfDoc()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL CLUB -->
+<div class="mb" id="mod-club">
+  <div class="mbox">
+    <div class="mhead"><h3 id="club-mt">Club</h3><button class="mclose" onclick="closeMod('mod-club')">&#x2715;</button></div>
+    <div class="mbody">
+      <div class="fr">
+        <div class="fg"><label>Nom du club</label><input id="club-name" type="text" placeholder="Club Théâtre"></div>
+        <div class="fg"><label>Responsable</label><input id="club-resp" type="text"></div>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="club-desc" rows="3"></textarea></div>
+      <div class="fg"><label>Nombre de membres</label><input id="club-members" type="number" placeholder="25"></div>
+      
+      <div class="ig" style="margin-bottom:.8rem;">
+        <label>Document PDF du club (Éléments/Infos additionnelles)</label>
+        <div class="ig-tabs">
+          <button class="ig-tab active" onclick="swPdf('club-pdf','url')">URL PDF</button>
+          <button class="ig-tab" onclick="swPdf('club-pdf','file')">Upload PDF</button>
+        </div>
+        <div class="ig-url show" id="club-pdf-url"><input type="text" id="club-pdf-v" placeholder="https://...pdf"></div>
+        <div class="ig-file" id="club-pdf-file"><input type="file" accept=".pdf" onchange="filePdf(this,'club-pdf-v')"></div>
+        <small style="color:var(--lt);font-size:.72rem;margin-top:.4rem;display:block;">Laissez vide si aucun fichier</small>
+      </div>
+
+      <div class="ig">
+        <label>Image du club (optionnel)</label>
+        <div class="ig-tabs">
+          <button class="ig-tab active" onclick="swImg('club-img','url')">URL</button>
+          <button class="ig-tab" onclick="swImg('club-img','file')">Fichier</button>
+        </div>
+        <div class="ig-url show" id="club-img-url"><input type="text" id="club-img-v" placeholder="https://..." oninput="prevImg('club-img-p',this.value)"></div>
+        <div class="ig-file" id="club-img-file"><input type="file" accept="image/*" onchange="fileImg(this,'club-img-v','club-img-p')"></div>
+        <img id="club-img-p" class="ig-prev" src="" alt="">
+      </div>
+      <input type="hidden" id="club-idx">
+    </div>
+    <div class="mfoot"><button class="be" onclick="closeMod('mod-club')">Annuler</button><button class="bp" onclick="saveClub()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- LIAISON CMS -->
+<script src="../cms.js"></script>
+
+<script>
+/* ═══ LOADER SYSTEM ═══ */
+function showLoader() { document.getElementById('appLoader').classList.add('active'); }
+function hideLoader() { document.getElementById('appLoader').classList.remove('active'); }
+
+/* ═══ STORAGE (cms.js) + CACHE ═══ */
+const _gdCache = new Map();
+async function sGet(k){ return await cmsGet(k); }
+async function sSet(k,val){ _gdCache.set(k,val); return await cmsSet(k,val); }
+
+/* ═══ DEFAULTS ═══ */
+const D = CMS_DEFAULTS || {
+  'site:config':{name:'Groupe Scolaire Le Miri',code:'041604',tel:'+225 27 22 52 79 00',email:'lemiri2015ac@gmail.com',address:'01 BP 8051, Abidjan 01 \u2014 Bingerville',year:'2026-2027',s1:542,s2:105,s3:100,s4:82,s5:95,dname:'M. LAWSON Silvere',dtitle:'Directeur des Etudes',dphoto:'https://static.wixstatic.com/media/568692_3e5e5748f7054e3bb0d5a3576f283e20~mv2.jpeg',dmsg:"Chers parents, chers eleves,\n\nC'est avec une immense fierte que je vous souhaite la bienvenue au Groupe Scolaire Le Miri..."},
+  'site:slides':[], 'site:events':[], 'site:ticker':[], 'site:notes_service':[], 'site:notes_parents':[],
+  'site:palmares':{cepe:{},bepc:{},bac:{}}, 'site:teachers':[], 'site:principals':[], 'site:surveillance':[],
+  'site:visites':[], 'site:gallery2':[], 'site:conseil':{text:''}, 'site:pages':{},
+  'site:eleves':[], 'site:ens_infos':[], 'site:horaires':[], 'site:examens':[], 'site:clubs':[],
+  'site:pageVisibility':{}
+};
+
+async function gd(k){
+  if(_gdCache.has(k)) return _gdCache.get(k);
+  const val=await sGet(k);
+  const result = val!==null ? val : ((CMS_DEFAULTS&&CMS_DEFAULTS[k]!==undefined) ? CMS_DEFAULTS[k] : (D[k]!==undefined ? D[k] : []));
+  _gdCache.set(k,result);
+  return result;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SÉCURITÉ OFFICIELLE : FIREBASE AUTHENTICATION
+══════════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyC-eM4IXBfVfRogmhSoLeWeaf-hJiQnbrg",
+  authDomain: "lemiri-cms.firebaseapp.com",
+  projectId: "lemiri-cms",
+  databaseURL: "https://lemiri-cms-default-rtdb.europe-west1.firebasedatabase.app"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// Surveille la connexion de l'utilisateur
+auth.onAuthStateChanged(async (user) => {
+  showLoader();
+  if (user) {
+    // Connecté — récupère le token frais (force=true pour éviter token expiré)
+    window.FIREBASE_ID_TOKEN = await user.getIdToken(true);
+    // Rafraîchit le token automatiquement toutes les 55 min (expire après 60 min)
+    if (window._tokenRefreshInterval) clearInterval(window._tokenRefreshInterval);
+    window._tokenRefreshInterval = setInterval(async () => {
+      try { window.FIREBASE_ID_TOKEN = await user.getIdToken(true); } catch(e) {}
+    }, 55 * 60 * 1000);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    document.getElementById('sbUser').textContent = user.email;
+    await initAdmin();
+  } else {
+    // Déconnecté
+    if (window._tokenRefreshInterval) clearInterval(window._tokenRefreshInterval);
+    window.FIREBASE_ID_TOKEN = null;
+    document.getElementById('adminApp').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+  hideLoader();
+});
+
+async function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+
+  if(!u || !p) {
+    err.textContent = "Veuillez remplir tous les champs.";
+    err.style.display = 'block';
+    return;
+  }
+
+  showLoader();
+  try {
+    err.style.display = 'none';
+    await auth.signInWithEmailAndPassword(u, p);
+    // Le onAuthStateChanged prend le relais
+  } catch (error) {
+    hideLoader();
+    err.textContent = "Email ou mot de passe incorrect.";
+    err.style.display = 'block';
+  }
+}
+
+function doLogout(){
+  showLoader();
+  auth.signOut().then(() => {
+    document.getElementById('loginPass').value = '';
+    hideLoader();
+  });
+}
+
+function openSite(){window.open('../index.html','_blank');}
+
+/* ═══ PANELS ═══ */
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('panel-'+name);
+  if(panel)panel.classList.add('active');
+  const btn=document.querySelector(`[data-panel="${name}"]`);
+  if(btn)btn.classList.add('active');
+  loadPanel(name);
+}
+async function loadPanel(name){
+  showLoader();
+  const map={
+    dashboard:loadDash, config:loadConfig, hero:loadSlides, actualites:loadEvents,
+    ticker:loadTicker, notes:()=>loadNotes('service'), notes_parents:()=>loadNotes('parents'),
+    parents_notes:()=>loadNotes('parents'), parents_horaires:()=>loadPdfDocs('horaires'),
+    parents_examens:()=>loadPdfDocs('examens'), liste_eleves:()=>loadPdfDocs('eleves'),
+    ens_infos:()=>loadPdfDocs('ens_infos'), activites:()=>loadPdfDocs('activites'),
+    conseils_ens:()=>loadPdfDocs('conseils_ens'), palmares:loadPalmares, enseignants:loadEns,
+    pages:loadPagesGrid, galerie:loadGallery, clubs:loadClubs, visibility:loadVisibility, security:()=>{}
+  };
+  if(map[name]) await map[name]();
+  hideLoader();
+}
+
+/* ═══ TAB SWITCHER ═══ */
+function swTab(prefix,name,btn){
+  document.querySelectorAll(`#panel-${prefix} .atab`).forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#panel-${prefix} .atpanel`).forEach(p=>p.classList.remove('active'));
+  document.getElementById(`${prefix}-${name}`).classList.add('active');
+  btn.classList.add('active');
+  if(name==='list')loadTchList();
+  if(name==='principals')loadPrList();
+  if(name==='surveil')loadSvList();
+  if(name==='visites')loadViList();
+}
+
+/* ═══ DASHBOARD ═══ */
+async function loadDash(){
+  const [ev,ns,np,te,sl,el,gl,cfg]=await Promise.all([
+    gd('site:events'),gd('site:notes_service'),gd('site:notes_parents'),
+    gd('site:teachers'),gd('site:slides'),gd('site:eleves'),gd('site:gallery2'),gd('site:config')
+  ]);
+  const setSafe = (id, val) => { const e = document.getElementById(id); if(e) e.textContent = val; };
+  setSafe('ds-ev', ev.length); setSafe('ds-ns', ns.length); setSafe('ds-np', np.length);
+  setSafe('ds-te', te.length); setSafe('ds-el', el.length); setSafe('ds-gl', gl.length);
+  setSafe('ds-sl', sl.length);
+  
+  const dInfo = document.getElementById('dashInfo');
+  if (dInfo && cfg) {
+    dInfo.innerHTML=`<div><strong>Établissement :</strong> ${cfg.name}</div><div><strong>Code :</strong> ${cfg.code}</div><div><strong>Téléphone :</strong> ${cfg.tel}</div><div><strong>Email :</strong> ${cfg.email}</div><div><strong>Adresse :</strong> ${cfg.address}</div><div><strong>Année académique :</strong> ${cfg.year}</div>`;
+  }
+}
+
+/* ═══ CONFIG ═══ */
+async function loadConfig(){
+  const c=await gd('site:config');
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
+  set('cfg-name',c.name);set('cfg-code',c.code);set('cfg-tel',c.tel);set('cfg-email',c.email);
+  set('cfg-address',c.address);set('cfg-year',c.year);
+  set('cfg-s1',c.s1);set('cfg-s2',c.s2);set('cfg-s3',c.s3);set('cfg-s4',c.s4);set('cfg-s5',c.s5||95);
+  const ss=document.getElementById('cfg-showStats');if(ss)ss.checked=(c.showStats!==false);
+  set('cfg-dname',c.dname);set('cfg-dtitle',c.dtitle);set('cfg-dphoto',c.dphoto);set('cfg-dmsg',c.dmsg);
+  set('cfg-fichesPdf',c.fichesPdf||'');set('cfg-paiementPdf',c.paiementPdf||'');set('cfg-reglementPdf',c.reglementPdf||'');
+  set('cfg-hero-t1',c.heroT1);set('cfg-hero-t2',c.heroT2);set('cfg-hero-desc',c.heroDesc);set('cfg-hero-btn',c.heroBtn);
+  set('cfg-logo-v',c.logo);
+  if(c.dphoto)prevImg('dphoto-p',c.dphoto);
+  if(c.logo)prevImg('cfg-logo-p',c.logo);
+}
+async function saveConfig(){
+  showLoader();
+  const _ss=document.getElementById('cfg-showStats');
+  const c={name:v('cfg-name'),code:v('cfg-code'),tel:v('cfg-tel'),email:v('cfg-email'),address:v('cfg-address'),year:v('cfg-year'),s1:+v('cfg-s1')||0,s2:+v('cfg-s2')||0,s3:+v('cfg-s3')||0,s4:+v('cfg-s4')||0,s5:+v('cfg-s5')||95,showStats:_ss?_ss.checked:true,dname:v('cfg-dname'),dtitle:v('cfg-dtitle'),dphoto:v('cfg-dphoto'),dmsg:v('cfg-dmsg'),fichesPdf:v('cfg-fichesPdf'),paiementPdf:v('cfg-paiementPdf'),reglementPdf:v('cfg-reglementPdf'),heroT1:v('cfg-hero-t1'),heroT2:v('cfg-hero-t2'),heroDesc:v('cfg-hero-desc'),heroBtn:v('cfg-hero-btn'),logo:v('cfg-logo-v')};
+  await sSet('site:config',c);
+  hideLoader();
+  toast('Paramètres enregistrés');
+}
+
+/* ═══ SLIDES ═══ */
+async function loadSlides(){
+  const sl=await gd('site:slides');
+  const container=document.getElementById('slidesList');
+  if(!sl.length){container.innerHTML='<p style="color:var(--md);font-size:.88rem;">Aucun slide.</p>';return;}
+  container.innerHTML=sl.map((s,i)=>`
+    <div class="irow wi sortable-drag-enabled" data-idx="${i}">
+      <span class="drag-handle" title="Glisser pour réordonner">⠿</span>
+      <img class="ithumb" src="${h(s.img)}" onerror="this.style.background='var(--cr)'">
+      <div class="iinfo"><h4>${h(s.title)}</h4><p>${h(s.tag)}</p></div>
+      <div class="iacts">
+        <button class="be" onclick="openSlideMod(${i})">Modifier</button>
+        <button class="bd" onclick="delItem('site:slides',${i},loadSlides)">Supprimer</button>
+      </div>
+    </div>`).join('');
+  // Initialise ou réinitialise SortableJS
+  if(window._slidesSortable) window._slidesSortable.destroy();
+  window._slidesSortable = Sortable.create(container, {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onEnd: async function(evt) {
+      if(evt.oldIndex === evt.newIndex) return;
+      showLoader();
+      const slides = await gd('site:slides');
+      const moved = slides.splice(evt.oldIndex, 1)[0];
+      slides.splice(evt.newIndex, 0, moved);
+      await sSet('site:slides', slides);
+      hideLoader();
+      toast('Ordre du carrousel mis à jour');
+      await loadSlides();
+    }
+  });
+}
+function openSlideMod(idx){
+  document.getElementById('slide-mt').textContent=idx===null?'Nouveau slide':'Modifier le slide';
+  document.getElementById('sl-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:slides').then(sl=>{const s=sl[idx];document.getElementById('sl-img-v').value=s.img;document.getElementById('sl-tag').value=s.tag;document.getElementById('sl-title').value=s.title;prevImg('sl-img-p',s.img);});}
+  else{['sl-img-v','sl-tag','sl-title'].forEach(id=>document.getElementById(id).value='');document.getElementById('sl-img-p').classList.remove('show');}
+  openMod('mod-slide');
+}
+async function saveSlide(){
+  const idx=document.getElementById('sl-idx').value;
+  const item={img:v('sl-img-v'),tag:v('sl-tag'),title:v('sl-title')};
+  if(!item.img||!item.title){toast('Image et titre requis','error');return;}
+  showLoader();
+  const sl=await gd('site:slides');
+  if(idx==='')sl.push(item);else sl[+idx]=item;
+  await sSet('site:slides',sl);closeMod('mod-slide');await loadSlides();
+  hideLoader(); toast('Slide enregistré');
+}
+
+/* ═══ EVENTS ═══ */
+async function loadEvents(){
+  const ev=await gd('site:events');
+  document.getElementById('eventsList').innerHTML=ev.length?ev.map((e,i)=>`<div class="irow wi"><img class="ithumb" src="${e.img}" onerror="this.style.background='var(--cr)'"><div class="iinfo"><h4>${h(e.title)}</h4><p>${h(e.date)} — <span class="bdg bdg-o">${h(e.tag)}</span></p></div><div class="iacts"><button class="be" onclick="openEvMod(${i})">Modifier</button><button class="bd" onclick="delItem('site:events',${i},loadEvents)">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);font-size:.88rem;">Aucune actualité.</p>';
+}
+function openEvMod(idx){
+  document.getElementById('ev-mt').textContent=idx===null?'Nouvelle actualité':'Modifier l\'actualité';
+  document.getElementById('ev-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:events').then(ev=>{const e=ev[idx];document.getElementById('ev-img-v').value=e.img;document.getElementById('ev-date').value=e.date;document.getElementById('ev-tag').value=e.tag;document.getElementById('ev-title').value=e.title;document.getElementById('ev-text').value=e.text;prevImg('ev-img-p',e.img);});}
+  else{['ev-img-v','ev-date','ev-tag','ev-title','ev-text'].forEach(id=>document.getElementById(id).value='');document.getElementById('ev-img-p').classList.remove('show');}
+  openMod('mod-ev');
+}
+async function saveEvent(){
+  const idx=document.getElementById('ev-idx').value;
+  const item={img:v('ev-img-v'),date:v('ev-date'),tag:v('ev-tag'),title:v('ev-title'),text:v('ev-text')};
+  if(!item.title){toast('Titre requis','error');return;}
+  showLoader();
+  const ev=await gd('site:events');
+  if(idx==='')ev.unshift(item);else ev[+idx]=item;
+  await sSet('site:events',ev);closeMod('mod-ev');await loadEvents();
+  hideLoader(); toast('Actualité enregistrée');
+}
+
+/* ═══ TICKER ═══ */
+async function loadTicker(){const items=await gd('site:ticker');renderTicker(items);}
+function renderTicker(items){document.getElementById('tickerItems').innerHTML=items.map((t,i)=>`<div class="ticker-row"><input type="text" value="${h(t)}" id="tk-${i}"><button class="bd" onclick="delTicker(${i})">Supprimer</button></div>`).join('');}
+async function addTicker(){const items=await gd('site:ticker');items.push('Nouveau message');await sSet('site:ticker',items);renderTicker(items);}
+async function delTicker(idx){const items=await gd('site:ticker');items.splice(idx,1);await sSet('site:ticker',items);renderTicker(items);}
+async function saveTicker(){showLoader(); const c=document.querySelectorAll('[id^="tk-"]').length;const items=[];for(let i=0;i<c;i++){const el=document.getElementById('tk-'+i);if(el)items.push(el.value);}await sSet('site:ticker',items);hideLoader(); toast('Bandeau enregistré');}
+
+/* ═══ NOTES ═══ */
+async function loadNotes(type){
+  const key=type==='service'?'site:notes_service':'site:notes_parents';
+  const listId=type==='service'?'notesList':'notesParentsList';
+  const notes=await gd(key);
+  
+  const listsToFill = [];
+  if (document.getElementById(listId)) listsToFill.push(document.getElementById(listId));
+  if (type==='parents' && document.getElementById('parentsNotesListRedondant')) listsToFill.push(document.getElementById('parentsNotesListRedondant'));
+
+  const html = notes.length?notes.map((n,i)=>`<div class="irow ni"><div class="iinfo"><h4>${h(n.title)}</h4><p>${h(n.date)}${n.pdf?` — <a href="${h(n.pdf)}" target="_blank" style="color:var(--tr);font-weight:700;">Voir PDF</a>`:''}</p></div><div class="iacts"><button class="be" onclick="openNoteMod('${type}',${i})">Modifier</button><button class="bd" onclick="delItem('${key}',${i},()=>loadNotes('${type}'))">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);font-size:.88rem;">Aucune note.</p>';
+  
+  listsToFill.forEach(l => l.innerHTML = html);
+}
+function openNoteMod(type,idx){
+  const key=type==='service'?'site:notes_service':'site:notes_parents';
+  document.getElementById('note-mt').textContent=idx===null?'Nouvelle note':'Modifier la note';
+  document.getElementById('note-type-v').value=type;
+  document.getElementById('note-idx').value=idx===null?'':idx;
+  if(idx!==null){gd(key).then(notes=>{const n=notes[idx];document.getElementById('note-date').value=n.date;document.getElementById('note-title').value=n.title;document.getElementById('note-pdf-v').value=n.pdf||'';});}
+  else{['note-date','note-title','note-pdf-v'].forEach(id=>document.getElementById(id).value='');}
+  openMod('mod-note');
+}
+async function saveNote(){
+  const type=document.getElementById('note-type-v').value;
+  const idx=document.getElementById('note-idx').value;
+  const key=type==='service'?'site:notes_service':'site:notes_parents';
+  const item={date:v('note-date'),title:v('note-title'),pdf:v('note-pdf-v')};
+  if(!item.title){toast('Titre requis','error');return;}
+  showLoader();
+  const notes=await gd(key);
+  if(idx==='')notes.push(item);else notes[+idx]=item;
+  await sSet(key,notes);closeMod('mod-note');await loadNotes(type);
+  hideLoader(); toast('Note enregistrée');
+}
+
+/* ═══ PALMARES ═══ */
+async function loadPalmares(){
+  const pal=await gd('site:palmares');
+  const fill=(pfx,d)=>{
+    document.getElementById(`p-${pfx}-r`).value=d.rate||'';
+    document.getElementById(`p-${pfx}-y`).value=d.year||'';
+    document.getElementById(`p-${pfx}-t`).value=d.text||'';
+    if(d.img&&document.getElementById(`p-${pfx}-i`)){document.getElementById(`p-${pfx}-i`).value=d.img;prevImg(`${pfx}-p`,d.img);}
+  };
+  fill('cepe',pal.cepe);fill('bepc',pal.bepc);fill('bac',pal.bac);
+}
+async function savePalmares(){
+  showLoader();
+  const pal={cepe:{rate:v('p-cepe-r'),year:v('p-cepe-y'),text:v('p-cepe-t'),img:v('p-cepe-i')},bepc:{rate:v('p-bepc-r'),year:v('p-bepc-y'),text:v('p-bepc-t'),img:v('p-bepc-i')},bac:{rate:v('p-bac-r'),year:v('p-bac-y'),text:v('p-bac-t'),img:v('p-bac-i')||''}};
+  await sSet('site:palmares',pal);
+  hideLoader(); toast('Palmarès enregistré');
+}
+
+/* ═══ ENSEIGNANTS & SURVEILLANCES/VISITES ═══ */
+async function loadEns(){await loadTchList();await loadPrList();await loadSvList();await loadViList();}
+
+async function loadTchList(){
+  const list=document.getElementById('teachersList');if(!list)return;
+  const teachers=await gd('site:teachers');
+  list.innerHTML=teachers.length?teachers.map((t,i)=>`<div class="irow ni"><div class="iinfo"><h4>${h(t.name)}</h4><p>${h(t.subj)} — ${h(t.cycle)}</p></div><div class="iacts"><button class="be" onclick="openTchMod(${i})">Modifier</button><button class="bd" onclick="delItem('site:teachers',${i},loadTchList)">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);">Aucun enseignant.</p>';
+}
+function openTchMod(idx){
+  document.getElementById('tch-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:teachers').then(t=>{document.getElementById('tch-name').value=t[idx].name;document.getElementById('tch-subj').value=t[idx].subj;document.getElementById('tch-cycle').value=t[idx].cycle;});}
+  else{['tch-name','tch-subj','tch-cycle'].forEach(id=>document.getElementById(id).value='');}
+  openMod('mod-tch');
+}
+async function saveTch(){
+  const idx=document.getElementById('tch-idx').value;
+  const item={name:v('tch-name'),subj:v('tch-subj'),cycle:v('tch-cycle')};
+  if(!item.name){toast('Nom requis','error');return;}
+  showLoader();
+  const teachers=await gd('site:teachers');
+  if(idx==='')teachers.push(item);else teachers[+idx]=item;
+  await sSet('site:teachers',teachers);closeMod('mod-tch');await loadTchList();
+  hideLoader(); toast('Enseignant enregistré');
+}
+
+async function loadPrList(){
+  const list=document.getElementById('principalsList');if(!list)return;
+  const items=await gd('site:principals');
+  list.innerHTML=items.length?items.map((p,i)=>`<div class="irow ni"><div class="iinfo"><h4>${h(p.name)}</h4><p>Classe : ${h(p.classe)} — ${h(p.contact)}</p></div><div class="iacts"><button class="be" onclick="openPrMod(${i})">Modifier</button><button class="bd" onclick="delItem('site:principals',${i},loadPrList)">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);">Aucun prof principal.</p>';
+}
+function openPrMod(idx){
+  document.getElementById('pr-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:principals').then(p=>{document.getElementById('pr-class').value=p[idx].classe;document.getElementById('pr-name').value=p[idx].name;document.getElementById('pr-contact').value=p[idx].contact;});}
+  else{['pr-class','pr-name','pr-contact'].forEach(id=>document.getElementById(id).value='');}
+  openMod('mod-pr');
+}
+async function savePr(){
+  const idx=document.getElementById('pr-idx').value;
+  const item={classe:v('pr-class'),name:v('pr-name'),contact:v('pr-contact')};
+  if(!item.name){toast('Nom requis','error');return;}
+  showLoader();
+  const items=await gd('site:principals');
+  if(idx==='')items.push(item);else items[+idx]=item;
+  await sSet('site:principals',items);closeMod('mod-pr');await loadPrList();
+  hideLoader(); toast('Professeur principal enregistré');
+}
+
+async function loadSvList(){
+  const list=document.getElementById('surveilList');if(!list)return;
+  const items=await gd('site:surveillance');
+  list.innerHTML=items.length?items.map((s,i)=>`<div class="irow ni"><div class="iinfo"><h4>${h(s.exam)}</h4><p>${h(s.date)} — ${h(s.room)}</p></div><div class="iacts"><button class="be" onclick="openSvMod(${i})">Modifier</button><button class="bd" onclick="delItem('site:surveillance',${i},loadSvList)">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);">Aucune surveillance.</p>';
+}
+function openSvMod(idx){
+  document.getElementById('sv-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:surveillance').then(s=>{document.getElementById('sv-date').value=s[idx].date;document.getElementById('sv-exam').value=s[idx].exam;document.getElementById('sv-room').value=s[idx].room;});}
+  else{['sv-date','sv-exam','sv-room'].forEach(id=>document.getElementById(id).value='');}
+  openMod('mod-sv');
+}
+async function saveSv(){
+  const idx=document.getElementById('sv-idx').value;
+  const item={date:v('sv-date'),exam:v('sv-exam'),room:v('sv-room')};
+  if(!item.exam){toast('Epreuve requise','error');return;}
+  showLoader();
+  const items=await gd('site:surveillance');
+  if(idx==='')items.push(item);else items[+idx]=item;
+  await sSet('site:surveillance',items);closeMod('mod-sv');await loadSvList();
+  hideLoader(); toast('Surveillance enregistrée');
+}
+
+async function loadViList(){
+  const list=document.getElementById('visitesList');if(!list)return;
+  const items=await gd('site:visites');
+  list.innerHTML=items.length?items.map((s,i)=>`<div class="irow ni"><div class="iinfo"><h4>${h(s.teacher)} — Classe : ${h(s.class)}</h4><p>Date : ${h(s.date)} — ${h(s.obs)}</p></div><div class="iacts"><button class="be" onclick="openViMod(${i})">Modifier</button><button class="bd" onclick="delItem('site:visites',${i},loadViList)">Supprimer</button></div></div>`).join(''):'<p style="color:var(--md);">Aucune visite programmée.</p>';
+}
+function openViMod(idx){
+  document.getElementById('vi-mt').textContent=idx===null?'Nouvelle visite':'Modifier la visite';
+  document.getElementById('vi-idx').value=idx===null?'':idx;
+  if(idx!==null){gd('site:visites').then(s=>{document.getElementById('vi-date').value=s[idx].date;document.getElementById('vi-class').value=s[idx].class;document.getElementById('vi-teacher').value=s[idx].teacher;document.getElementById('vi-obs').value=s[idx].obs||'';});}
+  else{['vi-date','vi-class','vi-teacher','vi-obs'].forEach(id=>document.getElementById(id).value='');}
+  openMod('mod-vi');
+}
+async function saveVi(){
+  const idx=document.getElementById('vi-idx').value;
+  const item={date:v('vi-date'),class:v('vi-class'),teacher:v('vi-teacher'),obs:v('vi-obs')};
+  if(!item.teacher || !item.date){toast('Date et Enseignant requis','error');return;}
+  showLoader();
+  const items=await gd('site:visites');
+  if(idx==='')items.push(item);else items[+idx]=item;
+  await sSet('site:visites',items);closeMod('mod-vi');await loadViList();
+  hideLoader(); toast('Visite de classe enregistrée');
+}
+
+/* ═══ PAGES EDITOR ═══ */
+const PAGE_DEFS=[{key:'historique',label:'Historique — Le MIRI',desc:'Page Administration'},{key:'reglement',label:'Règlement intérieur',desc:'Page Administration'},{key:'organigramme',label:'Organigramme',desc:'Page Administration'},{key:'maternelle',label:'Présentation Maternelle',desc:'Groupe Scolaire'},{key:'primaire',label:'Présentation Primaire',desc:'Groupe Scolaire'},{key:'secondaire',label:'Présentation Secondaire',desc:'Groupe Scolaire'},{key:'intro_mission',label:'Mission (accueil)',desc:'Page Accueil'}];
+function loadPagesGrid(){document.getElementById('pagesGrid').innerHTML=PAGE_DEFS.map(p=>`<div class="pitem" onclick="openPageEd('${p.key}','${h(p.label)}')"><h4>${p.label}</h4><p>${p.desc}</p></div>`).join('');}
+let curPageKey='';
+async function openPageEd(key,label){
+  curPageKey=key;
+  document.getElementById('page-mt').textContent='Modifier : '+label;
+  const pages=await gd('site:pages');
+  const page=pages[key]||{title:'',content:'',pdf:'',img:''};
+  const pdfField = key==='reglement' ? `<div class="fg"><label>PDF du règlement intérieur (URL)</label><input type="text" id="ped-pdf" value="${h(page.pdf||'')}" placeholder="https://...pdf"></div>` : '';
+  const gsKeys = ['maternelle','primaire','secondaire'];
+  const imgField = gsKeys.includes(key) ? `
+    <div class="ig" style="margin-top:.4rem;">
+      <label>Image de la section</label>
+      <div class="ig-tabs"><button class="ig-tab active" onclick="swImg('ped-img','url')">URL</button><button class="ig-tab" onclick="swImg('ped-img','file')">Fichier</button></div>
+      <div class="ig-url show" id="ped-img-url"><input type="text" id="ped-img-v" placeholder="https://..." value="${h(page.img||'')}" oninput="prevImg('ped-img-p',this.value)"></div>
+      <div class="ig-file" id="ped-img-file"><input type="file" accept="image/*" onchange="fileImg(this,'ped-img-v','ped-img-p')"></div>
+      <img id="ped-img-p" class="ig-prev" src="" alt="">
+    </div>` : '';
+  document.getElementById('page-body').innerHTML=`<div class="fg"><label>Titre de la section</label><input type="text" id="ped-title" value="${h(page.title)}"></div><div class="fg"><label>Description (texte d'introduction)</label><textarea id="ped-content" rows="6">${h(page.content)}</textarea></div>${imgField}${pdfField}`;
+  if(gsKeys.includes(key) && page.img) prevImg('ped-img-p', page.img);
+  openMod('mod-page');
+}
+async function savePage(){
+  showLoader();
+  const pages=await gd('site:pages');
+  const pdfEl=document.getElementById('ped-pdf');
+  const imgEl=document.getElementById('ped-img-v');
+  pages[curPageKey]={title:document.getElementById('ped-title').value,content:document.getElementById('ped-content').value};
+  if(pdfEl) pages[curPageKey].pdf=pdfEl.value;
+  if(imgEl) pages[curPageKey].img=imgEl.value;
+  await sSet('site:pages',pages);closeMod('mod-page');
+  hideLoader(); toast('Page mise à jour');
+}
+
+/* ═══ CLUBS ═══ */
+async function loadClubs(){
+  await loadClubsList();
+  const conseil = await gd('site:conseil');
+  document.getElementById('conseil-text').value = conseil.text||'';
+  document.getElementById('conseil-pdf-v').value = conseil.pdf||'';
+  const svPdf = await gd('site:surveillance_pdf');
+  if(document.getElementById('surveil-pdf-v')) document.getElementById('surveil-pdf-v').value = svPdf||'';
+}
+
+async function loadClubsList() {
+  const list = document.getElementById('clubsList'); if(!list) return;
+  const clubs = await gd('site:clubs');
+  list.innerHTML = clubs.length ? clubs.map((cl,i) => `
+    <div class="irow wi">
+      ${cl.img ? `<img class="ithumb" src="${cl.img}" onerror="this.style.background='var(--cr)'">` : `<div class="ithumb" style="background:var(--fo);display:flex;align-items:center;justify-content:center;color:var(--wh);font-size:.7rem;font-weight:700;text-align:center;padding:.2rem;">${h(cl.name.substring(0,8))}</div>`}
+      <div class="iinfo">
+        <h4>${h(cl.name)}</h4>
+        <p>${h(cl.resp||'')}${cl.members?' · '+cl.members+' membres':''}${cl.pdf?' · <a href="'+h(cl.pdf)+'" target="_blank" style="color:var(--tr);font-weight:700;">Voir PDF</a>':''}</p>
+      </div>
+      <div class="iacts">
+        <button class="be" onclick="openClubMod(${i})">Modifier</button>
+        <button class="bd" onclick="delItem('site:clubs',${i},loadClubsList)">Supprimer</button>
+      </div>
+    </div>`).join('') : '<p style="color:var(--md);">Aucun club enregistré.</p>';
+}
+
+function openClubMod(idx) {
+  document.getElementById('club-mt').textContent = idx===null ? 'Nouveau club' : 'Modifier le club';
+  document.getElementById('club-idx').value = idx===null ? '' : idx;
+  if(idx !== null) {
+    gd('site:clubs').then(clubs => {
+      const cl = clubs[idx];
+      document.getElementById('club-name').value    = cl.name||'';
+      document.getElementById('club-resp').value    = cl.resp||'';
+      document.getElementById('club-desc').value    = cl.desc||'';
+      document.getElementById('club-members').value = cl.members||'';
+      document.getElementById('club-img-v').value   = cl.img||'';
+      document.getElementById('club-pdf-v').value   = cl.pdf||'';
+      if(cl.img) prevImg('club-img-p', cl.img);
+      else document.getElementById('club-img-p').classList.remove('show');
+    });
+  } else {
+    ['club-name','club-resp','club-desc','club-members','club-img-v','club-pdf-v'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('club-img-p').classList.remove('show');
+  }
+  openMod('mod-club');
+}
+
+async function saveClub() {
+  const idx = document.getElementById('club-idx').value;
+  const item = {name:v('club-name'),resp:v('club-resp'),desc:v('club-desc'),members:+v('club-members')||0,img:v('club-img-v'),pdf:v('club-pdf-v')};
+  if(!item.name){toast('Nom requis','error');return;}
+  showLoader();
+  const clubs = await gd('site:clubs');
+  if(idx==='') clubs.push(item); else clubs[+idx]=item;
+  await sSet('site:clubs', clubs);
+  closeMod('mod-club');
+  await loadClubsList();
+  hideLoader(); toast('Club enregistré');
+}
+async function saveConseil(){
+  showLoader();
+  await sSet('site:conseil',{text:v('conseil-text'), pdf:v('conseil-pdf-v')||''});
+  hideLoader(); toast('Conseil scolaire enregistré');
+}
+async function saveSurveillancePdf(){
+  showLoader();
+  await sSet('site:surveillance_pdf', v('surveil-pdf-v')||'');
+  hideLoader(); toast('PDF calendrier de surveillance enregistré');
+}
+
+/* ═══ GENERIC DELETE ═══ */
+async function delItem(key,idx,reloadFn){
+  if(!confirm('Supprimer cet élément ?'))return;
+  showLoader();
+  const items=await gd(key);items.splice(idx,1);
+  await sSet(key,items);if(typeof reloadFn==='function')await reloadFn();
+  hideLoader(); toast('Élément supprimé');
+}
+
+/* ═══ IMAGE HELPERS ═══ */
+function swImg(prefix,mode){
+  const urlDiv=document.getElementById(`${prefix}-url`);
+  const fileDiv=document.getElementById(`${prefix}-file`);
+  const btns=urlDiv.previousElementSibling.querySelectorAll('.ig-tab');
+  btns.forEach(b=>b.classList.remove('active'));
+  if(mode==='url'){urlDiv.classList.add('show');fileDiv.classList.remove('show');btns[0].classList.add('active');}
+  else{fileDiv.classList.add('show');urlDiv.classList.remove('show');btns[1].classList.add('active');}
+}
+function swPdf(prefix,mode){
+  const urlDiv=document.getElementById(`${prefix}-url`);
+  const fileDiv=document.getElementById(`${prefix}-file`);
+  const btns=urlDiv.previousElementSibling.querySelectorAll('.ig-tab');
+  btns.forEach(b=>b.classList.remove('active'));
+  if(mode==='url'){urlDiv.classList.add('show');fileDiv.classList.remove('show');btns[0].classList.add('active');}
+  else{fileDiv.classList.add('show');urlDiv.classList.remove('show');btns[1].classList.add('active');}
+}
+function prevImg(id,src){const el=document.getElementById(id);if(!el)return;if(src){el.src=src;el.classList.add('show');}else el.classList.remove('show');}
+function fileImg(input,valId,prevId){
+  const f=input.files[0];
+  if(!f)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=800;
+      const ratio=Math.min(MAX/img.width,MAX/img.height,1);
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.round(img.width*ratio);
+      canvas.height=Math.round(img.height*ratio);
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      const compressed=canvas.toDataURL('image/jpeg',0.75);
+      const sizeKB=Math.round(compressed.length*0.75/1024);
+      if(sizeKB>500){
+        toast(`⚠️ Image trop lourde (${sizeKB}KB). Préférez une URL externe.`, 'error');
+        return;
+      }
+      document.getElementById(valId).value=compressed;
+      prevImg(prevId,compressed);
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+function filePdf(input,valId){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>document.getElementById(valId).value=e.target.result;r.readAsDataURL(f);}
+
+/* ═══ MODAL HELPERS ═══ */
+function openMod(id){document.getElementById(id).classList.add('open');}
+function closeMod(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mb').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');}));
+
+/* ═══ UTILS ═══ */
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='error'?' error':'');setTimeout(()=>t.className='',3500);}
+
+
+/* ═══ VISIBILITE DES PAGES ═══ */
+const PAGE_VISIBILITY = [
+  {group:'Groupe Scolaire', items:[
+    {key:'gs_maternelle', label:'Maternelle', desc:'Onglet section maternelle'},
+    {key:'gs_primaire', label:'Primaire', desc:'Onglet section primaire'},
+    {key:'gs_secondaire', label:'Secondaire & Lycée', desc:'Onglet secondaire et lycée'},
+  ]},
+  {group:'Espace Parents', items:[
+    {key:'parents_infos', label:"Notes d'information", desc:'Notes et circulaires pour les parents'},
+    {key:'parents_horaires', label:'Horaires des cours', desc:'Emplois du temps par classe'},
+    {key:'parents_examens', label:'Examens blancs', desc:'Calendriers et sujets des examens'},
+    {key:'parents_notes_consult', label:'Consultations notes', desc:'Accès aux résultats des élèves'},
+  ]},
+  {group:'Espace Enseignants', items:[
+    {key:'ens_infos', label:'Infos enseignants', desc:'Documents pour le corps enseignant'},
+    {key:'ens_activites', label:'Activités fin de trimestre', desc:'Activités pédagogiques'},
+    {key:'ens_conseils', label:"Conseils d'enseignements", desc:'Comptes rendus des conseils'},
+    {key:'ens_liste', label:'Corps enseignant', desc:'Liste et annuaire des enseignants'},
+    {key:'ens_surveillance', label:'Surveillance', desc:'Calendrier de surveillance'},
+    {key:'ens_visites', label:'Visites de classe', desc:'Planning des visites pédagogiques'},
+  ]},
+];
+
+async function loadVisibility(){
+  const vis = await gd('site:pageVisibility');
+  renderVisibilityPanel(vis);
+}
+
+function renderVisibilityPanel(vis){
+  const container = document.getElementById('visibilityPanelContent');
+  if(!container) return;
+  container.innerHTML = PAGE_VISIBILITY.map(group => `
+    <div class="ac vis-group" style="padding:0;overflow:hidden;">
+      <div class="vis-group-title">${h(group.group)}</div>
+      ${group.items.map(item => `
+        <div class="vis-row">
+          <div class="vis-row-info">
+            <strong>${h(item.label)}</strong>
+            <small>${h(item.desc)}</small>
+          </div>
+          <label class="toggle" title="${h(item.label)}">
+            <input type="checkbox" id="vis-${item.key}" ${vis[item.key]===false ? '' : 'checked'}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+async function saveVisibility(){
+  showLoader();
+  const vis = {};
+  PAGE_VISIBILITY.forEach(group => {
+    group.items.forEach(item => {
+      const el = document.getElementById('vis-'+item.key);
+      vis[item.key] = el ? el.checked : true;
+    });
+  });
+  await sSet('site:pageVisibility', vis);
+  hideLoader();
+  toast('Visibilité enregistrée');
+}
+
+/* ═══ INIT ═══ */
+async function initAdmin(){
+  // Initialise uniquement les clés "site:" — les clés "admin:" (credentials) ne sont jamais
+  // écrasées automatiquement pour éviter les erreurs 401 et les réinitialisations non voulues.
+  for(const[k,val]of Object.entries(D)){
+    if(k.startsWith('admin:')) continue; // protégé — ne pas toucher via initAdmin
+    const ex=await sGet(k);
+    if(ex===null) await sSet(k,val);
+  }
+  const oldGal = await sGet('site:gallery');
+  const newGal = await sGet('site:gallery2');
+  if(oldGal && Array.isArray(oldGal) && oldGal.length && (!newGal || !newGal.length)) {
+    const migrated = oldGal.map(src => ({type:'photo',src:typeof src==='string'?src:src,caption:''}));
+    await sSet('site:gallery2', migrated);
+  }
+  await loadDash();
+}
+
+/* ═══ PDF DOC GENERIQUE ═══ */
+const PDF_CAT_MAP = {
+  eleves: {key:'site:eleves', listId:'elevesList', label:'Liste élèves'},
+  ens_infos: {key:'site:ens_infos', listId:'ensInfosList', label:'Info enseignants'},
+  horaires: {key:'site:horaires', listId:'horairesList', label:'Horaire'},
+  examens: {key:'site:examens', listId:'examensList', label:'Examen blanc'},
+  activites: {key:'site:activites', listId:'activitesList', label:'Activité'},
+  conseils_ens: {key:'site:conseils_ens', listId:'conseilsEnsList', label:'Conseil enseignement'}
+};
+
+async function loadPdfDocs(cat) {
+  const m = PDF_CAT_MAP[cat]; if(!m) return;
+  const list = document.getElementById(m.listId); if(!list) return;
+  const items = await gd(m.key);
+  list.innerHTML = items.length ? items.map((d,i) => `
+    <div class="irow ni">
+      <div class="iinfo">
+        <h4>${h(d.title)}</h4>
+        <p>${h(d.date)}${d.desc?' — '+h(d.desc):''}${d.pdf?' — <a href="'+h(d.pdf)+'" target="_blank" style="color:var(--tr);font-weight:700;">Voir PDF</a>':' — <span style="color:var(--lt);">Pas de PDF</span>'}</p>
+      </div>
+      <div class="iacts">
+        <button class="be" onclick="openPdfDocMod('${cat}',${i})">Modifier</button>
+        <button class="bd" onclick="delItem('${m.key}',${i},()=>loadPdfDocs('${cat}'))">Supprimer</button>
+      </div>
+    </div>`).join('') : '<p style="color:var(--md);font-size:.88rem;">Aucun document.</p>';
+}
+
+function openPdfDocMod(cat, idx) {
+  const m = PDF_CAT_MAP[cat]; if(!m) return;
+  document.getElementById('pdfdoc-mt').textContent = idx===null ? 'Nouveau document — '+m.label : 'Modifier — '+m.label;
+  document.getElementById('pdfdoc-cat-v').value = cat;
+  document.getElementById('pdfdoc-idx').value = idx===null ? '' : idx;
+  if(idx !== null) {
+    gd(m.key).then(items => {
+      const d = items[idx];
+      document.getElementById('pdfdoc-title').value = d.title||'';
+      document.getElementById('pdfdoc-date').value  = d.date||'';
+      document.getElementById('pdfdoc-desc').value  = d.desc||'';
+      document.getElementById('pdfdoc-pdf-v').value = d.pdf||'';
+    });
+  } else {
+    ['pdfdoc-title','pdfdoc-date','pdfdoc-desc','pdfdoc-pdf-v'].forEach(id=>document.getElementById(id).value='');
+  }
+  openMod('mod-pdfdoc');
+}
+
+async function savePdfDoc() {
+  const cat = document.getElementById('pdfdoc-cat-v').value;
+  const idx = document.getElementById('pdfdoc-idx').value;
+  const m = PDF_CAT_MAP[cat]; if(!m) return;
+  const item = {title:v('pdfdoc-title'),date:v('pdfdoc-date'),desc:v('pdfdoc-desc'),pdf:v('pdfdoc-pdf-v')};
+  if(!item.title){toast('Titre requis','error');return;}
+  showLoader();
+  const items = await gd(m.key);
+  if(idx==='') items.push(item); else items[+idx]=item;
+  await sSet(m.key, items);
+  closeMod('mod-pdfdoc');
+  await loadPdfDocs(cat);
+  hideLoader(); toast('Document enregistré');
+}
+
+/* ═══ GALERIE MEDIA ═══ */
+async function loadGallery() {
+  const items = await gd('site:gallery2');
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = items.map((item,i) => {
+    if(item.type === 'video') {
+      const thumb = item.thumb || '';
+      return `<div style="position:relative;border:1px solid var(--cr2);border-radius:var(--rad);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+        ${thumb ? `<img src="${thumb}" style="width:100%;height:120px;object-fit:cover;display:block;">` : `<div style="width:100%;height:120px;background:var(--fo);display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>`}
+        <div style="position:absolute;top:6px;left:6px;background:var(--tr);color:#fff;font-size:.62rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;text-transform:uppercase;">Vidéo</div>
+        <p style="font-size:.72rem;padding:.5rem;color:var(--dk);background:var(--wh);border-top:1px solid var(--cr); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${h(item.caption||'Sans légende')}</p>
+        <button onclick="delGal(${i})" style="position:absolute;top:6px;right:6px;background:#DC2626;color:#fff;border-radius:4px;border:none;width:24px;height:24px;cursor:pointer;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:background .2s;">x</button>
+      </div>`;
+    } else {
+      return `<div style="position:relative;border:1px solid var(--cr2);border-radius:var(--rad);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+        <img src="${item.src||item}" style="width:100%;height:120px;object-fit:cover;display:block;" onerror="this.style.background='var(--cr)'">
+        ${item.caption ? `<p style="font-size:.72rem;padding:.5rem;color:var(--dk);background:var(--wh);border-top:1px solid var(--cr); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${h(item.caption)}</p>` : ''}
+        <button onclick="delGal(${i})" style="position:absolute;top:6px;right:6px;background:#DC2626;color:#fff;border-radius:4px;border:none;width:24px;height:24px;cursor:pointer;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:background .2s;">x</button>
+      </div>`;
+    }
+  }).join('');
+}
+
+function openGalMod(type) {
+  type = type || 'photo';
+  document.getElementById('gal-mt').textContent = type === 'video' ? 'Ajouter une vidéo' : 'Ajouter une photo';
+  document.getElementById('gal-type-v').value = type;
+  document.getElementById('gal-photo-section').style.display = type === 'photo' ? 'block' : 'none';
+  document.getElementById('gal-video-section').style.display = type === 'video' ? 'block' : 'none';
+  document.getElementById('gal-img-v').value = '';
+  document.getElementById('gal-video-v').value = '';
+  document.getElementById('gal-vthumb-v').value = '';
+  document.getElementById('gal-cap').value = '';
+  document.getElementById('gal-img-p').classList.remove('show');
+  document.getElementById('gal-vthumb-p').classList.remove('show');
+  openMod('mod-gal');
+}
+
+async function saveGal() {
+  const type = document.getElementById('gal-type-v').value;
+  const caption = v('gal-cap');
+  let item;
+  if(type === 'video') {
+    const src = v('gal-video-v');
+    if(!src){toast('URL vidéo requise','error');return;}
+    item = {type:'video', src, thumb:v('gal-vthumb-v'), caption};
+  } else {
+    const src = v('gal-img-v');
+    if(!src){toast('Image requise','error');return;}
+    item = {type:'photo', src, caption};
+  }
+  showLoader();
+  const items = await gd('site:gallery2');
+  items.push(item);
+  await sSet('site:gallery2', items);
+  closeMod('mod-gal');
+  await loadGallery();
+  hideLoader(); toast('Média ajouté');
+}
+
+async function delGal(idx) {
+  if(!confirm('Supprimer ce média ?')) return;
+  showLoader();
+  const items = await gd('site:gallery2');
+  items.splice(idx,1);
+  await sSet('site:gallery2', items);
+  await loadGallery();
+  hideLoader(); toast('Média supprimé');
+}
+</script>
+
+</body>
+</html>
