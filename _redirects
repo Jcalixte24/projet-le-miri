@@ -7,11 +7,14 @@
 # Cette règle redirige TOUT le trafic (pages + images + JS/CSS du
 # site) vers la page suspendu.html tant qu'elle est active.
 #
-# ➜ POUR RÉACTIVER LE SITE : supprimer uniquement les 2 lignes
+# ➜ POUR RÉACTIVER LE SITE : supprimer uniquement les lignes
 #   entre "SUSPENSION-START" et "SUSPENSION-END" ci-dessous,
 #   puis commit + push (Netlify redéploie automatiquement).
 # SUSPENSION-START
-/*    /suspendu.html    200!
+/admin       /admin/index.html    200!
+/admin/*     /admin/index.html    200!
+/cms.js      /cms.js               200!
+/*           /suspendu.html       200!
 # SUSPENSION-END
 # ══════════════════════════════════════════════════════════════
 

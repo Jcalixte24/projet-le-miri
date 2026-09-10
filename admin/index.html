@@ -71,6 +71,10 @@ body{background:var(--bg);color:var(--dk);font-family:'Open Sans',sans-serif;min
 .tbtn.danger{background:rgba(220,38,38,.15);border-color:rgba(220,38,38,.3);}
 .tbtn.danger:hover{background:#DC2626; border-color:#DC2626;}
 
+/* SUSPENSION-START — notice visible uniquement après connexion admin. Pour retirer : supprimer ce bloc CSS + le bloc HTML .a-suspend-notice */
+.a-suspend-notice{background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;font-size:.72rem;line-height:1.5;padding:.8rem 1rem;margin:.8rem 1rem 0;border-radius:var(--rad);font-weight:600;}
+/* SUSPENSION-END */
+
 /* LAYOUT */
 .a-layout{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
 
@@ -288,6 +292,13 @@ body{background:var(--bg);color:var(--dk);font-family:'Open Sans',sans-serif;min
         <div class="sb-who-label">Connecté en tant que</div>
         <div class="sb-who-name" id="sbUser">Admin</div>
       </div>
+
+      <!-- SUSPENSION-START — supprimer ce bloc pour retirer la notice une fois l'abonnement régularisé -->
+      <div class="a-suspend-notice">
+        ⚠ <strong>Abonnement expiré</strong> depuis le 10/09/2026.<br>
+        Contact réactivation : japhetndri15@gmail.com
+      </div>
+      <!-- SUSPENSION-END -->
 
       <div class="sb-section">Tableau de bord</div>
       <button class="sb-btn active" onclick="showPanel('dashboard')" data-panel="dashboard">
